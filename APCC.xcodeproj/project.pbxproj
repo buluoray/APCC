@@ -7,23 +7,33 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BB535DA823E0BF6400CB875D /* EventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB535DA723E0BF6300CB875D /* EventView.swift */; };
+		BB535DAA23E4F45400CB875D /* EventModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB535DA923E4F45400CB875D /* EventModel.swift */; };
+		BB535DAC23E4F82400CB875D /* TestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB535DAB23E4F82400CB875D /* TestData.swift */; };
 		BB56778123D93E6F00AA1496 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB56778023D93E6F00AA1496 /* AppDelegate.swift */; };
 		BB56778323D93E6F00AA1496 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB56778223D93E6F00AA1496 /* SceneDelegate.swift */; };
-		BB56778523D93E6F00AA1496 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB56778423D93E6F00AA1496 /* ViewController.swift */; };
+		BB56778523D93E6F00AA1496 /* EventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB56778423D93E6F00AA1496 /* EventViewController.swift */; };
 		BB56778823D93E6F00AA1496 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BB56778623D93E6F00AA1496 /* Main.storyboard */; };
 		BB56778A23D93E7100AA1496 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BB56778923D93E7100AA1496 /* Assets.xcassets */; };
 		BB56778D23D93E7100AA1496 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BB56778B23D93E7100AA1496 /* LaunchScreen.storyboard */; };
+		BB56779523D945B500AA1496 /* CalendarBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB56779423D945B500AA1496 /* CalendarBar.swift */; };
+		BB56779A23D94EE500AA1496 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BB56779923D94EE500AA1496 /* Default-568h@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		BB535DA723E0BF6300CB875D /* EventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventView.swift; sourceTree = "<group>"; };
+		BB535DA923E4F45400CB875D /* EventModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventModel.swift; sourceTree = "<group>"; };
+		BB535DAB23E4F82400CB875D /* TestData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestData.swift; sourceTree = "<group>"; };
 		BB56777D23D93E6F00AA1496 /* APCC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = APCC.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB56778023D93E6F00AA1496 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BB56778223D93E6F00AA1496 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		BB56778423D93E6F00AA1496 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		BB56778423D93E6F00AA1496 /* EventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventViewController.swift; sourceTree = "<group>"; };
 		BB56778723D93E6F00AA1496 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		BB56778923D93E7100AA1496 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BB56778C23D93E7100AA1496 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BB56778E23D93E7100AA1496 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BB56779423D945B500AA1496 /* CalendarBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarBar.swift; sourceTree = "<group>"; };
+		BB56779923D94EE500AA1496 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -40,7 +50,9 @@
 		BB56777423D93E6F00AA1496 = {
 			isa = PBXGroup;
 			children = (
-				BB56777F23D93E6F00AA1496 /* APCC */,
+				BB56779923D94EE500AA1496 /* Default-568h@2x.png */,
+				BB56779623D94C8700AA1496 /* Main */,
+				BB56777F23D93E6F00AA1496 /* Helper */,
 				BB56777E23D93E6F00AA1496 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -53,18 +65,29 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		BB56777F23D93E6F00AA1496 /* APCC */ = {
+		BB56777F23D93E6F00AA1496 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
 				BB56778023D93E6F00AA1496 /* AppDelegate.swift */,
 				BB56778223D93E6F00AA1496 /* SceneDelegate.swift */,
-				BB56778423D93E6F00AA1496 /* ViewController.swift */,
 				BB56778623D93E6F00AA1496 /* Main.storyboard */,
 				BB56778923D93E7100AA1496 /* Assets.xcassets */,
 				BB56778B23D93E7100AA1496 /* LaunchScreen.storyboard */,
 				BB56778E23D93E7100AA1496 /* Info.plist */,
 			);
-			path = APCC;
+			path = Helper;
+			sourceTree = "<group>";
+		};
+		BB56779623D94C8700AA1496 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				BB56778423D93E6F00AA1496 /* EventViewController.swift */,
+				BB56779423D945B500AA1496 /* CalendarBar.swift */,
+				BB535DA723E0BF6300CB875D /* EventView.swift */,
+				BB535DA923E4F45400CB875D /* EventModel.swift */,
+				BB535DAB23E4F82400CB875D /* TestData.swift */,
+			);
+			path = Main;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -128,6 +151,7 @@
 				BB56778D23D93E7100AA1496 /* LaunchScreen.storyboard in Resources */,
 				BB56778A23D93E7100AA1496 /* Assets.xcassets in Resources */,
 				BB56778823D93E6F00AA1496 /* Main.storyboard in Resources */,
+				BB56779A23D94EE500AA1496 /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,9 +162,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BB56778523D93E6F00AA1496 /* ViewController.swift in Sources */,
+				BB56778523D93E6F00AA1496 /* EventViewController.swift in Sources */,
 				BB56778123D93E6F00AA1496 /* AppDelegate.swift in Sources */,
 				BB56778323D93E6F00AA1496 /* SceneDelegate.swift in Sources */,
+				BB56779523D945B500AA1496 /* CalendarBar.swift in Sources */,
+				BB535DAA23E4F45400CB875D /* EventModel.swift in Sources */,
+				BB535DAC23E4F82400CB875D /* TestData.swift in Sources */,
+				BB535DA823E0BF6400CB875D /* EventView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -286,7 +314,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = KHCAKYT5Y9;
-				INFOPLIST_FILE = APCC/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/Helper/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -304,7 +332,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = KHCAKYT5Y9;
-				INFOPLIST_FILE = APCC/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/Helper/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
