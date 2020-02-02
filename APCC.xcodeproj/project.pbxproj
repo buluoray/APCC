@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1C544D2B23E6BCC500700D83 /* Employer_Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C544D2A23E6BCC500700D83 /* Employer_Request.swift */; };
+		1C544D2D23E6BCE600700D83 /* Employer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C544D2C23E6BCE600700D83 /* Employer.swift */; };
 		BB535DA823E0BF6400CB875D /* EventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB535DA723E0BF6300CB875D /* EventView.swift */; };
 		BB535DAA23E4F45400CB875D /* EventModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB535DA923E4F45400CB875D /* EventModel.swift */; };
 		BB535DAC23E4F82400CB875D /* TestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB535DAB23E4F82400CB875D /* TestData.swift */; };
@@ -21,6 +23,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1C544D2A23E6BCC500700D83 /* Employer_Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Employer_Request.swift; sourceTree = "<group>"; };
+		1C544D2C23E6BCE600700D83 /* Employer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Employer.swift; sourceTree = "<group>"; };
 		BB535DA723E0BF6300CB875D /* EventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventView.swift; sourceTree = "<group>"; };
 		BB535DA923E4F45400CB875D /* EventModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventModel.swift; sourceTree = "<group>"; };
 		BB535DAB23E4F82400CB875D /* TestData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestData.swift; sourceTree = "<group>"; };
@@ -47,6 +51,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1C544D2923E6BC9F00700D83 /* Mode */ = {
+			isa = PBXGroup;
+			children = (
+				1C544D2A23E6BCC500700D83 /* Employer_Request.swift */,
+				1C544D2C23E6BCE600700D83 /* Employer.swift */,
+			);
+			path = Mode;
+			sourceTree = "<group>";
+		};
 		BB56777423D93E6F00AA1496 = {
 			isa = PBXGroup;
 			children = (
@@ -54,6 +67,7 @@
 				BB56779623D94C8700AA1496 /* Main */,
 				BB56777F23D93E6F00AA1496 /* Helper */,
 				BB56777E23D93E6F00AA1496 /* Products */,
+				1C544D2923E6BC9F00700D83 /* Mode */,
 			);
 			sourceTree = "<group>";
 		};
@@ -166,8 +180,10 @@
 				BB56778323D93E6F00AA1496 /* SceneDelegate.swift in Sources */,
 				BB56779523D945B500AA1496 /* CalendarBar.swift in Sources */,
 				BB535DAE23E65D8200CB875D /* APCCTabBarController.swift in Sources */,
+				1C544D2B23E6BCC500700D83 /* Employer_Request.swift in Sources */,
 				BB535DAA23E4F45400CB875D /* EventModel.swift in Sources */,
 				BB535DAC23E4F82400CB875D /* TestData.swift in Sources */,
+				1C544D2D23E6BCE600700D83 /* Employer.swift in Sources */,
 				BB535DA823E0BF6400CB875D /* EventView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
