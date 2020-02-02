@@ -46,7 +46,7 @@ class CalendarBar: UIView, UICollectionViewDataSource, UICollectionViewDelegate,
         addConstraintsWithFormat("H:|-12.5-[v0]-12.5-|", views: yearView)
         addConstraintsWithFormat("V:|[v1(21)][v0]-1.5-|", views: collectionView,yearView)
 
-        //backgroundColor = .blue
+        backgroundColor = .white
     }
     
     override func layoutSubviews() {
