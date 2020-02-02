@@ -14,33 +14,34 @@ enum Employer_Request_Error:Error {
 }
 
 struct Employer_Request {
-    let resourceURL:URL
-    let API_KEY = "BjVugaC0TL3xHAbNAG9ih6kqVX8N9Djq47hqMLSC"
+    var request = URLRequest(url: URL(string: "https://3gzg78tkdh.execute-api.us-east-2.amazonaws.com/default/BYUH_APP_APCC")!)
     
     init() {
-        //let resourceString = "https://4e97t4crj2.execute-api.us-east-2.amazonaws.com/default/BYUH_APP?api_key=\(API_KEY)"
-        let resourceString = "https://p72owj7c70.execute-api.us-east-2.amazonaws.com/default/BYUH_APP_APCC"
+        //let resourceString = "https://p72owj7c70.execute-api.us-east-2.amazonaws.com/default/BYUH_APP_APCC"
+        let resourceString = "https://3gzg78tkdh.execute-api.us-east-2.amazonaws.com/default/BYUH_APP_APCC"
+        let API_KEY = "tv50UbePuT4jk53PnXYfu22SUGuSL7Xn77tHVt6x"
         guard let resourceURL = URL(string: resourceString) else {fatalError()}
-        self.resourceURL = resourceURL
-        
+        request = URLRequest(url: resourceURL)
+        request.setValue(API_KEY, forHTTPHeaderField:"X-API-KEY")
+        request.httpMethod = "POST"
     }
     
     func getVenders (completion: @escaping(Result<[Item], Employer_Request_Error>) -> Void) {
-        let dataTask = URLSession.shared.dataTask(with: resourceURL) { data, _, _ in
-            guard let jsonData = data else {
-                completion(.failure(.noDataAvailable))
-                return
-            }
-            do {
-                let decoder = JSONDecoder()
-                let employer_Response = try decoder.decode([Item].self, from: jsonData)
-                completion(.success(employer_Response))
-            }catch{
-                completion(.failure(.canNotProcessData))
-            }
-            
-        }
-        dataTask.resume()
+        let session = URLSession.shared
+        let task = session.dataTask(with: request, completionHandler: {data, response, error -> Void in
+           guard let jsonData = data else {
+               completion(.failure(.noDataAvailable))
+               return
+           }
+           do {
+               print(data ?? "no data")
+               let decoder = JSONDecoder()
+               let employer_Response = try decoder.decode([Item].self, from: jsonData)
+               completion(.success(employer_Response))
+           }catch{
+               completion(.failure(.canNotProcessData))
+           }
+        })
+        task.resume()
     }
-
 }

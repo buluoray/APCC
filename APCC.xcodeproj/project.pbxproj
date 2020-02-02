@@ -54,8 +54,8 @@
 		1C544D2923E6BC9F00700D83 /* Mode */ = {
 			isa = PBXGroup;
 			children = (
-				1C544D2A23E6BCC500700D83 /* Employer_Request.swift */,
 				1C544D2C23E6BCE600700D83 /* Employer.swift */,
+				1C544D2A23E6BCC500700D83 /* Employer_Request.swift */,
 			);
 			path = Mode;
 			sourceTree = "<group>";
