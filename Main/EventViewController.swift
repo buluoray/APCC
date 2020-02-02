@@ -8,13 +8,10 @@
 
 import UIKit
 
-class EventViewController: UIViewController {
+class EventViewController: UIViewController{
 
     
-
-    lazy var events: [EventSection] = [section1, section2]
-    
-    //lazy var eventDays: [EventDay] = [[],[],[],[],[]]
+    var eventDays: [EventDay] = testData
     
     lazy var calendarBar: CalendarBar = {
         let cb = CalendarBar()
@@ -25,17 +22,29 @@ class EventViewController: UIViewController {
     lazy var eventView: EventView = {
         let ev = EventView()
         ev.eventViewController = self
-        ev.events = events
+        ev.eventDays = eventDays
         return ev
     }()
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setNeedsStatusBarAppearanceUpdate()
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        .darkContent
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCalendarBar()
         setupEventView()
-        
+        overrideUserInterfaceStyle = .light
+        //navigationController?.overrideUserInterfaceStyle = .light
         //view.backgroundColor = .green
         navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.barTintColor = .themeColor
+        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
     }
 //
     private func setupCalendarBar(){
@@ -73,7 +82,9 @@ extension UIColor {
         return UIColor(red: red/255, green: green/255, blue: blue/255, alpha: 1)
     }
     
-    static var themeColor = #colorLiteral(red: 0.5019607843, green: 0.168627451, blue: 0.168627451, alpha: 1)
+    static var themeColor = #colorLiteral(red: 0.568627451, green: 0.1607843137, blue: 0.2156862745, alpha: 1)
+    
+    static var naviColor = #colorLiteral(red: 0.4901960784, green: 0.003921568627, blue: 0.07058823529, alpha: 1)
     
     static var platformBlue = #colorLiteral(red: 0.2784313725, green: 0.2666666667, blue: 0.8901960784, alpha: 1)
     

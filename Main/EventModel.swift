@@ -31,6 +31,5 @@ struct EventSection {
 
 
 struct EventDay {
-    
-    var eventSections: [EventSection]
+    var eventSections: [EventSection]?
 }

@@ -15,6 +15,8 @@ class CalendarBar: UIView, UICollectionViewDataSource, UICollectionViewDelegate,
     let DisplayDate = "March 2019"
     let cellId = "cellId"
     var eventViewController: EventViewController?
+    var eventView: EventView?
+    
     
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -26,7 +28,7 @@ class CalendarBar: UIView, UICollectionViewDataSource, UICollectionViewDelegate,
     }()
     
     var yearView: UILabel = {
-       let ul = UILabel()
+        let ul = UILabel()
         ul.text = "March 2019"
         ul.textAlignment = .center
         ul.font = .systemFont(ofSize: 12, weight: .bold)
@@ -35,7 +37,7 @@ class CalendarBar: UIView, UICollectionViewDataSource, UICollectionViewDelegate,
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+        //eventView = eventViewController?.eventView
         collectionView.register(DayCell.self, forCellWithReuseIdentifier: cellId)
         
         addSubview(collectionView)
@@ -43,10 +45,19 @@ class CalendarBar: UIView, UICollectionViewDataSource, UICollectionViewDelegate,
         addConstraintsWithFormat("H:|-12.5-[v0]-12.5-|", views: collectionView)
         addConstraintsWithFormat("H:|-12.5-[v0]-12.5-|", views: yearView)
         addConstraintsWithFormat("V:|[v1(21)][v0]-1.5-|", views: collectionView,yearView)
-        
+
         //backgroundColor = .blue
-        
-        
+    }
+    
+    override func layoutSubviews() {
+        eventView = eventViewController?.eventView
+        let selectedIndexPath = NSIndexPath(item: 1, section: 0)
+        collectionView.selectItem(at: selectedIndexPath as IndexPath, animated: false, scrollPosition: .centeredHorizontally)
+        //collectionView.reloadData()
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        eventView?.scrollToMenuIndex(menuIndex: indexPath.item)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -62,7 +73,7 @@ class CalendarBar: UIView, UICollectionViewDataSource, UICollectionViewDelegate,
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 6
+        return 5.9
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -78,14 +89,18 @@ class DayCell: BaseCell {
     
     let dayNumberView: UILabel = {
         let iv = UILabel()
+        iv.translatesAutoresizingMaskIntoConstraints = false
         iv.text = "1"
         iv.textAlignment = .center
-        iv.textColor = .darkGray
+        iv.textColor = .black
+        iv.font = .systemFont(ofSize: 20, weight: .bold)
         return iv
     }()
     
+    
     let dayInWeekView: UILabel = {
         let iv = UILabel()
+        iv.translatesAutoresizingMaskIntoConstraints = false
         iv.text = "Sun"
         iv.textAlignment = .center
         iv.textColor = .black
@@ -94,16 +109,42 @@ class DayCell: BaseCell {
         return iv
     }()
     
+    var circleView = UIView()
+    
     override var isHighlighted: Bool {
         didSet {
-            dayNumberView.textColor = isHighlighted ? UIColor.rgb(red: 255, green: 51, blue: 102) : .darkGray
+            dayNumberView.textColor = isHighlighted ? .white : .black
+            circleView.backgroundColor = isHighlighted ? .themeColor : .clear
+            layoutIfNeeded()
         }
     }
     
     override var isSelected: Bool {
         didSet {
-            dayNumberView.textColor = isSelected ? UIColor.rgb(red: 255, green: 51, blue: 102) : .darkGray
+            dayNumberView.textColor = isSelected ? .white : .black
+            circleView.backgroundColor = isSelected ? .themeColor : .clear
+            layoutIfNeeded()
         }
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        circleView.layer.cornerRadius = circleView.frame.width/2
+    }
+    
+    func setupCircleView() {
+        layoutIfNeeded()
+        addSubview(circleView)
+        circleView.translatesAutoresizingMaskIntoConstraints = false
+        addConstraintsWithFormat("H:[v0(40.5)]", views: circleView)
+        circleView.topAnchor.constraint(equalTo: dayNumberView.topAnchor).isActive = true
+        circleView.bottomAnchor.constraint(equalTo: dayNumberView.bottomAnchor).isActive = true
+        circleView.backgroundColor = .clear
+        circleView.layer.cornerRadius = circleView.frame.width/2
+        circleView.clipsToBounds = true
+        sendSubviewToBack(circleView)
+        //circleView.layer.borderWidth = 5.0
+
     }
     
     override func setupViews() {
@@ -113,8 +154,8 @@ class DayCell: BaseCell {
         addSubview(dayInWeekView)
         addConstraintsWithFormat("H:[v0(40.5)]", views: dayInWeekView)
         addConstraintsWithFormat("H:[v0(40.5)]", views: dayNumberView)
-        addConstraintsWithFormat("V:|[v1(8)]-1-[v0(40.5)]|", views: dayNumberView, dayInWeekView)
-
+        addConstraintsWithFormat("V:|[v1(8)]-1-[v0(40.5)]", views: dayNumberView, dayInWeekView)
+        setupCircleView()
     }
     
 }
