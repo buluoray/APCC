@@ -23,6 +23,30 @@ class APCCTabBarController: UITabBarController {
         viewControllers = [eventViewNavigationController, createDummyNavControllerWithTitle(title: "Guests", imageName: "guests"), createDummyNavControllerWithTitle(title: "Discover", imageName: "discover")]
         
         // load Employer data
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            let employer_Request = Employer_Request()
+            employer_Request.getVenders{ [weak self] result in
+                switch result {
+                case .failure(let error):
+                    print(error)
+                case .success(let employers):
+                    print(employers)
+                }
+            }
+        }
+
+        // load Schedule data
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            let schedule_Request = Schedule_Request()
+            schedule_Request.getVenders{ [weak self] result in
+                switch result {
+                case .failure(let error):
+                    print(error)
+                case .success(let schedule):
+                    print(schedule)
+                }
+            }
+        }
                DispatchQueue.global(qos: .userInitiated).async { [weak self] in
                    let employer_Request = Employer_Request()
                    employer_Request.getVenders{ [weak self] result in

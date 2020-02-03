@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		1C544D2B23E6BCC500700D83 /* Employer_Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C544D2A23E6BCC500700D83 /* Employer_Request.swift */; };
 		1C544D2D23E6BCE600700D83 /* Employer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C544D2C23E6BCE600700D83 /* Employer.swift */; };
+		1C544D2F23E7F23C00700D83 /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C544D2E23E7F23C00700D83 /* Schedule.swift */; };
+		1C544D3123E7F45A00700D83 /* Schedule_Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C544D3023E7F45A00700D83 /* Schedule_Request.swift */; };
 		BB535DA823E0BF6400CB875D /* EventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB535DA723E0BF6300CB875D /* EventView.swift */; };
 		BB535DAA23E4F45400CB875D /* EventModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB535DA923E4F45400CB875D /* EventModel.swift */; };
 		BB535DAC23E4F82400CB875D /* TestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB535DAB23E4F82400CB875D /* TestData.swift */; };
@@ -26,6 +28,8 @@
 /* Begin PBXFileReference section */
 		1C544D2A23E6BCC500700D83 /* Employer_Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Employer_Request.swift; sourceTree = "<group>"; };
 		1C544D2C23E6BCE600700D83 /* Employer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Employer.swift; sourceTree = "<group>"; };
+		1C544D2E23E7F23C00700D83 /* Schedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
+		1C544D3023E7F45A00700D83 /* Schedule_Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schedule_Request.swift; sourceTree = "<group>"; };
 		BB535DA723E0BF6300CB875D /* EventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventView.swift; sourceTree = "<group>"; };
 		BB535DA923E4F45400CB875D /* EventModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventModel.swift; sourceTree = "<group>"; };
 		BB535DAB23E4F82400CB875D /* TestData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestData.swift; sourceTree = "<group>"; };
@@ -58,6 +62,8 @@
 			children = (
 				1C544D2C23E6BCE600700D83 /* Employer.swift */,
 				1C544D2A23E6BCC500700D83 /* Employer_Request.swift */,
+				1C544D2E23E7F23C00700D83 /* Schedule.swift */,
+				1C544D3023E7F45A00700D83 /* Schedule_Request.swift */,
 			);
 			path = Mode;
 			sourceTree = "<group>";
@@ -180,6 +186,8 @@
 			files = (
 				BB56778523D93E6F00AA1496 /* EventViewController.swift in Sources */,
 				BB56778123D93E6F00AA1496 /* AppDelegate.swift in Sources */,
+				1C544D3123E7F45A00700D83 /* Schedule_Request.swift in Sources */,
+				1C544D2F23E7F23C00700D83 /* Schedule.swift in Sources */,
 				BB56778323D93E6F00AA1496 /* SceneDelegate.swift in Sources */,
 				BB535DB023E69D0B00CB875D /* EventInfoViewController.swift in Sources */,
 				BB56779523D945B500AA1496 /* CalendarBar.swift in Sources */,
