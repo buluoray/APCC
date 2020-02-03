@@ -21,6 +21,7 @@ class CalendarBar: UIView, UICollectionViewDataSource, UICollectionViewDelegate,
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        cv.translatesAutoresizingMaskIntoConstraints = false
         cv.backgroundColor = .white
         cv.dataSource = self
         cv.delegate = self
@@ -29,6 +30,7 @@ class CalendarBar: UIView, UICollectionViewDataSource, UICollectionViewDelegate,
     
     var yearView: UILabel = {
         let ul = UILabel()
+        ul.translatesAutoresizingMaskIntoConstraints = false
         ul.text = "March 2019"
         ul.textAlignment = .center
         ul.font = .systemFont(ofSize: 12, weight: .bold)
@@ -45,7 +47,7 @@ class CalendarBar: UIView, UICollectionViewDataSource, UICollectionViewDelegate,
         addConstraintsWithFormat("H:|-12.5-[v0]-12.5-|", views: collectionView)
         addConstraintsWithFormat("H:|-12.5-[v0]-12.5-|", views: yearView)
         addConstraintsWithFormat("V:|[v1(21)][v0]-1.5-|", views: collectionView,yearView)
-
+        
         backgroundColor = .white
     }
     
@@ -53,6 +55,7 @@ class CalendarBar: UIView, UICollectionViewDataSource, UICollectionViewDelegate,
         eventView = eventViewController?.eventView
         let selectedIndexPath = NSIndexPath(item: 1, section: 0)
         collectionView.selectItem(at: selectedIndexPath as IndexPath, animated: false, scrollPosition: .centeredHorizontally)
+        print(frame.width)
         //collectionView.reloadData()
     }
     
@@ -73,7 +76,8 @@ class CalendarBar: UIView, UICollectionViewDataSource, UICollectionViewDelegate,
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 5.9
+
+        return (frame.width - 308.5) / 7
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

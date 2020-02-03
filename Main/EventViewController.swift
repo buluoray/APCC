@@ -45,6 +45,7 @@ class EventViewController: UIViewController{
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.barTintColor = .themeColor
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "Calendar", style: .plain, target: nil, action: nil)
         navigationItem.title = "APCC Calendar"
     }
 //

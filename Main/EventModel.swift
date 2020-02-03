@@ -11,11 +11,20 @@ struct EventData {
     var title: String
     var location: String
     var imgaeName: String
+    var speaker: String?
     init(time: String, title:String, location: String, imageName: String) {
         self.title = title
         self.time = time
         self.location = location
         self.imgaeName = imageName
+    }
+    
+    init(time: String, title:String, location: String, imageName: String, speaker: String) {
+        self.title = title
+        self.time = time
+        self.location = location
+        self.imgaeName = imageName
+        self.speaker = speaker
     }
 }
 

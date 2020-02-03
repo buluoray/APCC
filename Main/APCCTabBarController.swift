@@ -21,7 +21,6 @@ class APCCTabBarController: UITabBarController {
         
 
         viewControllers = [eventViewNavigationController, createDummyNavControllerWithTitle(title: "Guests", imageName: "guests"), createDummyNavControllerWithTitle(title: "Discover", imageName: "discover")]
-        self.tabBar.backgroundColor = .lightGray
         
         // load Employer data
                DispatchQueue.global(qos: .userInitiated).async { [weak self] in
@@ -36,6 +35,8 @@ class APCCTabBarController: UITabBarController {
                        }
                    }
                }
+        self.tabBar.barTintColor = .white
+        self.tabBar.tintColor = .themeColor
     }
     
     private func createDummyNavControllerWithTitle(title: String, imageName: String) -> UINavigationController{

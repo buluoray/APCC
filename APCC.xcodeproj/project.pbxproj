@@ -13,6 +13,7 @@
 		BB535DAA23E4F45400CB875D /* EventModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB535DA923E4F45400CB875D /* EventModel.swift */; };
 		BB535DAC23E4F82400CB875D /* TestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB535DAB23E4F82400CB875D /* TestData.swift */; };
 		BB535DAE23E65D8200CB875D /* APCCTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB535DAD23E65D8200CB875D /* APCCTabBarController.swift */; };
+		BB535DB023E69D0B00CB875D /* EventInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB535DAF23E69D0B00CB875D /* EventInfoViewController.swift */; };
 		BB56778123D93E6F00AA1496 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB56778023D93E6F00AA1496 /* AppDelegate.swift */; };
 		BB56778323D93E6F00AA1496 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB56778223D93E6F00AA1496 /* SceneDelegate.swift */; };
 		BB56778523D93E6F00AA1496 /* EventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB56778423D93E6F00AA1496 /* EventViewController.swift */; };
@@ -29,6 +30,7 @@
 		BB535DA923E4F45400CB875D /* EventModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventModel.swift; sourceTree = "<group>"; };
 		BB535DAB23E4F82400CB875D /* TestData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestData.swift; sourceTree = "<group>"; };
 		BB535DAD23E65D8200CB875D /* APCCTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APCCTabBarController.swift; sourceTree = "<group>"; };
+		BB535DAF23E69D0B00CB875D /* EventInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventInfoViewController.swift; sourceTree = "<group>"; };
 		BB56777D23D93E6F00AA1496 /* APCC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = APCC.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB56778023D93E6F00AA1496 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BB56778223D93E6F00AA1496 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -95,6 +97,7 @@
 			isa = PBXGroup;
 			children = (
 				BB56778423D93E6F00AA1496 /* EventViewController.swift */,
+				BB535DAF23E69D0B00CB875D /* EventInfoViewController.swift */,
 				BB56779423D945B500AA1496 /* CalendarBar.swift */,
 				BB535DA723E0BF6300CB875D /* EventView.swift */,
 				BB535DA923E4F45400CB875D /* EventModel.swift */,
@@ -178,6 +181,7 @@
 				BB56778523D93E6F00AA1496 /* EventViewController.swift in Sources */,
 				BB56778123D93E6F00AA1496 /* AppDelegate.swift in Sources */,
 				BB56778323D93E6F00AA1496 /* SceneDelegate.swift in Sources */,
+				BB535DB023E69D0B00CB875D /* EventInfoViewController.swift in Sources */,
 				BB56779523D945B500AA1496 /* CalendarBar.swift in Sources */,
 				BB535DAE23E65D8200CB875D /* APCCTabBarController.swift in Sources */,
 				1C544D2B23E6BCC500700D83 /* Employer_Request.swift in Sources */,

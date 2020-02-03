@@ -88,6 +88,7 @@ class EventView: UIView, UICollectionViewDataSource, UICollectionViewDelegate, U
         }
         //print("item: \(indexPath.item), row: \(indexPath.row)")
         cell.eventDay = eventDays[indexPath.row]
+        cell.eventViewController = eventViewController
         return cell
     }
     
@@ -96,6 +97,7 @@ class EventView: UIView, UICollectionViewDataSource, UICollectionViewDelegate, U
 //MARK: Event Overview Cell
 class EventOverviewCell: BaseCell, UITableViewDelegate, UITableViewDataSource {
     
+    var eventViewController: EventViewController?
     var eventDay: EventDay?
     let cellId = "tablecellId"
     let data = ["test1","test2","test3"]
@@ -187,7 +189,20 @@ class EventOverviewCell: BaseCell, UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //print(indexPath.row)
+        guard let eventDay = eventDay
+            else {
+                return
+        }
+        guard let eventSections = eventDay.eventSections else {
+            return
+        }
+         
+        let eventVC = EventInfoViewController()
+        eventVC.eventDetail = eventSections[indexPath.section].eventData[indexPath.row]
+        eventVC.hidesBottomBarWhenPushed = true
+        eventViewController?.show(eventVC, sender: self)
+        
+
     }
     
     //MARK: Header View
