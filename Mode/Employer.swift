@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Item: Decodable{
+struct EmItem: Decodable{
     var Item: Item_info
 }
 

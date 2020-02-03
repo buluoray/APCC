@@ -24,18 +24,30 @@ class APCCTabBarController: UITabBarController {
         self.tabBar.backgroundColor = .lightGray
         
         // load Employer data
-               DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-                   let employer_Request = Employer_Request()
-                   employer_Request.getVenders{ [weak self] result in
-                       switch result {
-                       case .failure(let error):
-                           print(error)
-                       case .success(let employers):
-                           print("============================")
-                           print(employers)
-                       }
-                   }
-               }
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            let employer_Request = Employer_Request()
+            employer_Request.getVenders{ [weak self] result in
+                switch result {
+                case .failure(let error):
+                    print(error)
+                case .success(let employers):
+                    print(employers)
+                }
+            }
+        }
+
+        // load Schedule data
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            let schedule_Request = Schedule_Request()
+            schedule_Request.getVenders{ [weak self] result in
+                switch result {
+                case .failure(let error):
+                    print(error)
+                case .success(let schedule):
+                    print(schedule)
+                }
+            }
+        }
     }
     
     private func createDummyNavControllerWithTitle(title: String, imageName: String) -> UINavigationController{
