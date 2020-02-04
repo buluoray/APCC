@@ -53,7 +53,7 @@ class CalendarBar: UIView, UICollectionViewDataSource, UICollectionViewDelegate,
     
     override func layoutSubviews() {
         eventView = eventViewController?.eventView
-        let selectedIndexPath = NSIndexPath(item: 1, section: 0)
+        let selectedIndexPath = NSIndexPath(item: 3, section: 0)
         collectionView.selectItem(at: selectedIndexPath as IndexPath, animated: false, scrollPosition: .centeredHorizontally)
         print(frame.width)
         //collectionView.reloadData()
@@ -75,6 +75,15 @@ class CalendarBar: UIView, UICollectionViewDataSource, UICollectionViewDelegate,
         return cell
     }
     
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if let cell = cell as? DayCell{
+            if eventView?.eventDays?.count != 0 {
+                cell.eventDay = eventView?.eventDays![indexPath.item] ?? EventDay()
+            }
+            
+        }
+    }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
 
         return (frame.width - 308.5) / 7
@@ -90,6 +99,8 @@ class CalendarBar: UIView, UICollectionViewDataSource, UICollectionViewDelegate,
 }
 
 class DayCell: BaseCell {
+    
+    var eventDay: EventDay?
     
     let dayNumberView: UILabel = {
         let iv = UILabel()
@@ -117,7 +128,11 @@ class DayCell: BaseCell {
     
     override var isHighlighted: Bool {
         didSet {
-            dayNumberView.textColor = isHighlighted ? .white : .black
+            if eventDay?.eventSections.count == 0 {
+                dayNumberView.textColor = isHighlighted ? .white : .lightGray
+            } else {
+                dayNumberView.textColor = isHighlighted ? .white : .black
+            }
             circleView.backgroundColor = isHighlighted ? .themeColor : .clear
             layoutIfNeeded()
         }
@@ -125,7 +140,12 @@ class DayCell: BaseCell {
     
     override var isSelected: Bool {
         didSet {
-            dayNumberView.textColor = isSelected ? .white : .black
+            if eventDay?.eventSections.count == 0 {
+                dayNumberView.textColor = isSelected ? .white : .lightGray
+            } else {
+                dayNumberView.textColor = isSelected ? .white : .black
+            }
+            
             circleView.backgroundColor = isSelected ? .themeColor : .clear
             layoutIfNeeded()
         }
@@ -133,6 +153,12 @@ class DayCell: BaseCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
+        
+        if eventDay?.eventSections.count == 0 {
+            dayNumberView.textColor = .lightGray
+        } else {
+            dayNumberView.textColor = .black
+        }
         circleView.layer.cornerRadius = circleView.frame.width/2
     }
     

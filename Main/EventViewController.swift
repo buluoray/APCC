@@ -7,11 +7,11 @@
 //
 
 import UIKit
-
+import Foundation
 class EventViewController: UIViewController{
 
     
-    var eventDays: [EventDay] = testData
+    var eventDays = [EventDay]()
     
     lazy var calendarBar: CalendarBar = {
         let cb = CalendarBar()
@@ -47,7 +47,68 @@ class EventViewController: UIViewController{
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "Calendar", style: .plain, target: nil, action: nil)
         navigationItem.title = "APCC Calendar"
+        fetchEvents()
     }
+    func fetchEvents() {
+        self.showSpinner(onView: self.view)
+                // load Schedule data
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            let schedule_Request = Schedule_Request()
+            schedule_Request.getVenders{ [weak self] result in
+                switch result {
+                case .failure(let error):
+                    print(error)
+                case .success(let schedule):
+                    self!.makeModel(schedule: schedule)
+                    
+                }
+                
+            }
+
+        }
+    }
+    
+    func makeModel(schedule: ([ScItem])){
+        var eventDaysContainer = [EventDay]()
+        var tempEventDatas: [[EventData]] = [[EventData](),[EventData](),[EventData](),[EventData](),[EventData](),[EventData](),[EventData]()]
+        let employerSchedule = schedule.filter{ ($0.Item.Type?.S.contains("Employer’s and Universities schedule"))! }
+        for event in employerSchedule {
+            if let eventDateFormat = event.Item.Date?.S {
+                let day = eventDateFormat.subString(from: 2, to: 2)
+                let header = event.Item.Time?.S.matches(for: "^\\d*:\\d*\\s\\w\\w").first
+                //print(header)
+                var eventData = EventData(time: event.Item.Time?.S ?? "N/A", title: event.Item.Content?.S ?? "N/A", location: event.Item.Location?.S ?? "N/A", imageName: "sample1")
+                eventData.header = header
+                tempEventDatas[Int(day)! - 1].append(eventData)
+            }
+        }
+        for temp in tempEventDatas{
+            // Group the EventDatas into subarrays by header
+            let headerGroups = Array(Dictionary(grouping:temp){$0.header}.values)
+            var tempEventDay = EventDay()
+            for section in headerGroups{
+                let tempSection = EventSection(sectionHeader: section.first?.header ?? "", eventdata: section)
+                tempEventDay.eventSections.append(tempSection)
+            }
+            tempEventDay.eventSections.sort(by: { $0 < $1 })
+            eventDaysContainer.append(tempEventDay)
+        }
+        
+        eventDays = eventDaysContainer
+        DispatchQueue.main.asyncAfter(deadline: .now()) {
+            self.eventView.eventDays = self.eventDays
+            self.eventView.collectionView.reloadData()
+            self.calendarBar.collectionView.reloadData()
+            self.eventView.collectionView.layoutIfNeeded()
+            let selectedIndexPath = NSIndexPath(item: 3, section: 0)
+            self.eventView.collectionView.selectItem(at: selectedIndexPath as IndexPath, animated: false, scrollPosition: .centeredHorizontally)
+            self.calendarBar.collectionView.selectItem(at: selectedIndexPath as IndexPath, animated: false, scrollPosition: .centeredHorizontally)
+            self.removeSpinner()
+            //print(self.eventView.eventDays)
+        }
+        //print(eventDays)
+    }
+    
 //
     private func setupCalendarBar(){
         view.addSubview(calendarBar)
@@ -111,4 +172,52 @@ extension UIScrollView {
 
     }
 
+}
+
+extension String {
+    func subString(from: Int, to: Int) -> String {
+       let startIndex = self.index(self.startIndex, offsetBy: from)
+       let endIndex = self.index(self.startIndex, offsetBy: to)
+       return String(self[startIndex...endIndex])
+    }
+}
+
+extension String {
+    func matches(for regex: String) -> [String] {
+        do {
+            let regex = try NSRegularExpression(pattern: regex, options: .caseInsensitive)
+            let text = self as NSString
+            let results = regex.matches(in: self,options: [], range: NSRange(location:0,length: text.length))
+            return results.map {
+                text.substring(with: $0.range)
+            }
+        } catch let error {
+            print("invalid regex: \(error.localizedDescription)")
+            return []
+        }
+    }
+}
+var vSpinner : UIView?
+extension UIViewController {
+    func showSpinner(onView : UIView) {
+        let spinnerView = UIView.init(frame: onView.bounds)
+        spinnerView.backgroundColor = UIColor.init(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5)
+        let ai = UIActivityIndicatorView.init(style: .large)
+        ai.startAnimating()
+        ai.center = spinnerView.center
+        
+        DispatchQueue.main.async {
+            spinnerView.addSubview(ai)
+            onView.addSubview(spinnerView)
+        }
+        
+        vSpinner = spinnerView
+    }
+    
+    func removeSpinner() {
+        DispatchQueue.main.async {
+            vSpinner?.removeFromSuperview()
+            vSpinner = nil
+        }
+    }
 }

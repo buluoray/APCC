@@ -18,8 +18,9 @@ class EventView: UIView, UICollectionViewDataSource, UICollectionViewDelegate, U
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        cv.translatesAutoresizingMaskIntoConstraints = false
         layout.scrollDirection = .horizontal
-        cv.backgroundColor = .brown
+        cv.backgroundColor = .white
         cv.dataSource = self
         cv.delegate = self
         layout.minimumLineSpacing = 0
@@ -31,7 +32,7 @@ class EventView: UIView, UICollectionViewDataSource, UICollectionViewDelegate, U
     override func layoutSubviews() {
         calendarBar = eventViewController?.calendarBar
         collectionView.layoutIfNeeded()
-        let selectedIndexPath = NSIndexPath(item: 1, section: 0)
+        let selectedIndexPath = NSIndexPath(item: 3, section: 0)
         collectionView.selectItem(at: selectedIndexPath as IndexPath, animated: false, scrollPosition: .centeredHorizontally)
     }
     
@@ -64,7 +65,9 @@ class EventView: UIView, UICollectionViewDataSource, UICollectionViewDelegate, U
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        //
+        if let cell = cell as? EventOverviewCell{
+            cell.eventDay = eventDays?[indexPath.item]
+        }
     }
     
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
@@ -93,6 +96,8 @@ class EventView: UIView, UICollectionViewDataSource, UICollectionViewDelegate, U
     }
     
     
+    
+    
 }
 //MARK: Event Overview Cell
 class EventOverviewCell: BaseCell, UITableViewDelegate, UITableViewDataSource {
@@ -106,7 +111,7 @@ class EventOverviewCell: BaseCell, UITableViewDelegate, UITableViewDataSource {
         tv.translatesAutoresizingMaskIntoConstraints = false
         //tv.backgroundColor = .brown
         tv.separatorStyle = .none
-        
+        tv.backgroundColor = .white
         return tv
     }()
     
@@ -144,12 +149,13 @@ class EventOverviewCell: BaseCell, UITableViewDelegate, UITableViewDataSource {
         eventDetailTablecView.dataSource = self
 
         
-        if eventDay?.eventSections != nil {
+        if eventDay?.eventSections.count != 0 {
             noEventView.isHidden = true
         } else {
             noEventView.isHidden = false
         }
         eventDetailTablecView.reloadData()
+        
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -157,10 +163,7 @@ class EventOverviewCell: BaseCell, UITableViewDelegate, UITableViewDataSource {
             else {
                 return 0
         }
-        guard let eventSections = eventDay.eventSections else {
-            return 0
-        }
-        return eventSections[section].eventData.count
+        return eventDay.eventSections[section].eventData.count
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -168,24 +171,24 @@ class EventOverviewCell: BaseCell, UITableViewDelegate, UITableViewDataSource {
             else {
                 return 0
         }
-        guard let eventSections = eventDay.eventSections else {
-            return 0
-        }
-        return eventSections.count
+        return eventDay.eventSections.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = eventDetailTablecView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! EventDetailCell
 
-        guard let eventDay = eventDay
+        guard eventDay != nil
             else {
                 return cell
         }
-        guard let eventSections = eventDay.eventSections else {
-            return cell
-        }
-        cell.eventData = eventSections[indexPath.section].eventData[indexPath.row]
+        //cell.eventData = eventDay.eventSections[indexPath.section].eventData[indexPath.row]
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if let cell = cell as? EventDetailCell{
+            cell.eventData = eventDay?.eventSections[indexPath.section].eventData[indexPath.row]
+        }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -193,12 +196,9 @@ class EventOverviewCell: BaseCell, UITableViewDelegate, UITableViewDataSource {
             else {
                 return
         }
-        guard let eventSections = eventDay.eventSections else {
-            return
-        }
          
         let eventVC = EventInfoViewController()
-        eventVC.eventDetail = eventSections[indexPath.section].eventData[indexPath.row]
+        eventVC.eventDetail = eventDay.eventSections[indexPath.section].eventData[indexPath.row]
         eventVC.hidesBottomBarWhenPushed = true
         eventViewController?.show(eventVC, sender: self)
         
@@ -211,12 +211,10 @@ class EventOverviewCell: BaseCell, UITableViewDelegate, UITableViewDataSource {
             else {
                 return UIView()
         }
-        guard let eventSections = eventDay.eventSections else {
-            return UIView()
-        }
+
         let headerView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: tableView.frame.width, height: 50))
         let iv = UILabel(frame: CGRect(x: 15, y: 14.5, width: 105, height: 24))
-        iv.text = eventSections[section].sectionHeader
+        iv.text = eventDay.eventSections[section].sectionHeader
         iv.font = .systemFont(ofSize: 20, weight: .bold)
         iv.textAlignment = .left
         iv.textColor = .themeColor
@@ -260,7 +258,7 @@ class EventDetailCell: BaseTableCell {
             timeView.text = ev.time
             locationView.text = ev.location
             titleView.text = ev.title
-            displayImageView.image = UIImage(named: "\(ev.imgaeName)")
+            displayImageView.image = UIImage(named: "\(ev.imgaeName!)")
         }
     }
     
@@ -310,7 +308,7 @@ class EventDetailCell: BaseTableCell {
     private let locationView: UILabel = {
         let iv = UILabel()
         iv.translatesAutoresizingMaskIntoConstraints = false
-        iv.text = "HGB235"
+        iv.text = "N/A"
         iv.font = .systemFont(ofSize: 14, weight: .bold)
         iv.textAlignment = .left
         iv.textColor = .white

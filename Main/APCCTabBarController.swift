@@ -22,6 +22,14 @@ class APCCTabBarController: UITabBarController {
 
         viewControllers = [eventViewNavigationController, createDummyNavControllerWithTitle(title: "Guests", imageName: "guests"), createDummyNavControllerWithTitle(title: "Discover", imageName: "discover")]
         
+        
+
+
+        self.tabBar.barTintColor = .white
+        self.tabBar.tintColor = .themeColor
+    }
+    
+    func fetchEmployee(){
         // load Employer data
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             let employer_Request = Employer_Request()
@@ -34,8 +42,10 @@ class APCCTabBarController: UITabBarController {
                 }
             }
         }
-
-        // load Schedule data
+    }
+    
+    func fetchEvents() {
+                // load Schedule data
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             let schedule_Request = Schedule_Request()
             schedule_Request.getVenders{ [weak self] result in
@@ -47,20 +57,6 @@ class APCCTabBarController: UITabBarController {
                 }
             }
         }
-               DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-                   let employer_Request = Employer_Request()
-                   employer_Request.getVenders{ [weak self] result in
-                       switch result {
-                       case .failure(let error):
-                           print(error)
-                       case .success(let employers):
-                           print("============================")
-                           print(employers)
-                       }
-                   }
-               }
-        self.tabBar.barTintColor = .white
-        self.tabBar.tintColor = .themeColor
     }
     
     private func createDummyNavControllerWithTitle(title: String, imageName: String) -> UINavigationController{
