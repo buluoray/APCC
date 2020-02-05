@@ -32,8 +32,6 @@ class EventView: UIView, UICollectionViewDataSource, UICollectionViewDelegate, U
     override func layoutSubviews() {
         calendarBar = eventViewController?.calendarBar
         collectionView.layoutIfNeeded()
-        let selectedIndexPath = NSIndexPath(item: 3, section: 0)
-        collectionView.selectItem(at: selectedIndexPath as IndexPath, animated: false, scrollPosition: .centeredHorizontally)
     }
     
     override init(frame: CGRect) {
@@ -105,6 +103,7 @@ class EventOverviewCell: BaseCell, UITableViewDelegate, UITableViewDataSource {
     var eventViewController: EventViewController?
     var eventDay: EventDay?
     let cellId = "tablecellId"
+    let headerId = "headerId"
     let data = ["test1","test2","test3"]
     var eventDetailTablecView: UITableView = {
         let tv = UITableView(frame: .zero, style: .plain)
@@ -130,6 +129,7 @@ class EventOverviewCell: BaseCell, UITableViewDelegate, UITableViewDataSource {
         super.setupViews()
         
         eventDetailTablecView.register(EventDetailCell.self, forCellReuseIdentifier: cellId)
+        eventDetailTablecView.register(eventSectionHeaderView.self, forHeaderFooterViewReuseIdentifier: headerId)
         addSubview(eventDetailTablecView)
         addSubview(noEventView)
         addConstraintsWithFormat("H:|[v0]|", views: eventDetailTablecView)
@@ -201,42 +201,17 @@ class EventOverviewCell: BaseCell, UITableViewDelegate, UITableViewDataSource {
         eventVC.eventDetail = eventDay.eventSections[indexPath.section].eventData[indexPath.row]
         eventVC.hidesBottomBarWhenPushed = true
         eventViewController?.show(eventVC, sender: self)
-        
-
     }
     
-    //MARK: Header View
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let eventDay = eventDay
             else {
                 return UIView()
         }
-
-        let headerView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: tableView.frame.width, height: 50))
-        let iv = UILabel(frame: CGRect(x: 15, y: 14.5, width: 105, height: 24))
-        iv.text = eventDay.eventSections[section].sectionHeader
-        iv.font = .systemFont(ofSize: 20, weight: .bold)
-        iv.textAlignment = .left
-        iv.textColor = .themeColor
-        iv.translatesAutoresizingMaskIntoConstraints = false
-        let horizontalBarView = UIView()
-        horizontalBarView.translatesAutoresizingMaskIntoConstraints = false
-        let backgroundView = UIView()
-        backgroundView.backgroundColor = .white
-        backgroundView.translatesAutoresizingMaskIntoConstraints = false
-        headerView.addSubview(backgroundView)
-        headerView.addConstraintsWithFormat("H:|[v0]|", views: backgroundView)
-        headerView.addConstraintsWithFormat("V:|[v0]|", views: backgroundView)
-        headerView.addSubview(horizontalBarView)
-        headerView.addSubview(iv)
-        iv.centerYAnchor.constraint(equalTo: headerView.centerYAnchor).isActive = true
-        headerView.addConstraintsWithFormat("H:|-15-[v0]", views: iv)
-        horizontalBarView.leadingAnchor.constraint(equalTo: iv.trailingAnchor, constant: 10).isActive = true
-        horizontalBarView.trailingAnchor.constraint(equalTo: headerView.trailingAnchor).isActive = true
-        horizontalBarView.heightAnchor.constraint(equalToConstant: 1).isActive = true
-        horizontalBarView.centerYAnchor.constraint(equalTo: headerView.centerYAnchor).isActive = true
-        horizontalBarView.backgroundColor = .rgb(red: 128, green: 128, blue: 128)
-        return headerView
+        let eventHeaderView = tableView.dequeueReusableHeaderFooterView(withIdentifier: headerId) as! eventSectionHeaderView
+        eventHeaderView.title = eventDay.eventSections[section].sectionHeader
+        eventHeaderView.tableView = tableView
+        return eventHeaderView
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -362,6 +337,64 @@ class EventDetailCell: BaseTableCell {
         //gradientLayer.locations = [0.7, 1.2]
         displayImageView.layer.addSublayer(gradientLayer)
     }
+}
+//MARK: Header View
+class eventSectionHeaderView: UITableViewHeaderFooterView {
+    
+    var title: String?
+    var tableView: UITableView?
+    let headerView = UIView(frame: .zero)
+    let horizontalBarView = UIView(frame: .zero)
+    let backgroundCoverView = UIView(frame: .zero)
+    
+    var headerLabel : UILabel =  {
+        let iv = UILabel(frame: CGRect(x: 15, y: 14.5, width: 105, height: 24))
+        iv.text = ""
+        iv.font = .systemFont(ofSize: 20, weight: .bold)
+        iv.textAlignment = .left
+        iv.textColor = .themeColor
+        iv.translatesAutoresizingMaskIntoConstraints = false
+        return iv
+    }()
+    
+    required init(coder aDecoder: NSCoder) {
+      fatalError("init(coder:) has not been implemented")
+    }
+
+    override init(reuseIdentifier: String?) {
+        super.init(reuseIdentifier: reuseIdentifier)
+        setupViews()
+    }
+    
+    override func layoutSubviews() {
+        if let title = title{
+            headerLabel.text = title
+            headerView.frame = CGRect(x: 0, y: 0, width: tableView!.frame.width, height: 50)
+            headerView.addConstraintsWithFormat("H:|-15-[v0]", views: headerLabel)
+        }
+        
+    }
+    
+    func setupViews(){
+        
+        horizontalBarView.translatesAutoresizingMaskIntoConstraints = false
+        backgroundCoverView.backgroundColor = .white
+        backgroundCoverView.translatesAutoresizingMaskIntoConstraints = false
+        headerView.addSubview(backgroundCoverView)
+        headerView.addConstraintsWithFormat("H:|[v0]|", views: backgroundCoverView)
+        headerView.addConstraintsWithFormat("V:|[v0]|", views: backgroundCoverView)
+        headerView.addSubview(horizontalBarView)
+        headerView.addSubview(headerLabel)
+        headerLabel.centerYAnchor.constraint(equalTo: headerView.centerYAnchor).isActive = true
+        horizontalBarView.leadingAnchor.constraint(equalTo: headerLabel.trailingAnchor, constant: 10).isActive = true
+        horizontalBarView.trailingAnchor.constraint(equalTo: headerView.trailingAnchor).isActive = true
+        horizontalBarView.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        horizontalBarView.centerYAnchor.constraint(equalTo: headerView.centerYAnchor).isActive = true
+        horizontalBarView.backgroundColor = .rgb(red: 128, green: 128, blue: 128)
+        contentView.addSubview(headerView)
+    }
+    
+    
 }
 
 

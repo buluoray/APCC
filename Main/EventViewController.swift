@@ -40,8 +40,7 @@ class EventViewController: UIViewController{
         setupCalendarBar()
         setupEventView()
         overrideUserInterfaceStyle = .light
-        //navigationController?.overrideUserInterfaceStyle = .light
-        //view.backgroundColor = .green
+        navigationController?.navigationBar.barStyle = .black
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.barTintColor = .themeColor
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
@@ -50,7 +49,7 @@ class EventViewController: UIViewController{
         fetchEvents()
     }
     func fetchEvents() {
-        self.showSpinner(onView: self.view)
+        showSpinner(onView: self.view)
                 // load Schedule data
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             let schedule_Request = Schedule_Request()
@@ -200,18 +199,44 @@ extension String {
 var vSpinner : UIView?
 extension UIViewController {
     func showSpinner(onView : UIView) {
-        let spinnerView = UIView.init(frame: onView.bounds)
-        spinnerView.backgroundColor = UIColor.init(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5)
+        let spinnerView = UIView(frame: .zero)
+        //print(spinnerView.frame)
+        spinnerView.backgroundColor = #colorLiteral(red: 0.9051910639, green: 0.8998102546, blue: 0.909327209, alpha: 1)
+        spinnerView.translatesAutoresizingMaskIntoConstraints = false
         let ai = UIActivityIndicatorView.init(style: .large)
         ai.startAnimating()
         ai.center = spinnerView.center
-        
+        ai.color = .themeColor
+        ai.translatesAutoresizingMaskIntoConstraints = false
+        let iv = UILabel(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
+        iv.translatesAutoresizingMaskIntoConstraints = false
+        iv.text = "Loading Events"
+        iv.numberOfLines = 1
+        iv.adjustsFontSizeToFitWidth = true
+        iv.textColor = .themeColor
+        iv.textAlignment = .center
+        iv.isUserInteractionEnabled = false
+        iv.center = spinnerView.center
+
         DispatchQueue.main.async {
             spinnerView.addSubview(ai)
+            spinnerView.addSubview(iv)
             onView.addSubview(spinnerView)
+            ai.centerYAnchor.constraint(equalTo: spinnerView.centerYAnchor).isActive = true
+            ai.centerXAnchor.constraint(equalTo: spinnerView.centerXAnchor).isActive = true
+            iv.heightAnchor.constraint(equalToConstant: 50).isActive = true
+            iv.widthAnchor.constraint(equalToConstant: 100).isActive = true
+            iv.centerYAnchor.constraint(equalTo: spinnerView.centerYAnchor, constant: 40).isActive = true
+            iv.centerXAnchor.constraint(equalTo: spinnerView.centerXAnchor).isActive = true
+            spinnerView.heightAnchor.constraint(equalToConstant: 150).isActive = true
+            spinnerView.widthAnchor.constraint(equalToConstant: 150).isActive = true
+            spinnerView.centerYAnchor.constraint(equalTo: onView.centerYAnchor).isActive = true
+            spinnerView.centerXAnchor.constraint(equalTo: onView.centerXAnchor).isActive = true
         }
-        
         vSpinner = spinnerView
+        vSpinner?.layer.cornerRadius = 12
+//        vSpinner?.centerYAnchor.constraint(equalTo: onView.centerYAnchor).isActive = true
+//        vSpinner?.centerXAnchor.constraint(equalTo: onView.centerXAnchor).isActive = true
     }
     
     func removeSpinner() {
@@ -219,5 +244,18 @@ extension UIViewController {
             vSpinner?.removeFromSuperview()
             vSpinner = nil
         }
+    }
+    
+    func addActivityIndicatorToView(activityIndicator: UIActivityIndicatorView, view: UIView){
+
+        self.view.addSubview(activityIndicator)
+
+        //Don't forget this line
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        view.addConstraint(NSLayoutConstraint(item: activityIndicator, attribute: NSLayoutConstraint.Attribute.centerX, relatedBy: NSLayoutConstraint.Relation.equal, toItem: view, attribute: NSLayoutConstraint.Attribute.centerX, multiplier: 1, constant: 0))
+        view.addConstraint(NSLayoutConstraint(item: activityIndicator, attribute: NSLayoutConstraint.Attribute.centerY, relatedBy: NSLayoutConstraint.Relation.equal, toItem: view, attribute: NSLayoutConstraint.Attribute.centerY, multiplier: 1, constant: 0))
+
+        activityIndicator.startAnimating()
+
     }
 }

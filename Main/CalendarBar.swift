@@ -53,9 +53,6 @@ class CalendarBar: UIView, UICollectionViewDataSource, UICollectionViewDelegate,
     
     override func layoutSubviews() {
         eventView = eventViewController?.eventView
-        let selectedIndexPath = NSIndexPath(item: 3, section: 0)
-        collectionView.selectItem(at: selectedIndexPath as IndexPath, animated: false, scrollPosition: .centeredHorizontally)
-        print(frame.width)
         //collectionView.reloadData()
     }
     
@@ -107,7 +104,7 @@ class DayCell: BaseCell {
         iv.translatesAutoresizingMaskIntoConstraints = false
         iv.text = "1"
         iv.textAlignment = .center
-        iv.textColor = .black
+        iv.textColor = .white
         iv.font = .systemFont(ofSize: 20, weight: .bold)
         return iv
     }()
@@ -128,6 +125,7 @@ class DayCell: BaseCell {
     
     override var isHighlighted: Bool {
         didSet {
+            
             if eventDay?.eventSections.count == 0 {
                 dayNumberView.textColor = isHighlighted ? .white : .lightGray
             } else {
@@ -157,7 +155,12 @@ class DayCell: BaseCell {
         if eventDay?.eventSections.count == 0 {
             dayNumberView.textColor = .lightGray
         } else {
-            dayNumberView.textColor = .black
+            if isHighlighted || isSelected {
+                dayNumberView.textColor = .white
+            } else {
+                dayNumberView.textColor = .black
+            }
+            
         }
         circleView.layer.cornerRadius = circleView.frame.width/2
     }
@@ -186,6 +189,11 @@ class DayCell: BaseCell {
         addConstraintsWithFormat("H:[v0(40.5)]", views: dayNumberView)
         addConstraintsWithFormat("V:|[v1(8)]-1-[v0(40.5)]", views: dayNumberView, dayInWeekView)
         setupCircleView()
+        if eventDay?.eventSections.count == 0 {
+            dayNumberView.textColor = .lightGray
+        } else {
+            dayNumberView.textColor = .black
+        }
     }
     
 }
