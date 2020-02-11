@@ -311,7 +311,7 @@ class EventDetailCell: BaseTableCell {
         iv.textAlignment = .left
         iv.layer.shadowColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         iv.layer.shadowOpacity = 0.8
-        iv.layer.shadowOffset = CGSize(width: 4, height: 4)
+        iv.layer.shadowOffset = CGSize(width: 1, height: 1)
         iv.isUserInteractionEnabled = false
         return iv
     }()
@@ -326,7 +326,7 @@ class EventDetailCell: BaseTableCell {
         iv.backgroundColor = .clear
         iv.layer.shadowColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         iv.layer.shadowOpacity = 0.8
-        iv.layer.shadowOffset = CGSize(width: 2, height: 2)
+        iv.layer.shadowOffset = CGSize(width: 1, height: 1)
         iv.isUserInteractionEnabled = false
         return iv
     }()
@@ -341,7 +341,7 @@ class EventDetailCell: BaseTableCell {
         iv.isUserInteractionEnabled = false
         iv.layer.shadowColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         iv.layer.shadowOpacity = 0.8
-        iv.layer.shadowOffset = CGSize(width: 2, height: 2)
+        iv.layer.shadowOffset = CGSize(width: 1, height: 1)
         return iv
     }()
     
@@ -351,7 +351,7 @@ class EventDetailCell: BaseTableCell {
         iv.isUserInteractionEnabled = false
         iv.layer.shadowColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         iv.layer.shadowOpacity = 0.8
-        iv.layer.shadowOffset = CGSize(width: 2, height: 2)
+        iv.layer.shadowOffset = CGSize(width: 1, height: 1)
         return iv
     }()
     
@@ -391,7 +391,7 @@ class EventDetailCell: BaseTableCell {
     private func setupGradientLayer() {
         let gradientLayer = CAGradientLayer()
         gradientLayer.frame = displayImageView.frame
-        gradientLayer.colors = [UIColor.init(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.3).cgColor, UIColor.init(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.3).cgColor]
+        gradientLayer.colors = [UIColor.init(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.2).cgColor, UIColor.init(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.2).cgColor]
         //gradientLayer.locations = [0.7, 1.2]
         displayImageView.layer.addSublayer(gradientLayer)
     }

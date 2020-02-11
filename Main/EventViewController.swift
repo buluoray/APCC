@@ -13,7 +13,6 @@ class EventViewController: UIViewController{
     
     var eventDays = [EventDay](){
         didSet{
-            print(isShowingStudent)
             eventView.eventDays = eventDays
             let selectedIndexPath = calendarBar.collectionView.indexPathsForSelectedItems?.first
             eventView.collectionView.selectItem(at: selectedIndexPath, animated: false, scrollPosition: .centeredHorizontally)
@@ -81,7 +80,6 @@ class EventViewController: UIViewController{
     }
     
     @objc func switchCalender_tapped(){
-           print("ok")
         isShowingStudent = !isShowingStudent
         if isShowingStudent{
             self.navigationItem.rightBarButtonItem?.title = "Employer"
