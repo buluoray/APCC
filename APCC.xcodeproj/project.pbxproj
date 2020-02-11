@@ -23,6 +23,8 @@
 		BB56778D23D93E7100AA1496 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BB56778B23D93E7100AA1496 /* LaunchScreen.storyboard */; };
 		BB56779523D945B500AA1496 /* CalendarBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB56779423D945B500AA1496 /* CalendarBar.swift */; };
 		BB56779A23D94EE500AA1496 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BB56779923D94EE500AA1496 /* Default-568h@2x.png */; };
+		BBD2BC2D23EE341E000282E2 /* EventDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD2BC2C23EE341E000282E2 /* EventDetailViewModel.swift */; };
+		BBEE050B23EAB54E0042E811 /* TableViewAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBEE050A23EAB54E0042E811 /* TableViewAnimation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +46,8 @@
 		BB56778E23D93E7100AA1496 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BB56779423D945B500AA1496 /* CalendarBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarBar.swift; sourceTree = "<group>"; };
 		BB56779923D94EE500AA1496 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		BBD2BC2C23EE341E000282E2 /* EventDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailViewModel.swift; sourceTree = "<group>"; };
+		BBEE050A23EAB54E0042E811 /* TableViewAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewAnimation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,11 +108,13 @@
 			children = (
 				BB56778423D93E6F00AA1496 /* EventViewController.swift */,
 				BB535DAF23E69D0B00CB875D /* EventInfoViewController.swift */,
+				BBD2BC2C23EE341E000282E2 /* EventDetailViewModel.swift */,
 				BB56779423D945B500AA1496 /* CalendarBar.swift */,
 				BB535DA723E0BF6300CB875D /* EventView.swift */,
 				BB535DA923E4F45400CB875D /* EventModel.swift */,
 				BB535DAB23E4F82400CB875D /* TestData.swift */,
 				BB535DAD23E65D8200CB875D /* APCCTabBarController.swift */,
+				BBEE050A23EAB54E0042E811 /* TableViewAnimation.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -196,7 +202,9 @@
 				BB535DAA23E4F45400CB875D /* EventModel.swift in Sources */,
 				BB535DAC23E4F82400CB875D /* TestData.swift in Sources */,
 				1C544D2D23E6BCE600700D83 /* Employer.swift in Sources */,
+				BBEE050B23EAB54E0042E811 /* TableViewAnimation.swift in Sources */,
 				BB535DA823E0BF6400CB875D /* EventView.swift in Sources */,
+				BBD2BC2D23EE341E000282E2 /* EventDetailViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

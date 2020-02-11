@@ -28,8 +28,10 @@ class EventViewController: UIViewController{
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        setNeedsStatusBarAppearanceUpdate()
+        self.navigationController?.isToolbarHidden = true
+        self.navigationController?.tabBarController?.tabBar.isHidden = false
     }
+    
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         .darkContent
@@ -48,7 +50,21 @@ class EventViewController: UIViewController{
         navigationItem.title = "APCC Calendar"
         fetchEvents()
     }
-    func fetchEvents() {
+    
+    func handleClientError(error:Error){
+
+        DispatchQueue.main.sync {
+            let alert = UIAlertController(title: "Failed to load events", message: "\(error.localizedDescription)" , preferredStyle: .alert)
+
+            alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
+            alert.addAction(UIAlertAction(title: "Try again", style: .cancel, handler: { action in
+             self.fetchEvents()
+            }))
+            self.present(alert, animated: true)
+        }
+    }
+    
+    @objc func fetchEvents() {
         showSpinner(onView: self.view)
                 // load Schedule data
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
@@ -56,12 +72,12 @@ class EventViewController: UIViewController{
             schedule_Request.getVenders{ [weak self] result in
                 switch result {
                 case .failure(let error):
-                    print(error)
+                    self!.removeSpinner()
+                    self!.handleClientError(error: error)
                 case .success(let schedule):
                     self!.makeModel(schedule: schedule)
                     
                 }
-                
             }
 
         }
@@ -76,7 +92,7 @@ class EventViewController: UIViewController{
                 let day = eventDateFormat.subString(from: 2, to: 2)
                 let header = event.Item.Time?.S.matches(for: "^\\d*:\\d*\\s\\w\\w").first
                 //print(header)
-                var eventData = EventData(time: event.Item.Time?.S ?? "N/A", title: event.Item.Content?.S ?? "N/A", location: event.Item.Location?.S ?? "N/A", imageName: "sample1")
+                var eventData = EventData(time: event.Item.Time?.S ?? "N/A", title: event.Item.Content?.S ?? "N/A", location: event.Item.Location?.S ?? "N/A", imageName: "sample1",description: event.Item.Description?.S ?? "N/A")
                 eventData.header = header
                 tempEventDatas[Int(day)! - 1].append(eventData)
             }
@@ -98,7 +114,6 @@ class EventViewController: UIViewController{
             self.eventView.eventDays = self.eventDays
             self.eventView.collectionView.reloadData()
             self.calendarBar.collectionView.reloadData()
-            self.eventView.collectionView.layoutIfNeeded()
             let selectedIndexPath = NSIndexPath(item: 3, section: 0)
             self.eventView.collectionView.selectItem(at: selectedIndexPath as IndexPath, animated: false, scrollPosition: .centeredHorizontally)
             self.calendarBar.collectionView.selectItem(at: selectedIndexPath as IndexPath, animated: false, scrollPosition: .centeredHorizontally)
@@ -107,6 +122,7 @@ class EventViewController: UIViewController{
         }
         //print(eventDays)
     }
+
     
 //
     private func setupCalendarBar(){
@@ -125,7 +141,12 @@ class EventViewController: UIViewController{
     
 }
 
-
+extension UICollectionView {
+    func reload(completion: @escaping () -> ()) {
+        UIView.animate(withDuration: 0, animations: { self.reloadData()})
+        {_ in completion() }
+    }
+}
 
 extension UIView {
     public func addConstraintsWithFormat(_ format: String, views: UIView...) {
@@ -201,7 +222,7 @@ extension UIViewController {
     func showSpinner(onView : UIView) {
         let spinnerView = UIView(frame: .zero)
         //print(spinnerView.frame)
-        spinnerView.backgroundColor = #colorLiteral(red: 0.9051910639, green: 0.8998102546, blue: 0.909327209, alpha: 1)
+        spinnerView.backgroundColor = #colorLiteral(red: 0.9409832358, green: 0.9353893399, blue: 0.9452831149, alpha: 1)
         spinnerView.translatesAutoresizingMaskIntoConstraints = false
         let ai = UIActivityIndicatorView.init(style: .large)
         ai.startAnimating()
@@ -257,5 +278,21 @@ extension UIViewController {
 
         activityIndicator.startAnimating()
 
+    }
+}
+
+extension UIRefreshControl {
+    func programaticallyBeginRefreshing(in tableView: UITableView) {
+        beginRefreshing()
+        let offsetPoint = CGPoint.init(x: 0, y: -frame.size.height)
+        tableView.setContentOffset(offsetPoint, animated: true)
+    }
+    func beginRefreshingManually() {
+        if let scrollView = superview as? UIScrollView {
+            scrollView.setContentOffset(CGPoint(x: 0, y: scrollView.contentOffset.y - frame.height), animated: true)
+        }
+        beginRefreshing()
+        
+        sendActions(for: UIControl.Event.valueChanged)
     }
 }

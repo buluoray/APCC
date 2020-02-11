@@ -7,39 +7,49 @@
 //
 import Foundation
 
+struct Attendee: Hashable {
+    var name: String?
+    var imageName: String?
+    
+    init(name: String, imageName: String) {
+        self.name = name
+        self.imageName = imageName
+    }
+}
+
 struct EventData: Hashable {
     
 
-    
-
-    
     var time: String?
     var title: String?
     var location: String?
     var imgaeName: String?
-    var speaker: String?
+    var speakers = [Attendee]()
     var header: String?
-    init(time: String, title:String, location: String, imageName: String) {
+    var description: String?
+    init(time: String, title:String, location: String, imageName: String, description: String) {
         self.title = title
         self.time = time
         self.location = location
         self.imgaeName = imageName
+        self.description = description
     }
     
     init() {
 
     }
     
-    init(time: String, title:String, location: String, imageName: String, speaker: String) {
-        self.title = title
-        self.time = time
-        self.location = location
-        self.imgaeName = imageName
-        self.speaker = speaker
-    }
+//    init(time: String, title:String, location: String, imageName: String) {
+//        self.title = title
+//        self.time = time
+//        self.location = location
+//        self.imgaeName = imageName
+//        //self.speaker = speaker
+//    }
 }
 
 struct EventSection: Comparable {
+    
     var eventData = [EventData]()
     var sectionHeader: String
     
@@ -63,4 +73,8 @@ struct EventSection: Comparable {
 
 struct EventDay {
     var eventSections = [EventSection]()
+    
+    
 }
+
+

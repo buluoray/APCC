@@ -10,6 +10,7 @@ import UIKit
 
 class EventView: UIView, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout{
     
+    
     var calendarBar: CalendarBar?
     var eventDays: [EventDay]?
     var eventViewController: EventViewController?
@@ -26,12 +27,14 @@ class EventView: UIView, UICollectionViewDataSource, UICollectionViewDelegate, U
         layout.minimumLineSpacing = 0
         cv.isPagingEnabled = true
         cv.showsHorizontalScrollIndicator = false
+        
+        
         return cv
     }()
     
     override func layoutSubviews() {
+        super.layoutSubviews()
         calendarBar = eventViewController?.calendarBar
-        collectionView.layoutIfNeeded()
     }
     
     override init(frame: CGRect) {
@@ -41,6 +44,7 @@ class EventView: UIView, UICollectionViewDataSource, UICollectionViewDelegate, U
         addSubview(collectionView)
         addConstraintsWithFormat("H:|[v0]|", views: collectionView)
         addConstraintsWithFormat("V:|[v0]|", views: collectionView)
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -79,7 +83,6 @@ class EventView: UIView, UICollectionViewDataSource, UICollectionViewDelegate, U
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! EventOverviewCell
-        cell.backgroundColor = .white
 
         guard let eventDays = eventDays
             else {
@@ -103,7 +106,7 @@ class EventOverviewCell: BaseCell, UITableViewDelegate, UITableViewDataSource {
     var eventViewController: EventViewController?
     var eventDay: EventDay?
     let cellId = "tablecellId"
-    let headerId = "headerId"
+   
     let data = ["test1","test2","test3"]
     var eventDetailTablecView: UITableView = {
         let tv = UITableView(frame: .zero, style: .plain)
@@ -129,13 +132,15 @@ class EventOverviewCell: BaseCell, UITableViewDelegate, UITableViewDataSource {
         super.setupViews()
         
         eventDetailTablecView.register(EventDetailCell.self, forCellReuseIdentifier: cellId)
-        eventDetailTablecView.register(eventSectionHeaderView.self, forHeaderFooterViewReuseIdentifier: headerId)
+        eventDetailTablecView.register(EventSectionHeaderView.self, forHeaderFooterViewReuseIdentifier: EventSectionHeaderView.identifier)
         addSubview(eventDetailTablecView)
         addSubview(noEventView)
         addConstraintsWithFormat("H:|[v0]|", views: eventDetailTablecView)
         addConstraintsWithFormat("V:|[v0]|", views: eventDetailTablecView)
         noEventView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         noEventView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+       
+        
     }
     
     override func prepareForReuse() {
@@ -156,6 +161,18 @@ class EventOverviewCell: BaseCell, UITableViewDelegate, UITableViewDataSource {
         }
         eventDetailTablecView.reloadData()
         
+    }
+    
+    func updateTable(){
+        let transition = CATransition()
+        transition.type = CATransitionType.push
+        transition.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
+        transition.fillMode = CAMediaTimingFillMode.forwards
+        transition.duration = 0.5
+        transition.subtype = CATransitionSubtype.fromTop
+        eventDetailTablecView.layer.add(transition, forKey: "UITableViewReloadDataAnimationKey")
+        // Update your data source here
+        eventDetailTablecView.reloadData()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -185,12 +202,19 @@ class EventOverviewCell: BaseCell, UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        
+    }
+    var arrIndexPath = [IndexPath]()
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if let cell = cell as? EventDetailCell{
             cell.eventData = eventDay?.eventSections[indexPath.section].eventData[indexPath.row]
+//            let animation = AnimationFactory.makeMoveUpWithFade(rowHeight: 50, duration: 0.3, delayFactor: 0.5)
+//            let animator = Animator(animation: animation)
+//            animator.animate(cell: cell, at: indexPath, in: tableView)
         }
     }
-    
+    //MARK: Push detail view
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let eventDay = eventDay
             else {
@@ -200,7 +224,8 @@ class EventOverviewCell: BaseCell, UITableViewDelegate, UITableViewDataSource {
         let eventVC = EventInfoViewController()
         eventVC.eventDetail = eventDay.eventSections[indexPath.section].eventData[indexPath.row]
         eventVC.hidesBottomBarWhenPushed = true
-        eventViewController?.show(eventVC, sender: self)
+        eventViewController?.navigationController?.pushViewController(eventVC, animated: true)
+        //eventViewController?.show(eventVC, sender: self)
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -208,7 +233,7 @@ class EventOverviewCell: BaseCell, UITableViewDelegate, UITableViewDataSource {
             else {
                 return UIView()
         }
-        let eventHeaderView = tableView.dequeueReusableHeaderFooterView(withIdentifier: headerId) as! eventSectionHeaderView
+        let eventHeaderView = tableView.dequeueReusableHeaderFooterView(withIdentifier: EventSectionHeaderView.identifier) as! EventSectionHeaderView
         eventHeaderView.title = eventDay.eventSections[section].sectionHeader
         eventHeaderView.tableView = tableView
         return eventHeaderView
@@ -226,6 +251,7 @@ class EventOverviewCell: BaseCell, UITableViewDelegate, UITableViewDataSource {
 // MARK: EventDetailCell - Tableview
 class EventDetailCell: BaseTableCell {
     
+    var animated = false
 
     var eventData: EventData? {
         didSet {
@@ -328,6 +354,7 @@ class EventDetailCell: BaseTableCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        displayImageView.image = nil
     }
     
     private func setupGradientLayer() {
@@ -339,13 +366,17 @@ class EventDetailCell: BaseTableCell {
     }
 }
 //MARK: Header View
-class eventSectionHeaderView: UITableViewHeaderFooterView {
+class EventSectionHeaderView: UITableViewHeaderFooterView {
     
     var title: String?
     var tableView: UITableView?
     let headerView = UIView(frame: .zero)
     let horizontalBarView = UIView(frame: .zero)
     let backgroundCoverView = UIView(frame: .zero)
+    
+    static var identifier: String {
+        return String(describing: self)
+    }
     
     var headerLabel : UILabel =  {
         let iv = UILabel(frame: CGRect(x: 15, y: 14.5, width: 105, height: 24))
@@ -370,13 +401,13 @@ class eventSectionHeaderView: UITableViewHeaderFooterView {
         if let title = title{
             headerLabel.text = title
             headerView.frame = CGRect(x: 0, y: 0, width: tableView!.frame.width, height: 50)
+            //print(headerView.frame)
             headerView.addConstraintsWithFormat("H:|-15-[v0]", views: headerLabel)
         }
         
     }
     
     func setupViews(){
-        
         horizontalBarView.translatesAutoresizingMaskIntoConstraints = false
         backgroundCoverView.backgroundColor = .white
         backgroundCoverView.translatesAutoresizingMaskIntoConstraints = false
@@ -392,6 +423,7 @@ class eventSectionHeaderView: UITableViewHeaderFooterView {
         horizontalBarView.centerYAnchor.constraint(equalTo: headerView.centerYAnchor).isActive = true
         horizontalBarView.backgroundColor = .rgb(red: 128, green: 128, blue: 128)
         contentView.addSubview(headerView)
+        
     }
     
     
@@ -446,7 +478,6 @@ class TextViewLabel: UITextView {
         textContainerInset = UIEdgeInsets.zero
         textContainer.lineFragmentPadding = 0
         textContainer.lineBreakMode = .byTruncatingTail
-        
     }
 }
 
@@ -460,3 +491,4 @@ extension UITextView {
         contentOffset.y = -positiveTopOffset
     }
 }
+
