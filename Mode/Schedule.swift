@@ -23,6 +23,7 @@ struct ScItem_info: Decodable{
     var Location: Location_info?
     var Dressing: Dressing_info?
     var Description: Description_info?
+    var Image:Image_info?
 }
 
 struct Sc_ID_info:Decodable{
@@ -50,6 +51,9 @@ struct Dressing_info:Decodable{
     var S:String
 }
 struct Description_info:Decodable{
+    var S:String
+}
+struct Image_info:Decodable{
     var S:String
 }
 
