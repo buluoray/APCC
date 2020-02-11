@@ -15,9 +15,9 @@ class EventViewController: UIViewController{
         didSet{
             print(isShowingStudent)
             eventView.eventDays = eventDays
-            let selectedIndexPath = NSIndexPath(item: 3, section: 0)
-            eventView.collectionView.selectItem(at: selectedIndexPath as IndexPath, animated: false, scrollPosition: .centeredHorizontally)
-            calendarBar.collectionView.selectItem(at: selectedIndexPath as IndexPath, animated: false, scrollPosition: .centeredHorizontally)
+            let selectedIndexPath = calendarBar.collectionView.indexPathsForSelectedItems?.first
+            eventView.collectionView.selectItem(at: selectedIndexPath, animated: false, scrollPosition: .centeredHorizontally)
+            calendarBar.collectionView.selectItem(at: selectedIndexPath, animated: false, scrollPosition: .centeredHorizontally)
         }
     }
     var employerData = [EventDay]()
@@ -129,11 +129,6 @@ class EventViewController: UIViewController{
     }
     
     func makeModel(schedule: ([ScItem])){
-        print(schedule.count)
-        for sc in schedule{
-            print("title: \(sc.Item.Content?.S), type: \(sc.Item.Type?.S)")
-        }
-        
         var eventDaysContainer = [EventDay]()
         var tempEventDatas: [[EventData]] = [[EventData](),[EventData](),[EventData](),[EventData](),[EventData](),[EventData](),[EventData]()]
         //Filter employer
