@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import SDWebImage
 class EventView: UIView, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout{
     
     
@@ -193,11 +193,12 @@ class EventOverviewCell: BaseCell, UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = eventDetailTablecView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! EventDetailCell
-
+        
         guard eventDay != nil
             else {
                 return cell
         }
+
         //cell.eventData = eventDay.eventSections[indexPath.section].eventData[indexPath.row]
         return cell
     }
@@ -259,8 +260,18 @@ class EventDetailCell: BaseTableCell {
             timeView.text = ev.time
             locationView.text = ev.location
             titleView.text = ev.title
-            displayImageView.image = UIImage(named: "\(ev.imgaeName!)")
+            setupDisplayImageView()
         }
+    }
+    
+    func setupDisplayImageView(){
+        if let displayImageURLString = eventData?.imageURL {
+            let imageURL = URL(string: displayImageURLString)
+            displayImageView.sd_setImage(with: imageURL, placeholderImage: UIImage(named: "sample1"), options: [.highPriority,.retryFailed], context: nil)
+//            displayImageView.loadImageUsingUrlString(urlString: displayImageURL)
+            
+        }
+        
     }
     
     private let displayImageView: UIImageView = {
@@ -492,3 +503,44 @@ extension UITextView {
     }
 }
 
+//let imageCache = NSCache<String, String>()
+//
+//class CustomImageView: UIImageView {
+//
+//    var imageUrlString: String?
+//
+//    func loadImageUsingUrlString(urlString: String) {
+//
+//        imageUrlString = urlString
+//
+//        let url = NSURL(string: urlString)
+//
+//        image = nil
+//
+//        if let imageFromCache = imageCache.objectForKey(urlString) as? UIImage {
+//            self.image = imageFromCache
+//            return
+//        }
+//
+//         URLSession.shared.dataTask(with: url! as URL, completionHandler: { (data, respones, error) in
+//
+//            if error != nil {
+//                print(error)
+//                return
+//            }
+//
+//            DispatchQueue.main.sync {
+//
+//                let imageToCache = UIImage(data: data!)
+//
+//                if self.imageUrlString == urlString {
+//                    self.image = imageToCache
+//                }
+//
+//                imageCache.setObject(imageToCache!, forKey: urlString)
+//            }
+//
+//        }).resume()
+//    }
+//
+//}

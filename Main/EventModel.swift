@@ -23,7 +23,7 @@ struct EventData: Hashable {
     var time: String?
     var title: String?
     var location: String?
-    var imgaeName: String?
+    var imageURL: String?
     var speakers = [Attendee]()
     var header: String?
     var description: String?
@@ -31,8 +31,9 @@ struct EventData: Hashable {
         self.title = title
         self.time = time
         self.location = location
-        self.imgaeName = imageName
+        self.imageURL = imageName
         self.description = description
+       
     }
     
     init() {

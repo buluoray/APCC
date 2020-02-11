@@ -93,6 +93,9 @@ class EventViewController: UIViewController{
                 let header = event.Item.Time?.S.matches(for: "^\\d*:\\d*\\s\\w\\w").first
                 //print(header)
                 var eventData = EventData(time: event.Item.Time?.S ?? "N/A", title: event.Item.Content?.S ?? "N/A", location: event.Item.Location?.S ?? "N/A", imageName: "sample1",description: event.Item.Description?.S ?? "N/A")
+                if let imageURL = event.Item.Image?.S{
+                    eventData.imageURL = imageURL
+                }
                 eventData.header = header
                 tempEventDatas[Int(day)! - 1].append(eventData)
             }
