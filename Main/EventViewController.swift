@@ -11,7 +11,18 @@ import Foundation
 class EventViewController: UIViewController{
 
     
-    var eventDays = [EventDay]()
+    var eventDays = [EventDay](){
+        didSet{
+            print(isShowingStudent)
+            eventView.eventDays = eventDays
+            let selectedIndexPath = NSIndexPath(item: 3, section: 0)
+            eventView.collectionView.selectItem(at: selectedIndexPath as IndexPath, animated: false, scrollPosition: .centeredHorizontally)
+            calendarBar.collectionView.selectItem(at: selectedIndexPath as IndexPath, animated: false, scrollPosition: .centeredHorizontally)
+        }
+    }
+    var employerData = [EventDay]()
+    var studentData = [EventDay]()
+    var isShowingStudent = false
     
     lazy var calendarBar: CalendarBar = {
         let cb = CalendarBar()
@@ -39,6 +50,7 @@ class EventViewController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupSwitchView()
         setupCalendarBar()
         setupEventView()
         overrideUserInterfaceStyle = .light
@@ -47,8 +59,41 @@ class EventViewController: UIViewController{
         navigationController?.navigationBar.barTintColor = .themeColor
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "Calendar", style: .plain, target: nil, action: nil)
-        navigationItem.title = "APCC Calendar"
+        if isShowingStudent {
+            navigationItem.title = "Student Calendar"
+            self.navigationItem.rightBarButtonItem?.title = "Employer"
+        } else {
+            navigationItem.title = "Employer Calendar"
+            self.navigationItem.rightBarButtonItem?.title = "Student"
+        }
+
         fetchEvents()
+    }
+    
+    func setupSwitchView(){
+        let rightBarButtonItem = UIBarButtonItem(
+        title: "",
+        style: .plain,
+        target: self,
+        action: #selector(switchCalender_tapped))
+        rightBarButtonItem.tintColor = .white
+        self.navigationItem.rightBarButtonItem = rightBarButtonItem
+    }
+    
+    @objc func switchCalender_tapped(){
+           print("ok")
+        isShowingStudent = !isShowingStudent
+        if isShowingStudent{
+            self.navigationItem.rightBarButtonItem?.title = "Employer"
+            navigationItem.title = "Student Calendar"
+            eventDays = studentData
+            
+        }else {
+            self.navigationItem.rightBarButtonItem?.title = "Student"
+            eventDays = employerData
+            navigationItem.title = "Employer Calendar"
+        }
+        
     }
     
     func handleClientError(error:Error){
@@ -84,15 +129,22 @@ class EventViewController: UIViewController{
     }
     
     func makeModel(schedule: ([ScItem])){
+        print(schedule.count)
+        for sc in schedule{
+            print("title: \(sc.Item.Content?.S), type: \(sc.Item.Type?.S)")
+        }
+        
         var eventDaysContainer = [EventDay]()
         var tempEventDatas: [[EventData]] = [[EventData](),[EventData](),[EventData](),[EventData](),[EventData](),[EventData](),[EventData]()]
+        //Filter employer
         let employerSchedule = schedule.filter{ ($0.Item.Type?.S.contains("Employer’s and Universities schedule"))! }
+        //Loop Through employers
         for event in employerSchedule {
             if let eventDateFormat = event.Item.Date?.S {
                 let day = eventDateFormat.subString(from: 2, to: 2)
                 let header = event.Item.Time?.S.matches(for: "^\\d*:\\d*\\s\\w\\w").first
                 //print(header)
-                var eventData = EventData(time: event.Item.Time?.S ?? "N/A", title: event.Item.Content?.S ?? "N/A", location: event.Item.Location?.S ?? "N/A", imageName: "sample1",description: event.Item.Description?.S ?? "N/A")
+                var eventData = EventData(time: event.Item.Time?.S ?? "N/A", title: event.Item.Content?.S ?? "N/A", location: event.Item.Location?.S ?? "N/A",description: event.Item.Description?.S ?? "N/A")
                 if let imageURL = event.Item.Image?.S{
                     eventData.imageURL = imageURL
                 }
@@ -112,9 +164,43 @@ class EventViewController: UIViewController{
             eventDaysContainer.append(tempEventDay)
         }
         
-        eventDays = eventDaysContainer
+        employerData = eventDaysContainer
+        eventDaysContainer = [EventDay]()
+        tempEventDatas = [[EventData](),[EventData](),[EventData](),[EventData](),[EventData](),[EventData](),[EventData]()]
+        //Filter student
+        let studentSchedule = schedule.filter{ ($0.Item.Type?.S.contains("Student Schedule"))! }
+
+        //Loop through student
+        for event in studentSchedule {
+            if let eventDateFormat = event.Item.Date?.S {
+                let day = eventDateFormat.subString(from: 2, to: 2)
+                let header = event.Item.Time?.S.matches(for: "^\\d*:\\d*\\s\\w\\w").first
+                //print(header)
+                var eventData = EventData(time: event.Item.Time?.S ?? "N/A", title: event.Item.Content?.S ?? "N/A", location: event.Item.Location?.S ?? "N/A",description: event.Item.Description?.S ?? "N/A")
+                if let imageURL = event.Item.Image?.S{
+                    eventData.imageURL = imageURL
+                }
+                
+                eventData.header = header
+                tempEventDatas[Int(day)! - 1].append(eventData)
+            }
+        }
+        
+        for temp in tempEventDatas{
+            // Group the EventDatas into subarrays by header
+            let headerGroups = Array(Dictionary(grouping:temp){$0.header}.values)
+            var tempEventDay = EventDay()
+            for section in headerGroups{
+                let tempSection = EventSection(sectionHeader: section.first?.header ?? "", eventdata: section)
+                tempEventDay.eventSections.append(tempSection)
+            }
+            tempEventDay.eventSections.sort(by: { $0 < $1 })
+            eventDaysContainer.append(tempEventDay)
+        }
+        studentData = eventDaysContainer
+        
         DispatchQueue.main.asyncAfter(deadline: .now()) {
-            self.eventView.eventDays = self.eventDays
+            self.eventDays = self.employerData
             self.eventView.collectionView.reloadData()
             self.calendarBar.collectionView.reloadData()
             let selectedIndexPath = NSIndexPath(item: 3, section: 0)

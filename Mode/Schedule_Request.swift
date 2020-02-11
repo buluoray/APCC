@@ -35,10 +35,10 @@ struct Schedule_Request {
            }
            do {
              print("=========schedule data response===================")
-               print(data ?? "no data")
-               let decoder = JSONDecoder()
-               let schedule_Response = try decoder.decode([ScItem].self, from: jsonData)
-               completion(.success(schedule_Response))
+                print(data ?? "no data")
+                let decoder = JSONDecoder()
+                let schedule_Response = try decoder.decode([ScItem].self, from: jsonData)
+                completion(.success(schedule_Response))
            }catch{
                completion(.failure(.canNotProcessData))
            }

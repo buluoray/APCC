@@ -12,7 +12,11 @@ class EventView: UIView, UICollectionViewDataSource, UICollectionViewDelegate, U
     
     
     var calendarBar: CalendarBar?
-    var eventDays: [EventDay]?
+    var eventDays: [EventDay]? {
+        didSet{
+            collectionView.reloadData()
+        }
+    }
     var eventViewController: EventViewController?
     let cellId = "cellId"
     //let sectionNumber: Int?
@@ -104,7 +108,11 @@ class EventView: UIView, UICollectionViewDataSource, UICollectionViewDelegate, U
 class EventOverviewCell: BaseCell, UITableViewDelegate, UITableViewDataSource {
     
     var eventViewController: EventViewController?
-    var eventDay: EventDay?
+    var eventDay: EventDay?{
+        didSet{
+            eventDetailTablecView.reloadData()
+        }
+    }
     let cellId = "tablecellId"
    
     let data = ["test1","test2","test3"]
@@ -301,6 +309,9 @@ class EventDetailCell: BaseTableCell {
         iv.font = .systemFont(ofSize: 20, weight: .bold)
         iv.textColor = .white
         iv.textAlignment = .left
+        iv.layer.shadowColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        iv.layer.shadowOpacity = 0.8
+        iv.layer.shadowOffset = CGSize(width: 4, height: 4)
         iv.isUserInteractionEnabled = false
         return iv
     }()
@@ -313,6 +324,9 @@ class EventDetailCell: BaseTableCell {
         iv.font = .systemFont(ofSize: 20, weight: .bold)
         iv.textColor = .white
         iv.backgroundColor = .clear
+        iv.layer.shadowColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        iv.layer.shadowOpacity = 0.8
+        iv.layer.shadowOffset = CGSize(width: 2, height: 2)
         iv.isUserInteractionEnabled = false
         return iv
     }()
@@ -325,6 +339,9 @@ class EventDetailCell: BaseTableCell {
         iv.textAlignment = .left
         iv.textColor = .white
         iv.isUserInteractionEnabled = false
+        iv.layer.shadowColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        iv.layer.shadowOpacity = 0.8
+        iv.layer.shadowOffset = CGSize(width: 2, height: 2)
         return iv
     }()
     
@@ -332,6 +349,9 @@ class EventDetailCell: BaseTableCell {
         let iv = UIImageView(image: UIImage(named: "location"))
         iv.translatesAutoresizingMaskIntoConstraints = false
         iv.isUserInteractionEnabled = false
+        iv.layer.shadowColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        iv.layer.shadowOpacity = 0.8
+        iv.layer.shadowOffset = CGSize(width: 2, height: 2)
         return iv
     }()
     
@@ -371,7 +391,7 @@ class EventDetailCell: BaseTableCell {
     private func setupGradientLayer() {
         let gradientLayer = CAGradientLayer()
         gradientLayer.frame = displayImageView.frame
-        gradientLayer.colors = [UIColor.init(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.4).cgColor, UIColor.init(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.4).cgColor]
+        gradientLayer.colors = [UIColor.init(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.3).cgColor, UIColor.init(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.3).cgColor]
         //gradientLayer.locations = [0.7, 1.2]
         displayImageView.layer.addSublayer(gradientLayer)
     }
