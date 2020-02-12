@@ -62,8 +62,7 @@ class EventView: UIView, UICollectionViewDataSource, UICollectionViewDelegate, U
     
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let eventDays = eventDays else { return 7 }
-        return eventDays.count
+        return 7
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -72,7 +71,10 @@ class EventView: UIView, UICollectionViewDataSource, UICollectionViewDelegate, U
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if let cell = cell as? EventOverviewCell{
-            cell.eventDay = eventDays?[indexPath.item]
+            if eventDays?.count != 0{
+                cell.eventDay = eventDays?[indexPath.item]
+            }
+            
         }
     }
     
@@ -88,14 +90,11 @@ class EventView: UIView, UICollectionViewDataSource, UICollectionViewDelegate, U
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! EventOverviewCell
 
-        guard let eventDays = eventDays
-            else {
-                //cell.eventDay = EventDay()
-                print("error: No eventDays")
-                return cell
+        if eventDays?.count != 0{
+            cell.eventDay = eventDays?[indexPath.row]
         }
         //print("item: \(indexPath.item), row: \(indexPath.row)")
-        cell.eventDay = eventDays[indexPath.row]
+       
         cell.eventViewController = eventViewController
         return cell
     }
@@ -111,6 +110,9 @@ class EventOverviewCell: BaseCell, UITableViewDelegate, UITableViewDataSource {
     var eventDay: EventDay?{
         didSet{
             eventDetailTablecView.reloadData()
+            DispatchQueue.main.async{
+                self.eventDetailTablecView.refreshControl?.endRefreshing()
+            }
         }
     }
     let cellId = "tablecellId"
@@ -147,8 +149,15 @@ class EventOverviewCell: BaseCell, UITableViewDelegate, UITableViewDataSource {
         addConstraintsWithFormat("V:|[v0]|", views: eventDetailTablecView)
         noEventView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         noEventView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-       
-        
+        let refreshControl = UIRefreshControl()
+        refreshControl.tintColor = .themeColor
+        let attributes = [
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.regular), NSAttributedString.Key.foregroundColor: UIColor.themeColor
+        ]
+        refreshControl.attributedTitle = NSAttributedString(string: "Loading APCC Events...", attributes: attributes)
+        refreshControl.addTarget(eventViewController, action: #selector(eventViewController?.fetchEvents), for: .valueChanged)
+        eventDetailTablecView.refreshControl = refreshControl
+        eventDetailTablecView.refreshControl?.beginRefreshing()
     }
     
     override func prepareForReuse() {
@@ -186,6 +195,9 @@ class EventOverviewCell: BaseCell, UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let eventDay = eventDay
             else {
+                DispatchQueue.main.async{
+                    tableView.refreshControl?.endRefreshing()
+                }
                 return 0
         }
         return eventDay.eventSections[section].eventData.count
@@ -269,13 +281,14 @@ class EventDetailCell: BaseTableCell {
             locationView.text = ev.location
             titleView.text = ev.title
             setupDisplayImageView()
+            
         }
     }
     
     func setupDisplayImageView(){
         if let displayImageURLString = eventData?.imageURL {
             let imageURL = URL(string: displayImageURLString)
-            displayImageView.sd_setImage(with: imageURL, placeholderImage: UIImage(named: "sample1"), options: [.highPriority,.retryFailed], context: nil)
+            displayImageView.sd_setImage(with: imageURL, placeholderImage: UIImage(), options: [.highPriority,.retryFailed], context: nil)
 //            displayImageView.loadImageUsingUrlString(urlString: displayImageURL)
             
         }
@@ -363,7 +376,6 @@ class EventDetailCell: BaseTableCell {
     
     override func setupViews() {
         super.setupViews()
-        
         addSubview(displayImageView)
         addSubview(timeView)
         addSubview(titleView)
@@ -523,44 +535,3 @@ extension UITextView {
     }
 }
 
-//let imageCache = NSCache<String, String>()
-//
-//class CustomImageView: UIImageView {
-//
-//    var imageUrlString: String?
-//
-//    func loadImageUsingUrlString(urlString: String) {
-//
-//        imageUrlString = urlString
-//
-//        let url = NSURL(string: urlString)
-//
-//        image = nil
-//
-//        if let imageFromCache = imageCache.objectForKey(urlString) as? UIImage {
-//            self.image = imageFromCache
-//            return
-//        }
-//
-//         URLSession.shared.dataTask(with: url! as URL, completionHandler: { (data, respones, error) in
-//
-//            if error != nil {
-//                print(error)
-//                return
-//            }
-//
-//            DispatchQueue.main.sync {
-//
-//                let imageToCache = UIImage(data: data!)
-//
-//                if self.imageUrlString == urlString {
-//                    self.image = imageToCache
-//                }
-//
-//                imageCache.setObject(imageToCache!, forKey: urlString)
-//            }
-//
-//        }).resume()
-//    }
-//
-//}

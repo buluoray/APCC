@@ -14,14 +14,14 @@ class EventViewController: UIViewController{
     var eventDays = [EventDay](){
         didSet{
             eventView.eventDays = eventDays
-            let selectedIndexPath = calendarBar.collectionView.indexPathsForSelectedItems?.first
-            eventView.collectionView.selectItem(at: selectedIndexPath, animated: false, scrollPosition: .centeredHorizontally)
-            calendarBar.collectionView.selectItem(at: selectedIndexPath, animated: false, scrollPosition: .centeredHorizontally)
+            if let selectedIndexPath = calendarBar.collectionView.indexPathsForSelectedItems?.first{
+                eventView.collectionView.selectItem(at: selectedIndexPath, animated: false, scrollPosition: .centeredHorizontally)
+                calendarBar.collectionView.selectItem(at: selectedIndexPath, animated: false, scrollPosition: .centeredHorizontally)
+            }
         }
     }
     var employerData = [EventDay]()
     var studentData = [EventDay]()
-    var isShowingStudent = false
     
     lazy var calendarBar: CalendarBar = {
         let cb = CalendarBar()
@@ -58,14 +58,14 @@ class EventViewController: UIViewController{
         navigationController?.navigationBar.barTintColor = .themeColor
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "Calendar", style: .plain, target: nil, action: nil)
-        if isShowingStudent {
-            navigationItem.title = "Student Calendar"
-            self.navigationItem.rightBarButtonItem?.title = "Employer"
-        } else {
-            navigationItem.title = "Employer Calendar"
-            self.navigationItem.rightBarButtonItem?.title = "Student"
-        }
-
+        navigationItem.title = "Loading..."
+//        if UserDefaults.standard.bool(forKey: "isShowingStudent") {
+//            navigationItem.title = "Student Calendar"
+//            self.navigationItem.rightBarButtonItem?.title = "Employer"
+//        } else {
+//            navigationItem.title = "Employer Calendar"
+//            self.navigationItem.rightBarButtonItem?.title = "Student"
+//        }
         fetchEvents()
     }
     
@@ -80,35 +80,45 @@ class EventViewController: UIViewController{
     }
     
     @objc func switchCalender_tapped(){
-        isShowingStudent = !isShowingStudent
-        if isShowingStudent{
+
+        if !UserDefaults.standard.bool(forKey: "isShowingStudent") {
             self.navigationItem.rightBarButtonItem?.title = "Employer"
             navigationItem.title = "Student Calendar"
             eventDays = studentData
-            
+            UserDefaults.standard.set(true, forKey: "isShowingStudent")
         }else {
             self.navigationItem.rightBarButtonItem?.title = "Student"
             eventDays = employerData
             navigationItem.title = "Employer Calendar"
+            UserDefaults.standard.set(false, forKey: "isShowingStudent")
         }
         
     }
     
     func handleClientError(error:Error){
 
-        DispatchQueue.main.sync {
-            let alert = UIAlertController(title: "Failed to load events", message: "\(error.localizedDescription)" , preferredStyle: .alert)
 
-            alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
+        DispatchQueue.main.sync {
+            let alert = UIAlertController(title: "Failed to load events", message: "Please check you internet connection and try again." , preferredStyle: .alert)
+
+            alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { action in
+                DispatchQueue.main.async{
+                    if let cell = self.eventView.collectionView.visibleCells.first as? EventOverviewCell {
+                        print("succeed")
+                        cell.eventDetailTablecView.refreshControl?.endRefreshing()
+                    }
+                }}))
             alert.addAction(UIAlertAction(title: "Try again", style: .cancel, handler: { action in
              self.fetchEvents()
             }))
+
             self.present(alert, animated: true)
         }
+        
     }
     
     @objc func fetchEvents() {
-        showSpinner(onView: self.view)
+        //showSpinner(onView: self.view)
                 // load Schedule data
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             let schedule_Request = Schedule_Request()
@@ -193,13 +203,21 @@ class EventViewController: UIViewController{
         studentData = eventDaysContainer
         
         DispatchQueue.main.asyncAfter(deadline: .now()) {
-            self.eventDays = self.employerData
+            self.eventDays = !UserDefaults.standard.bool(forKey: "isShowingStudent") ? self.employerData : self.studentData
+            if UserDefaults.standard.bool(forKey: "isShowingStudent") {
+                self.navigationItem.title = "Student Calendar"
+                self.navigationItem.rightBarButtonItem?.title = "Employer"
+            } else {
+                self.navigationItem.title = "Employer Calendar"
+                self.navigationItem.rightBarButtonItem?.title = "Student"
+            }
             self.eventView.collectionView.reloadData()
             self.calendarBar.collectionView.reloadData()
             let selectedIndexPath = NSIndexPath(item: 3, section: 0)
             self.eventView.collectionView.selectItem(at: selectedIndexPath as IndexPath, animated: false, scrollPosition: .centeredHorizontally)
             self.calendarBar.collectionView.selectItem(at: selectedIndexPath as IndexPath, animated: false, scrollPosition: .centeredHorizontally)
-            self.removeSpinner()
+
+            //self.removeSpinner()
             //print(self.eventView.eventDays)
         }
         //print(eventDays)
