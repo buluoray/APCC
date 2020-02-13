@@ -36,11 +36,7 @@ class EventViewController: UIViewController{
         return ev
     }()
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.navigationController?.isToolbarHidden = true
-        self.navigationController?.tabBarController?.tabBar.isHidden = false
-    }
+    
     
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -66,6 +62,7 @@ class EventViewController: UIViewController{
 //            navigationItem.title = "Employer Calendar"
 //            self.navigationItem.rightBarButtonItem?.title = "Student"
 //        }
+
         fetchEvents()
     }
     
@@ -118,15 +115,28 @@ class EventViewController: UIViewController{
     }
     
     @objc func fetchEvents() {
-        //showSpinner(onView: self.view)
+        
+        
                 // load Schedule data
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             let schedule_Request = Schedule_Request()
             schedule_Request.getVenders{ [weak self] result in
                 switch result {
                 case .failure(let error):
-                    self!.removeSpinner()
-                    self!.handleClientError(error: error)
+                    //self!.removeSpinner()
+                    DispatchQueue.main.async {
+                        self!.showSpinner(onView: self!.view, text: "Failed to update events:\nPlease check your internet connection")
+                        if let cell = self!.eventView.collectionView.visibleCells.first as? EventOverviewCell {
+                            print("succeed")
+                            cell.eventDetailTablecView.refreshControl?.endRefreshing()
+                        }
+                    }
+//                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+//                        self!.removeSpinner()
+//
+//                    }
+                    
+                    //self!.handleClientError(error: error)
                 case .success(let schedule):
                     self!.makeModel(schedule: schedule)
                     
@@ -201,9 +211,34 @@ class EventViewController: UIViewController{
             eventDaysContainer.append(tempEventDay)
         }
         studentData = eventDaysContainer
+
+        saveEventDaysToFile(eventdays: studentData, filename: "studentData.json")
+        saveEventDaysToFile(eventdays: employerData, filename: "employerData.json")
+        
+        DispatchQueue.main.async{
+            if let cell = self.eventView.collectionView.visibleCells.first as? EventOverviewCell {
+                print("succeed loaded from web")
+                cell.eventDetailTablecView.refreshControl?.endRefreshing()
+            }
+            self.eventDays = !UserDefaults.standard.bool(forKey: "isShowingStudent") ? self.employerData : self.studentData
+            self.showSpinner(onView: self.view, text: "APCC events updated")
+        }
+        //print(eventDays)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.isToolbarHidden = true
+        self.navigationController?.tabBarController?.tabBar.isHidden = false
+        if let sd = readEventDaysFromFile(filename: "studentData.json"){
+            studentData = sd
+        }
+        if let ed = readEventDaysFromFile(filename: "employerData.json"){
+            employerData = ed
+        }
         
         DispatchQueue.main.asyncAfter(deadline: .now()) {
-            self.eventDays = !UserDefaults.standard.bool(forKey: "isShowingStudent") ? self.employerData : self.studentData
+            
             if UserDefaults.standard.bool(forKey: "isShowingStudent") {
                 self.navigationItem.title = "Student Calendar"
                 self.navigationItem.rightBarButtonItem?.title = "Employer"
@@ -211,17 +246,58 @@ class EventViewController: UIViewController{
                 self.navigationItem.title = "Employer Calendar"
                 self.navigationItem.rightBarButtonItem?.title = "Student"
             }
+            self.eventDays = !UserDefaults.standard.bool(forKey: "isShowingStudent") ? self.employerData : self.studentData
             self.eventView.collectionView.reloadData()
             self.calendarBar.collectionView.reloadData()
             let selectedIndexPath = NSIndexPath(item: 3, section: 0)
             self.eventView.collectionView.selectItem(at: selectedIndexPath as IndexPath, animated: false, scrollPosition: .centeredHorizontally)
             self.calendarBar.collectionView.selectItem(at: selectedIndexPath as IndexPath, animated: false, scrollPosition: .centeredHorizontally)
+            
 
             //self.removeSpinner()
             //print(self.eventView.eventDays)
         }
-        //print(eventDays)
+        
     }
+    
+    func readEventDaysFromFile(filename: String) -> [EventDay]?{
+        let jsonDecoder = JSONDecoder()
+        if let url = try? FileManager.default.url(for: .cachesDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appendingPathComponent(filename){
+            do {
+                if let jsonData = try? Data(contentsOf: url){
+                let decodedData = try jsonDecoder.decode([EventDay].self, from: jsonData)
+                    print("\(filename) loaded successfully")
+                    return decodedData
+            }
+            } catch let error {
+                print("couldn't load: \(filename), error: \(error)")
+            }
+            
+        }
+        return nil
+    }
+    
+    func saveEventDaysToFile(eventdays: [EventDay], filename: String){
+        let jsonEncoder = JSONEncoder()
+        var jsonData: Data?
+        do {
+            jsonData = try jsonEncoder.encode(eventdays)
+            //let jsonString = String(data: jsonData!, encoding: .utf8)
+            if let url = try? FileManager.default.url(for: .cachesDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appendingPathComponent(filename){
+                do {
+                    try jsonData?.write(to: url)
+                    print("\(filename) saved successfuly")
+                } catch let error {
+                    print("couldn't save: \(filename), error: \(error)")
+                }
+                
+            }
+            //print("JSON String : " + jsonString!)
+        }
+        catch {
+        }
+    }
+
 
     
 //
@@ -319,65 +395,47 @@ extension String {
 }
 var vSpinner : UIView?
 extension UIViewController {
-    func showSpinner(onView : UIView) {
+    func showSpinner(onView : UIView, text: String) {
         let spinnerView = UIView(frame: .zero)
-        //print(spinnerView.frame)
-        spinnerView.backgroundColor = #colorLiteral(red: 0.9409832358, green: 0.9353893399, blue: 0.9452831149, alpha: 1)
+        spinnerView.backgroundColor = .themeColor
         spinnerView.translatesAutoresizingMaskIntoConstraints = false
-        let ai = UIActivityIndicatorView.init(style: .large)
-        ai.startAnimating()
-        ai.center = spinnerView.center
-        ai.color = .themeColor
-        ai.translatesAutoresizingMaskIntoConstraints = false
-        let iv = UILabel(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
+        let iv = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 50))
         iv.translatesAutoresizingMaskIntoConstraints = false
-        iv.text = "Loading Events"
-        iv.numberOfLines = 1
+        iv.text = text
+        iv.numberOfLines = 2
         iv.adjustsFontSizeToFitWidth = true
-        iv.textColor = .themeColor
+        iv.textColor = .white
         iv.textAlignment = .center
         iv.isUserInteractionEnabled = false
         iv.center = spinnerView.center
 
         DispatchQueue.main.async {
-            spinnerView.addSubview(ai)
             spinnerView.addSubview(iv)
             onView.addSubview(spinnerView)
-            ai.centerYAnchor.constraint(equalTo: spinnerView.centerYAnchor).isActive = true
-            ai.centerXAnchor.constraint(equalTo: spinnerView.centerXAnchor).isActive = true
-            iv.heightAnchor.constraint(equalToConstant: 50).isActive = true
-            iv.widthAnchor.constraint(equalToConstant: 100).isActive = true
-            iv.centerYAnchor.constraint(equalTo: spinnerView.centerYAnchor, constant: 40).isActive = true
+            iv.heightAnchor.constraint(equalTo: spinnerView.heightAnchor).isActive = true
+            iv.widthAnchor.constraint(equalTo: spinnerView.widthAnchor).isActive = true
+            iv.centerYAnchor.constraint(equalTo: spinnerView.centerYAnchor).isActive = true
             iv.centerXAnchor.constraint(equalTo: spinnerView.centerXAnchor).isActive = true
-            spinnerView.heightAnchor.constraint(equalToConstant: 150).isActive = true
-            spinnerView.widthAnchor.constraint(equalToConstant: 150).isActive = true
-            spinnerView.centerYAnchor.constraint(equalTo: onView.centerYAnchor).isActive = true
-            spinnerView.centerXAnchor.constraint(equalTo: onView.centerXAnchor).isActive = true
+            spinnerView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+            spinnerView.widthAnchor.constraint(equalTo: onView.widthAnchor).isActive = true
+            spinnerView.bottomAnchor.constraint(equalTo: onView.safeAreaLayoutGuide.bottomAnchor).isActive = true
+            spinnerView.alpha = 0.0
+            UIView.animate(withDuration: 0.2, animations: {spinnerView.alpha = 1.0})
         }
         vSpinner = spinnerView
-        vSpinner?.layer.cornerRadius = 12
-//        vSpinner?.centerYAnchor.constraint(equalTo: onView.centerYAnchor).isActive = true
-//        vSpinner?.centerXAnchor.constraint(equalTo: onView.centerXAnchor).isActive = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            UIView.animate(withDuration: 0.2, animations: {vSpinner?.alpha = 0.0},
+            completion: {(value: Bool) in
+                          vSpinner?.removeFromSuperview()
+                vSpinner = nil
+                        })
+            
+            
+        }
     }
     
     func removeSpinner() {
-        DispatchQueue.main.async {
-            vSpinner?.removeFromSuperview()
-            vSpinner = nil
-        }
-    }
-    
-    func addActivityIndicatorToView(activityIndicator: UIActivityIndicatorView, view: UIView){
-
-        self.view.addSubview(activityIndicator)
-
-        //Don't forget this line
-        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
-        view.addConstraint(NSLayoutConstraint(item: activityIndicator, attribute: NSLayoutConstraint.Attribute.centerX, relatedBy: NSLayoutConstraint.Relation.equal, toItem: view, attribute: NSLayoutConstraint.Attribute.centerX, multiplier: 1, constant: 0))
-        view.addConstraint(NSLayoutConstraint(item: activityIndicator, attribute: NSLayoutConstraint.Attribute.centerY, relatedBy: NSLayoutConstraint.Relation.equal, toItem: view, attribute: NSLayoutConstraint.Attribute.centerY, multiplier: 1, constant: 0))
-
-        activityIndicator.startAnimating()
-
+        
     }
 }
 
@@ -393,6 +451,6 @@ extension UIRefreshControl {
         }
         beginRefreshing()
         
-        sendActions(for: UIControl.Event.valueChanged)
+        //sendActions(for: UIControl.Event.valueChanged)
     }
 }

@@ -7,7 +7,7 @@
 //
 import Foundation
 
-struct Attendee: Hashable {
+struct Attendee: Hashable, Codable {
     var name: String?
     var imageName: String?
     
@@ -17,7 +17,7 @@ struct Attendee: Hashable {
     }
 }
 
-struct EventData: Hashable {
+struct EventData: Hashable, Codable {
     
 
     var time: String?
@@ -48,7 +48,7 @@ struct EventData: Hashable {
 //    }
 }
 
-struct EventSection: Comparable {
+struct EventSection: Comparable, Codable {
     
     var eventData = [EventData]()
     var sectionHeader: String
@@ -71,10 +71,13 @@ struct EventSection: Comparable {
 }
 
 
-struct EventDay {
+struct EventDay: Codable {
     var eventSections = [EventSection]()
-    
-    
+//    var json: Data? {
+//        return try? JSONEncoder().encode(self)
+//    }
 }
+
+
 
 

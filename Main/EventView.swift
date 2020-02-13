@@ -17,7 +17,11 @@ class EventView: UIView, UICollectionViewDataSource, UICollectionViewDelegate, U
             collectionView.reloadData()
         }
     }
-    var eventViewController: EventViewController?
+    var eventViewController: EventViewController?{
+        didSet{
+            print(collectionView.visibleCells.count)
+        }
+    }
     let cellId = "cellId"
     //let sectionNumber: Int?
     lazy var collectionView: UICollectionView = {
@@ -110,7 +114,7 @@ class EventOverviewCell: BaseCell, UITableViewDelegate, UITableViewDataSource {
     var eventDay: EventDay?{
         didSet{
             eventDetailTablecView.reloadData()
-            DispatchQueue.main.async{
+            DispatchQueue.main.asyncAfter(deadline: .now()){
                 self.eventDetailTablecView.refreshControl?.endRefreshing()
             }
         }
@@ -157,7 +161,10 @@ class EventOverviewCell: BaseCell, UITableViewDelegate, UITableViewDataSource {
         refreshControl.attributedTitle = NSAttributedString(string: "Loading APCC Events...", attributes: attributes)
         refreshControl.addTarget(eventViewController, action: #selector(eventViewController?.fetchEvents), for: .valueChanged)
         eventDetailTablecView.refreshControl = refreshControl
-        eventDetailTablecView.refreshControl?.beginRefreshing()
+        if eventDay == nil{
+            eventDetailTablecView.refreshControl!.beginRefreshingManually()
+        }
+//        eventDetailTablecView.refreshControl!.beginRefreshingManually()
     }
     
     override func prepareForReuse() {
@@ -169,6 +176,7 @@ class EventOverviewCell: BaseCell, UITableViewDelegate, UITableViewDataSource {
 
         eventDetailTablecView.delegate = self
         eventDetailTablecView.dataSource = self
+        
 
         
         if eventDay?.eventSections.count != 0 {
@@ -288,7 +296,7 @@ class EventDetailCell: BaseTableCell {
     func setupDisplayImageView(){
         if let displayImageURLString = eventData?.imageURL {
             let imageURL = URL(string: displayImageURLString)
-            displayImageView.sd_setImage(with: imageURL, placeholderImage: UIImage(), options: [.highPriority,.retryFailed], context: nil)
+            displayImageView.sd_setImage(with: imageURL, placeholderImage: UIImage(), options: [.highPriority,.retryFailed,.continueInBackground], context: nil)
 //            displayImageView.loadImageUsingUrlString(urlString: displayImageURL)
             
         }
