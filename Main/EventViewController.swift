@@ -55,15 +55,29 @@ class EventViewController: UIViewController{
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "Calendar", style: .plain, target: nil, action: nil)
         navigationItem.title = "Loading..."
-//        if UserDefaults.standard.bool(forKey: "isShowingStudent") {
-//            navigationItem.title = "Student Calendar"
-//            self.navigationItem.rightBarButtonItem?.title = "Employer"
-//        } else {
-//            navigationItem.title = "Employer Calendar"
-//            self.navigationItem.rightBarButtonItem?.title = "Student"
-//        }
-
+        if let sd = readEventDaysFromFile(filename: "studentData.json"){
+            studentData = sd
+        }
+        if let ed = readEventDaysFromFile(filename: "employerData.json"){
+            employerData = ed
+        }
         fetchEvents()
+        DispatchQueue.main.asyncAfter(deadline: .now()) {
+            
+            if UserDefaults.standard.bool(forKey: "isShowingStudent") {
+                self.navigationItem.title = "Student Calendar"
+                self.navigationItem.rightBarButtonItem?.title = "Employer"
+            } else {
+                self.navigationItem.title = "Employer Calendar"
+                self.navigationItem.rightBarButtonItem?.title = "Student"
+            }
+            self.eventDays = !UserDefaults.standard.bool(forKey: "isShowingStudent") ? self.employerData : self.studentData
+            self.eventView.collectionView.reloadData()
+            self.calendarBar.collectionView.reloadData()
+            let selectedIndexPath = NSIndexPath(item: 3, section: 0)
+            self.eventView.collectionView.selectItem(at: selectedIndexPath as IndexPath, animated: false, scrollPosition: .centeredHorizontally)
+            self.calendarBar.collectionView.selectItem(at: selectedIndexPath as IndexPath, animated: false, scrollPosition: .centeredHorizontally)
+        }
     }
     
     func setupSwitchView(){
@@ -115,15 +129,11 @@ class EventViewController: UIViewController{
     }
     
     @objc func fetchEvents() {
-        
-        
-                // load Schedule data
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             let schedule_Request = Schedule_Request()
             schedule_Request.getVenders{ [weak self] result in
                 switch result {
-                case .failure(let error):
-                    //self!.removeSpinner()
+                case .failure:
                     DispatchQueue.main.async {
                         self!.showSpinner(onView: self!.view, text: "Failed to update events:\nPlease check your internet connection")
                         if let cell = self!.eventView.collectionView.visibleCells.first as? EventOverviewCell {
@@ -131,18 +141,10 @@ class EventViewController: UIViewController{
                             cell.eventDetailTablecView.refreshControl?.endRefreshing()
                         }
                     }
-//                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-//                        self!.removeSpinner()
-//
-//                    }
-                    
-                    //self!.handleClientError(error: error)
                 case .success(let schedule):
                     self!.makeModel(schedule: schedule)
-                    
                 }
             }
-
         }
     }
     
@@ -230,33 +232,7 @@ class EventViewController: UIViewController{
         super.viewWillAppear(animated)
         self.navigationController?.isToolbarHidden = true
         self.navigationController?.tabBarController?.tabBar.isHidden = false
-        if let sd = readEventDaysFromFile(filename: "studentData.json"){
-            studentData = sd
-        }
-        if let ed = readEventDaysFromFile(filename: "employerData.json"){
-            employerData = ed
-        }
-        
-        DispatchQueue.main.asyncAfter(deadline: .now()) {
-            
-            if UserDefaults.standard.bool(forKey: "isShowingStudent") {
-                self.navigationItem.title = "Student Calendar"
-                self.navigationItem.rightBarButtonItem?.title = "Employer"
-            } else {
-                self.navigationItem.title = "Employer Calendar"
-                self.navigationItem.rightBarButtonItem?.title = "Student"
-            }
-            self.eventDays = !UserDefaults.standard.bool(forKey: "isShowingStudent") ? self.employerData : self.studentData
-            self.eventView.collectionView.reloadData()
-            self.calendarBar.collectionView.reloadData()
-            let selectedIndexPath = NSIndexPath(item: 3, section: 0)
-            self.eventView.collectionView.selectItem(at: selectedIndexPath as IndexPath, animated: false, scrollPosition: .centeredHorizontally)
-            self.calendarBar.collectionView.selectItem(at: selectedIndexPath as IndexPath, animated: false, scrollPosition: .centeredHorizontally)
-            
 
-            //self.removeSpinner()
-            //print(self.eventView.eventDays)
-        }
         
     }
     
@@ -426,25 +402,14 @@ extension UIViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             UIView.animate(withDuration: 0.2, animations: {vSpinner?.alpha = 0.0},
             completion: {(value: Bool) in
-                          vSpinner?.removeFromSuperview()
+                vSpinner?.removeFromSuperview()
                 vSpinner = nil
                         })
-            
-            
         }
-    }
-    
-    func removeSpinner() {
-        
     }
 }
 
 extension UIRefreshControl {
-    func programaticallyBeginRefreshing(in tableView: UITableView) {
-        beginRefreshing()
-        let offsetPoint = CGPoint.init(x: 0, y: -frame.size.height)
-        tableView.setContentOffset(offsetPoint, animated: true)
-    }
     func beginRefreshingManually() {
         if let scrollView = superview as? UIScrollView {
             scrollView.setContentOffset(CGPoint(x: 0, y: scrollView.contentOffset.y - frame.height), animated: true)

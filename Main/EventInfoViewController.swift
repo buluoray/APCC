@@ -105,7 +105,7 @@ class TimeAndLocationCell: BaseTableCell {
         iv.textColor = .darkGray
         iv.backgroundColor = .white
         iv.isUserInteractionEnabled = false
-
+        iv.font = UIFont(name: "Athelas", size: 20)
         return iv
     }()
     
@@ -137,8 +137,7 @@ class DescriptionCell: BaseTableCell {
         let iv = TextViewLabel()
         iv.translatesAutoresizingMaskIntoConstraints = false
         iv.textAlignment = .left
-        let font = UIFont()
-        iv.font = .preferredFont(forTextStyle: .body)
+        iv.font = UIFont(name: "Athelas-Regular", size: 19)
         iv.textColor = .darkGray
         iv.backgroundColor = .clear
         iv.isUserInteractionEnabled = false
