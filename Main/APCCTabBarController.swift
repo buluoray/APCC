@@ -19,8 +19,14 @@ class APCCTabBarController: UITabBarController {
         eventViewNavigationController.tabBarItem.title = "Calendar"
         eventViewNavigationController.tabBarItem.image = UIImage(named: "calendar")
         
+        
+        let guestViewController = GuestViewController()
+        let guestViewNavigationController = UINavigationController(rootViewController: guestViewController)
+        guestViewNavigationController.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+        guestViewNavigationController.tabBarItem.title = "Guests"
+        guestViewNavigationController.tabBarItem.image = UIImage(named: "guests")
 
-        viewControllers = [eventViewNavigationController, createDummyNavControllerWithTitle(title: "Guests", imageName: "guests"), createDummyNavControllerWithTitle(title: "Discover", imageName: "discover")]
+        viewControllers = [eventViewNavigationController, guestViewNavigationController, createDummyNavControllerWithTitle(title: "Discover", imageName: "discover")]
         
         
 

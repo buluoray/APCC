@@ -97,8 +97,6 @@ class EventView: UIView, UICollectionViewDataSource, UICollectionViewDelegate, U
         if eventDays?.count != 0{
             cell.eventDay = eventDays?[indexPath.row]
         }
-        //print("item: \(indexPath.item), row: \(indexPath.row)")
-       
         cell.eventViewController = eventViewController
         return cell
     }
@@ -238,9 +236,6 @@ class EventOverviewCell: BaseCell, UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if let cell = cell as? EventDetailCell{
             cell.eventData = eventDay?.eventSections[indexPath.section].eventData[indexPath.row]
-//            let animation = AnimationFactory.makeMoveUpWithFade(rowHeight: 50, duration: 0.3, delayFactor: 0.5)
-//            let animator = Animator(animation: animation)
-//            animator.animate(cell: cell, at: indexPath, in: tableView)
         }
     }
     //MARK: Push detail view
@@ -254,7 +249,6 @@ class EventOverviewCell: BaseCell, UITableViewDelegate, UITableViewDataSource {
         eventVC.eventDetail = eventDay.eventSections[indexPath.section].eventData[indexPath.row]
         eventVC.hidesBottomBarWhenPushed = true
         eventViewController?.navigationController?.pushViewController(eventVC, animated: true)
-        //eventViewController?.show(eventVC, sender: self)
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {

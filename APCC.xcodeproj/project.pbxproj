@@ -12,6 +12,7 @@
 		1C544D2F23E7F23C00700D83 /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C544D2E23E7F23C00700D83 /* Schedule.swift */; };
 		1C544D3123E7F45A00700D83 /* Schedule_Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C544D3023E7F45A00700D83 /* Schedule_Request.swift */; };
 		BB3E39E923F2ADEC004F3DD5 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = BB3E39E823F2ADEC004F3DD5 /* Podfile */; };
+		BB3E39EB23F5034E004F3DD5 /* GuestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3E39EA23F5034E004F3DD5 /* GuestViewController.swift */; };
 		BB535DA823E0BF6400CB875D /* EventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB535DA723E0BF6300CB875D /* EventView.swift */; };
 		BB535DAA23E4F45400CB875D /* EventModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB535DA923E4F45400CB875D /* EventModel.swift */; };
 		BB535DAC23E4F82400CB875D /* TestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB535DAB23E4F82400CB875D /* TestData.swift */; };
@@ -36,6 +37,7 @@
 		1C544D3023E7F45A00700D83 /* Schedule_Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schedule_Request.swift; sourceTree = "<group>"; };
 		5ACD89D590629CA1295DA8F4 /* Pods-APCC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-APCC.release.xcconfig"; path = "Target Support Files/Pods-APCC/Pods-APCC.release.xcconfig"; sourceTree = "<group>"; };
 		BB3E39E823F2ADEC004F3DD5 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		BB3E39EA23F5034E004F3DD5 /* GuestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuestViewController.swift; sourceTree = "<group>"; };
 		BB535DA723E0BF6300CB875D /* EventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventView.swift; sourceTree = "<group>"; };
 		BB535DA923E4F45400CB875D /* EventModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventModel.swift; sourceTree = "<group>"; };
 		BB535DAB23E4F82400CB875D /* TestData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestData.swift; sourceTree = "<group>"; };
@@ -88,6 +90,29 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		BB3E39EC23F5041A004F3DD5 /* Calendar */ = {
+			isa = PBXGroup;
+			children = (
+				BB56778423D93E6F00AA1496 /* EventViewController.swift */,
+				BB535DAF23E69D0B00CB875D /* EventInfoViewController.swift */,
+				BBD2BC2C23EE341E000282E2 /* EventDetailViewModel.swift */,
+				BB56779423D945B500AA1496 /* CalendarBar.swift */,
+				BB535DA723E0BF6300CB875D /* EventView.swift */,
+				BB535DA923E4F45400CB875D /* EventModel.swift */,
+				BB535DAB23E4F82400CB875D /* TestData.swift */,
+				BBEE050A23EAB54E0042E811 /* TableViewAnimation.swift */,
+			);
+			path = Calendar;
+			sourceTree = "<group>";
+		};
+		BB3E39ED23F50431004F3DD5 /* Guests */ = {
+			isa = PBXGroup;
+			children = (
+				BB3E39EA23F5034E004F3DD5 /* GuestViewController.swift */,
+			);
+			path = Guests;
+			sourceTree = "<group>";
+		};
 		BB56777423D93E6F00AA1496 = {
 			isa = PBXGroup;
 			children = (
@@ -125,15 +150,9 @@
 		BB56779623D94C8700AA1496 /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				BB56778423D93E6F00AA1496 /* EventViewController.swift */,
-				BB535DAF23E69D0B00CB875D /* EventInfoViewController.swift */,
-				BBD2BC2C23EE341E000282E2 /* EventDetailViewModel.swift */,
-				BB56779423D945B500AA1496 /* CalendarBar.swift */,
-				BB535DA723E0BF6300CB875D /* EventView.swift */,
-				BB535DA923E4F45400CB875D /* EventModel.swift */,
-				BB535DAB23E4F82400CB875D /* TestData.swift */,
+				BB3E39EC23F5041A004F3DD5 /* Calendar */,
 				BB535DAD23E65D8200CB875D /* APCCTabBarController.swift */,
-				BBEE050A23EAB54E0042E811 /* TableViewAnimation.swift */,
+				BB3E39ED23F50431004F3DD5 /* Guests */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -273,6 +292,7 @@
 				1C544D2B23E6BCC500700D83 /* Employer_Request.swift in Sources */,
 				BB535DAA23E4F45400CB875D /* EventModel.swift in Sources */,
 				BB535DAC23E4F82400CB875D /* TestData.swift in Sources */,
+				BB3E39EB23F5034E004F3DD5 /* GuestViewController.swift in Sources */,
 				1C544D2D23E6BCE600700D83 /* Employer.swift in Sources */,
 				BBEE050B23EAB54E0042E811 /* TableViewAnimation.swift in Sources */,
 				BB535DA823E0BF6400CB875D /* EventView.swift in Sources */,

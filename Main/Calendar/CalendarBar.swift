@@ -53,7 +53,6 @@ class CalendarBar: UIView, UICollectionViewDataSource, UICollectionViewDelegate,
     
     override func layoutSubviews() {
         eventView = eventViewController?.eventView
-        //collectionView.reloadData()
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
