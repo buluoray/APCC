@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  EventViewController.swift
 //  APCC
 //
 //  Created by Yusheng Xu on 1/22/20.

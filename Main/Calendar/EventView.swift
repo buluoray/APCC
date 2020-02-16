@@ -73,6 +73,8 @@ class EventView: UIView, UICollectionViewDataSource, UICollectionViewDelegate, U
         return CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
     }
     
+
+    
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if let cell = cell as? EventOverviewCell{
             if eventDays?.count != 0{

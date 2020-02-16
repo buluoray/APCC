@@ -10,11 +10,7 @@ import Foundation
 struct Attendee: Hashable, Codable {
     var name: String?
     var imageName: String?
-    
-    init(name: String, imageName: String) {
-        self.name = name
-        self.imageName = imageName
-    }
+    var bio: String?
 }
 
 struct EventData: Hashable, Codable {

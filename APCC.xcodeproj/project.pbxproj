@@ -13,6 +13,9 @@
 		1C544D3123E7F45A00700D83 /* Schedule_Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C544D3023E7F45A00700D83 /* Schedule_Request.swift */; };
 		BB3E39E923F2ADEC004F3DD5 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = BB3E39E823F2ADEC004F3DD5 /* Podfile */; };
 		BB3E39EB23F5034E004F3DD5 /* GuestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3E39EA23F5034E004F3DD5 /* GuestViewController.swift */; };
+		BB3E39EF23F79B13004F3DD5 /* GuestCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3E39EE23F79B13004F3DD5 /* GuestCell.swift */; };
+		BB3E39F123F79C1F004F3DD5 /* GuestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3E39F023F79C1F004F3DD5 /* GuestModel.swift */; };
+		BB3E39F323F8EC74004F3DD5 /* GuestSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3E39F223F8EC74004F3DD5 /* GuestSectionHeaderView.swift */; };
 		BB535DA823E0BF6400CB875D /* EventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB535DA723E0BF6300CB875D /* EventView.swift */; };
 		BB535DAA23E4F45400CB875D /* EventModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB535DA923E4F45400CB875D /* EventModel.swift */; };
 		BB535DAC23E4F82400CB875D /* TestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB535DAB23E4F82400CB875D /* TestData.swift */; };
@@ -38,6 +41,9 @@
 		5ACD89D590629CA1295DA8F4 /* Pods-APCC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-APCC.release.xcconfig"; path = "Target Support Files/Pods-APCC/Pods-APCC.release.xcconfig"; sourceTree = "<group>"; };
 		BB3E39E823F2ADEC004F3DD5 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		BB3E39EA23F5034E004F3DD5 /* GuestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuestViewController.swift; sourceTree = "<group>"; };
+		BB3E39EE23F79B13004F3DD5 /* GuestCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuestCell.swift; sourceTree = "<group>"; };
+		BB3E39F023F79C1F004F3DD5 /* GuestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuestModel.swift; sourceTree = "<group>"; };
+		BB3E39F223F8EC74004F3DD5 /* GuestSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuestSectionHeaderView.swift; sourceTree = "<group>"; };
 		BB535DA723E0BF6300CB875D /* EventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventView.swift; sourceTree = "<group>"; };
 		BB535DA923E4F45400CB875D /* EventModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventModel.swift; sourceTree = "<group>"; };
 		BB535DAB23E4F82400CB875D /* TestData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestData.swift; sourceTree = "<group>"; };
@@ -109,6 +115,9 @@
 			isa = PBXGroup;
 			children = (
 				BB3E39EA23F5034E004F3DD5 /* GuestViewController.swift */,
+				BB3E39EE23F79B13004F3DD5 /* GuestCell.swift */,
+				BB3E39F023F79C1F004F3DD5 /* GuestModel.swift */,
+				BB3E39F223F8EC74004F3DD5 /* GuestSectionHeaderView.swift */,
 			);
 			path = Guests;
 			sourceTree = "<group>";
@@ -282,6 +291,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				BB56778523D93E6F00AA1496 /* EventViewController.swift in Sources */,
+				BB3E39F323F8EC74004F3DD5 /* GuestSectionHeaderView.swift in Sources */,
+				BB3E39EF23F79B13004F3DD5 /* GuestCell.swift in Sources */,
+				BB3E39F123F79C1F004F3DD5 /* GuestModel.swift in Sources */,
 				BB56778123D93E6F00AA1496 /* AppDelegate.swift in Sources */,
 				1C544D3123E7F45A00700D83 /* Schedule_Request.swift in Sources */,
 				1C544D2F23E7F23C00700D83 /* Schedule.swift in Sources */,
