@@ -8,6 +8,8 @@
 
 import UIKit
 
+
+
 class GuestInfoView: UIView {
     
     let bgView = UIView()
@@ -17,7 +19,7 @@ class GuestInfoView: UIView {
         let iv = UILabel()
         iv.translatesAutoresizingMaskIntoConstraints = false
         iv.text = ""
-        iv.font = .systemFont(ofSize: 25, weight: .bold)
+        iv.font = .systemFont(ofSize: titleSize, weight: .bold)
         iv.textColor = #colorLiteral(red: 0.2117647059, green: 0.2039215686, blue: 0.2039215686, alpha: 1)
         iv.textAlignment = .left
         iv.isUserInteractionEnabled = false
@@ -30,7 +32,7 @@ class GuestInfoView: UIView {
         let iv = TextViewLabel()
         iv.text = ""
         iv.textAlignment = .left
-        iv.font = .systemFont(ofSize: 14, weight: .regular)
+        iv.font = .systemFont(ofSize: fontSize, weight: .regular)
         iv.textColor = #colorLiteral(red: 0.6039215686, green: 0.6039215686, blue: 0.6039215686, alpha: 1)
         iv.backgroundColor = .white
         iv.isUserInteractionEnabled = true
@@ -44,19 +46,33 @@ class GuestInfoView: UIView {
         let iv = UILabel()
         iv.translatesAutoresizingMaskIntoConstraints = false
         iv.text = "REPRESENTATIVES"
-        iv.font = .systemFont(ofSize: 13, weight: .bold)
+        iv.font = .systemFont(ofSize: fontSize, weight: .black)
         iv.textColor = .themeColor
-        iv.textAlignment = .left
+        iv.textAlignment = .center
         iv.isUserInteractionEnabled = false
         iv.numberOfLines = 1
         iv.lineBreakMode = .byClipping
         return iv
     }()
     
-    
+    lazy var collectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        cv.translatesAutoresizingMaskIntoConstraints = false
+        layout.scrollDirection = .vertical
+        cv.backgroundColor = .white
+        layout.minimumLineSpacing = 15
+        layout.minimumInteritemSpacing = 0
+        cv.isPagingEnabled = false
+        cv.showsHorizontalScrollIndicator = false
+        
+        
+        return cv
+    }()
     
     
     func setupView(){
+        collectionView.register(GuestInfoCell.self, forCellWithReuseIdentifier: GuestInfoCell.identifier)
         addSubview(bgView)
         addSubview(secondBgView)
         secondBgView.addSubview(separateLineView)
@@ -64,6 +80,7 @@ class GuestInfoView: UIView {
         secondBgView.addSubview(businessDescriptionLabel)
         secondBgView.addSubview(businessPromoLabel)
         secondBgView.addSubview(representativeLabel)
+        secondBgView.addSubview(collectionView)
         //Background Red
         bgView.backgroundColor = .themeColor
         bgView.translatesAutoresizingMaskIntoConstraints = false
@@ -106,9 +123,13 @@ class GuestInfoView: UIView {
         businessPromoLabel.bottomAnchor.constraint(equalTo: separateLineView.topAnchor, constant: -16).isActive = true
         
         //Representative Label
-        secondBgView.addConstraintsWithFormat("H:|-30-[v0]", views: representativeLabel)
+        secondBgView.addConstraintsWithFormat("H:|[v0]|", views: representativeLabel)
         representativeLabel.topAnchor.constraint(equalTo: separateLineView.bottomAnchor, constant: 15).isActive = true
-
+        
+        //Collectionview
+        secondBgView.addConstraintsWithFormat("H:|-45-[v0]-45-|", views: collectionView)
+        collectionView.topAnchor.constraint(equalTo: representativeLabel.bottomAnchor, constant: 9).isActive = true
+        collectionView.bottomAnchor.constraint(equalTo: secondBgView.bottomAnchor, constant: -15).isActive = true
         
     }
     override func layoutSubviews()
@@ -120,6 +141,7 @@ class GuestInfoView: UIView {
         if businessNameLabel.frame.height > 71{
             businessNameLabel.heightAnchor.constraint(equalToConstant: 71).isActive = true
         }
+        
         
     }
     
@@ -145,3 +167,71 @@ extension UIView{
         layer.cornerRadius = radius!
     }
 }
+
+class GuestInfoCell: BaseCell{
+    
+
+    
+
+    
+    var nameLabel: TextViewLabel = {
+        let iv = TextViewLabel()
+        iv.text = ""
+        
+        iv.font = .systemFont(ofSize: fontSize, weight: .black)
+        iv.textColor = #colorLiteral(red: 0.1803921569, green: 0.1764705882, blue: 0.1764705882, alpha: 1)
+        iv.textAlignment = .left
+        iv.isUserInteractionEnabled = false
+        iv.textContainer.lineBreakMode = .byWordWrapping
+
+        return iv
+       }()
+    
+    var titleLabel: TextViewLabel = {
+        let iv = TextViewLabel()
+        iv.text = ""
+        iv.font = .systemFont(ofSize: fontSize, weight: .medium)
+        iv.textColor = #colorLiteral(red: 0.1803921569, green: 0.1764705882, blue: 0.1764705882, alpha: 1)
+        iv.textAlignment = .left
+        iv.isUserInteractionEnabled = false
+        iv.textContainer.lineBreakMode = .byWordWrapping
+        return iv
+       }()
+       
+    let profileImageView: UIImageView = {
+        let iv = UIImageView()
+        iv.translatesAutoresizingMaskIntoConstraints = false
+        iv.isUserInteractionEnabled = false
+        iv.contentMode = .scaleAspectFill
+        iv.layer.masksToBounds = true
+        return iv
+    }()
+    
+    static var identifier: String {
+        return String(describing: self)
+    }
+    override func setupViews() {
+        backgroundColor = .white
+        contentView.addSubview(profileImageView)
+        contentView.addSubview(nameLabel)
+        contentView.addSubview(titleLabel)
+        contentView.addConstraintsWithFormat("V:|-1-[v0]-1-|", views: profileImageView)
+        profileImageView.widthAnchor.constraint(equalTo: contentView.heightAnchor, constant: -2).isActive = true
+        profileImageView.layer.cornerRadius = (frame.height - 2)/2
+        profileImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
+        nameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
+        titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
+        //contentView.addConstraintsWithFormat("V:|-8-[v0]-7-[v1]", views: nameLabel, titleLabel)
+        //nameLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor, constant: -nameSpacing).isActive = true
+        //titleLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor, constant: nameSpacing).isActive = true
+        titleLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0).isActive = true
+        titleLabel.trailingAnchor.constraint(equalTo: profileImageView.leadingAnchor, constant: -8).isActive = true
+        nameLabel.trailingAnchor.constraint(equalTo: profileImageView.leadingAnchor, constant: -8).isActive = true
+        titleLabel.setContentHuggingPriority(.init(rawValue: 249), for: .vertical)
+        nameLabel.setContentCompressionResistancePriority(.init(rawValue: 751), for: .vertical)
+        nameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8).isActive = true
+        titleLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 4).isActive = true
+    }
+
+}
+

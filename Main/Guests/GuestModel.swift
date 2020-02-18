@@ -19,6 +19,7 @@ struct Business: Codable, Comparable {
     var email: String?
     var businessHeader: String?
     var promoLink: String?
+
     var attendee: [Attendee]?
 }
 
@@ -68,9 +69,9 @@ class GuestModel: NSObject{
         for b in tempBusinesses{
             var attendees = [Attendee]()
             //Make Attendee object for this business
-            b.forEach({attendees.append(Attendee(name: $0.Item.Name_of_Attendee?.S ?? "N/A",bio: $0.Item.Bio?.S ?? "N/A"))})
+            b.forEach({attendees.append(Attendee(name: $0.Item.Name_of_Attendee?.S,profileImageURL: $0.Item.Profile_Image?.S, bio: $0.Item.Bio?.S, title: $0.Item.Title?.S))})
             //Make Business object
-            let business = Business(businessName: b.first?.Item.Business_Name?.S, businessDescription: b.first?.Item.Business_Description?.S, country: b.first?.Item.Country?.S, email: b.first?.Item.Emial?.S, businessHeader: String((b.first?.Item.Business_Name?.S.prefix(1))!) ,promoLink: b.first?.Item.Promo_Link?.S ,attendee: attendees)
+            let business = Business(businessName: b.first?.Item.Business_Name?.S, businessDescription: b.first?.Item.Business_Description?.S, country: b.first?.Item.Country?.S, email: b.first?.Item.Emial?.S, businessHeader: String((b.first?.Item.Business_Name?.S.prefix(1))!) ,promoLink: b.first?.Item.Website?.S ,attendee: attendees)
             tempBusinessesContainer.append(business)
         }
         //Group them to [BusinessHeader][Business] array

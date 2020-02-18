@@ -9,8 +9,10 @@ import Foundation
 
 struct Attendee: Hashable, Codable {
     var name: String?
-    var imageName: String?
+    var profileImageURL: String?
     var bio: String?
+    var title: String?
+    var email: String?
 }
 
 struct EventData: Hashable, Codable {

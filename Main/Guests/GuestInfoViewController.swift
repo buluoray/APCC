@@ -8,8 +8,9 @@
 
 import UIKit
 import SafariServices
+import SDWebImage
 
-class GusetInfoViewController: UIViewController {
+class GuestInfoViewController: UIViewController {
     
     private var business: Business?
     private lazy var guestInfoView: GuestInfoView = {
@@ -29,13 +30,15 @@ class GusetInfoViewController: UIViewController {
     
     func setupView(){
         view.addSubview(guestInfoView)
+        guestInfoView.collectionView.delegate = self
+        guestInfoView.collectionView.dataSource = self
         guestInfoView.businessNameLabel.text = business?.businessName
         guestInfoView.businessDescriptionLabel.text = business?.businessDescription
         if let link = business?.promoLink{
             if let url = URL(string: link){
                 let attributedString = NSMutableAttributedString(string: "Visit Website")
                 let attributes = [
-                    NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14, weight: UIFont.Weight.light),
+                    NSAttributedString.Key.font: UIFont.systemFont(ofSize: fontSize, weight: UIFont.Weight.light),
                     NSAttributedString.Key.foregroundColor: UIColor.themeColor,
                     NSAttributedString.Key.underlineColor: UIColor.clear,
                     NSAttributedString.Key.attachment:url ] as [NSAttributedString.Key : Any]
@@ -64,7 +67,7 @@ class GusetInfoViewController: UIViewController {
     }
 }
 
-extension GusetInfoViewController: LinkLabelDelegate{
+extension GuestInfoViewController: LinkLabelDelegate{
     func openURl(url: URL) {
         let safari = SFSafariViewController(url: url)
         safari.preferredBarTintColor = #colorLiteral(red: 0.5490196078, green: 0, blue: 0.05490196078, alpha: 1)
@@ -74,95 +77,34 @@ extension GusetInfoViewController: LinkLabelDelegate{
     }
 }
 
-protocol LinkLabelDelegate: class {
-    func openURl(url: URL)
-}
-
-public class LinkLabel: UILabel {
-    private var storage: NSTextStorage?
-    private let textContainer = NSTextContainer()
-    private let layoutManager = NSLayoutManager()
-    private var selectedBackgroundView = UIView()
-    weak var delegate: LinkLabelDelegate?
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        textContainer.lineFragmentPadding = 0
-        layoutManager.addTextContainer(textContainer)
-        textContainer.layoutManager = layoutManager
-        isUserInteractionEnabled = true
-        selectedBackgroundView.isHidden = true
-        selectedBackgroundView.backgroundColor = UIColor(white: 0, alpha: 0.3333)
-        selectedBackgroundView.layer.cornerRadius = 4
-        addSubview(selectedBackgroundView)
+extension GuestInfoViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return business?.attendee?.count ?? 7
     }
-
-    public required convenience init(coder: NSCoder) {
-        self.init(frame: .zero)
-    }
-
-    public override func layoutSubviews() {
-        super.layoutSubviews()
-        textContainer.size = frame.size
-    }
-
-    public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesBegan(touches, with: event)
-        setLink(for: touches)
-    }
-
-    public override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesMoved(touches, with: event)
-        setLink(for: touches)
-    }
-
-    private func setLink(for touches: Set<UITouch>) {
-        if let pt = touches.first?.location(in: self), let (characterRange, _) = link(at: pt) {
-            let glyphRange = layoutManager.glyphRange(forCharacterRange: characterRange, actualCharacterRange: nil)
-            selectedBackgroundView.frame = layoutManager.boundingRect(forGlyphRange: glyphRange, in: textContainer).insetBy(dx: -3, dy: -3)
-            selectedBackgroundView.isHidden = false
-        } else {
-            selectedBackgroundView.isHidden = true
-        }
-    }
-
-    public override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesCancelled(touches, with: event)
-        selectedBackgroundView.isHidden = true
-    }
-
-    public override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesEnded(touches, with: event)
-        selectedBackgroundView.isHidden = true
-
-        if let pt = touches.first?.location(in: self), let (_, url) = link(at: pt) {
-            //UIApplication.shared.open(url)
-            delegate?.openURl(url: url)
-        }
-    }
-
-    private func link(at point: CGPoint) -> (NSRange, URL)? {
-        let touchedGlyph = layoutManager.glyphIndex(for: point, in: textContainer)
-        let touchedChar = layoutManager.characterIndexForGlyph(at: touchedGlyph)
-        var range = NSRange()
-        let attrs = attributedText!.attributes(at: touchedChar, effectiveRange: &range)
-        if let urlstr = attrs[.attachment] as? URL {
-            return (range, urlstr)
-        } else {
-            return nil
-        }
-    }
-
-    public override var attributedText: NSAttributedString? {
-        didSet {
-            textContainer.maximumNumberOfLines = numberOfLines
-            textContainer.lineBreakMode = lineBreakMode
-            if let txt = attributedText {
-                storage = NSTextStorage(attributedString: txt)
-                storage!.addLayoutManager(layoutManager)
-                layoutManager.textStorage = storage
-                textContainer.size = frame.size
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GuestInfoCell.identifier, for: indexPath) as? GuestInfoCell{
+            cell.nameLabel.text = business?.attendee?[indexPath.row].name
+            cell.titleLabel.text = business?.attendee?[indexPath.row].title
+            
+            if let URLString = business?.attendee?[indexPath.row].profileImageURL{
+                if let imageURL = URL(string: URLString){
+                    cell.profileImageView.sd_setImage(with: imageURL, placeholderImage: UIImage(named: "APCC"), options: [.highPriority,.retryFailed,.continueInBackground], context: nil)
+                }
             }
+            
+            
+            return cell
         }
+        return UICollectionViewCell()
     }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: collectionView.frame.width, height: collectionView.frame.height / 3 - 10)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+
+    }
+    
 }
+

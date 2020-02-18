@@ -86,7 +86,7 @@ extension GuestViewController : UICollectionViewDelegateFlowLayout{
 
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if businesses != nil{
-            let guestInfoVC = GusetInfoViewController()
+            let guestInfoVC = GuestInfoViewController()
             guestInfoVC.setupModel(data: businesses![indexPath.section][indexPath.row])
             navigationController?.pushViewController(guestInfoVC, animated: true)
         }

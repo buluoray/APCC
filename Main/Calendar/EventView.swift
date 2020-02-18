@@ -265,7 +265,7 @@ class EventOverviewCell: BaseCell, UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 155
+        return UIDevice.current.userInterfaceIdiom == .phone ? 155 : 300
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -273,6 +273,8 @@ class EventOverviewCell: BaseCell, UITableViewDelegate, UITableViewDataSource {
     }
 
 }
+
+
 // MARK: EventDetailCell - Tableview
 class EventDetailCell: BaseTableCell {
     
@@ -315,7 +317,7 @@ class EventDetailCell: BaseTableCell {
         let iv = UILabel()
         iv.translatesAutoresizingMaskIntoConstraints = false
         iv.text = "10:00 AM - 12:00 PM"
-        iv.font = .systemFont(ofSize: 20, weight: .bold)
+        iv.font = .systemFont(ofSize: cardFontSize, weight: .bold)
         iv.textColor = .white
         iv.textAlignment = .left
         iv.layer.shadowColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
@@ -330,7 +332,7 @@ class EventDetailCell: BaseTableCell {
         iv.translatesAutoresizingMaskIntoConstraints = false
         iv.text = "China Regional Breakout Session"
         iv.textAlignment = .left
-        iv.font = .systemFont(ofSize: 20, weight: .bold)
+        iv.font = .systemFont(ofSize: cardFontSize, weight: .bold)
         iv.textColor = .white
         iv.backgroundColor = .clear
         iv.layer.shadowColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
@@ -344,7 +346,7 @@ class EventDetailCell: BaseTableCell {
         let iv = UILabel()
         iv.translatesAutoresizingMaskIntoConstraints = false
         iv.text = "N/A"
-        iv.font = .systemFont(ofSize: 14, weight: .bold)
+        iv.font = .systemFont(ofSize: fontSize, weight: .bold)
         iv.textAlignment = .left
         iv.textColor = .white
         iv.isUserInteractionEnabled = false
@@ -358,6 +360,7 @@ class EventDetailCell: BaseTableCell {
         let iv = UIImageView(image: UIImage(named: "location"))
         iv.translatesAutoresizingMaskIntoConstraints = false
         iv.isUserInteractionEnabled = false
+        iv.contentMode = .scaleAspectFit
         iv.layer.shadowColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         iv.layer.shadowOpacity = 0.8
         iv.layer.shadowOffset = CGSize(width: 1, height: 1)
@@ -367,7 +370,6 @@ class EventDetailCell: BaseTableCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         displayImageView.roundCorners(corners: [.topLeft, .bottomLeft], radius: 12)
-        
     }
     
     override func setupViews() {
@@ -379,13 +381,15 @@ class EventDetailCell: BaseTableCell {
         addSubview(iconView)
         addConstraintsWithFormat("H:|-15-[v0]|", views: displayImageView)
         addConstraintsWithFormat("V:|-7.5-[v0]-7.5-|", views: displayImageView)
-        addConstraintsWithFormat("H:|-30-[v0]", views: timeView)
-        addConstraintsWithFormat("V:|-20-[v0(24)]-10-[v1(60)]-10-[v2]-15-|", views: timeView, titleView, locationView)
-        addConstraintsWithFormat("H:|-30-[v0(280)]", views: titleView)
-        addConstraintsWithFormat("H:|-30-[v1(14)]-6-[v0(250)]", views: locationView, iconView)
+        addConstraintsWithFormat("H:|-\(cardSpacing)-[v0]", views: timeView)
+        addConstraintsWithFormat("V:|-\(cardFontSize)-[v0(24)]-10-[v1]-10-[v2(\(fontSize))]-\(locationViewSpacing)-|", views: timeView, titleView, locationView)
+        addConstraintsWithFormat("H:|-\(cardSpacing)-[v0]-50-|", views: titleView)
+        //addConstraintsWithFormat("H:|-\(cardSpacing)-[v1]-6-[v0]-24-|", views: locationView, iconView)
         NSLayoutConstraint.activate([iconView.topAnchor.constraint(equalTo: locationView.topAnchor, constant: 0),
-        iconView.bottomAnchor.constraint(equalTo: locationView.bottomAnchor, constant: 0)
+                                     iconView.bottomAnchor.constraint(equalTo: locationView.bottomAnchor)
         ])
+        iconView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: cardSpacing).isActive = true
+        locationView.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: 4).isActive = true
         setupGradientLayer()
         selectionStyle = .none
         

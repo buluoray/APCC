@@ -20,11 +20,21 @@ struct Item_info: Decodable, Hashable{
     var `Type`: Type_info?
     var Name_of_Attendee :Name_of_Attendee_info?
     var Emial: Emial_info?
-    var Promo_Link: Promo_Link_Info?
+    var Website: Website_Info?
     var Bio: Bio_Info?
+    var Title: Title_Info?
+    var Profile_Image: Profile_Image_Info?
 }
 
-struct Promo_Link_Info:Decodable, Hashable {
+struct Profile_Image_Info:Decodable, Hashable {
+    var S:String
+}
+
+struct Title_Info:Decodable, Hashable {
+    var S:String
+}
+
+struct Website_Info:Decodable, Hashable {
     var S:String
 }
 

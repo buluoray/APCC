@@ -18,6 +18,8 @@
 		BB3E39F323F8EC74004F3DD5 /* GuestSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3E39F223F8EC74004F3DD5 /* GuestSectionHeaderView.swift */; };
 		BB3E39F523FA376C004F3DD5 /* GuestInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3E39F423FA376C004F3DD5 /* GuestInfoViewController.swift */; };
 		BB3E39F723FA377C004F3DD5 /* GuestInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3E39F623FA377C004F3DD5 /* GuestInfoView.swift */; };
+		BB3E39F923FC8A1F004F3DD5 /* ConstantHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3E39F823FC8A1F004F3DD5 /* ConstantHelper.swift */; };
+		BB3E39FB23FC8AB3004F3DD5 /* HelperClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3E39FA23FC8AB3004F3DD5 /* HelperClass.swift */; };
 		BB535DA823E0BF6400CB875D /* EventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB535DA723E0BF6300CB875D /* EventView.swift */; };
 		BB535DAA23E4F45400CB875D /* EventModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB535DA923E4F45400CB875D /* EventModel.swift */; };
 		BB535DAC23E4F82400CB875D /* TestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB535DAB23E4F82400CB875D /* TestData.swift */; };
@@ -48,6 +50,8 @@
 		BB3E39F223F8EC74004F3DD5 /* GuestSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuestSectionHeaderView.swift; sourceTree = "<group>"; };
 		BB3E39F423FA376C004F3DD5 /* GuestInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuestInfoViewController.swift; sourceTree = "<group>"; };
 		BB3E39F623FA377C004F3DD5 /* GuestInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuestInfoView.swift; sourceTree = "<group>"; };
+		BB3E39F823FC8A1F004F3DD5 /* ConstantHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstantHelper.swift; sourceTree = "<group>"; };
+		BB3E39FA23FC8AB3004F3DD5 /* HelperClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperClass.swift; sourceTree = "<group>"; };
 		BB535DA723E0BF6300CB875D /* EventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventView.swift; sourceTree = "<group>"; };
 		BB535DA923E4F45400CB875D /* EventModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventModel.swift; sourceTree = "<group>"; };
 		BB535DAB23E4F82400CB875D /* TestData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestData.swift; sourceTree = "<group>"; };
@@ -124,6 +128,8 @@
 				BB3E39F223F8EC74004F3DD5 /* GuestSectionHeaderView.swift */,
 				BB3E39F423FA376C004F3DD5 /* GuestInfoViewController.swift */,
 				BB3E39F623FA377C004F3DD5 /* GuestInfoView.swift */,
+				BB3E39F823FC8A1F004F3DD5 /* ConstantHelper.swift */,
+				BB3E39FA23FC8AB3004F3DD5 /* HelperClass.swift */,
 			);
 			path = Guests;
 			sourceTree = "<group>";
@@ -301,6 +307,7 @@
 				BB3E39F323F8EC74004F3DD5 /* GuestSectionHeaderView.swift in Sources */,
 				BB3E39EF23F79B13004F3DD5 /* GuestCell.swift in Sources */,
 				BB3E39F123F79C1F004F3DD5 /* GuestModel.swift in Sources */,
+				BB3E39F923FC8A1F004F3DD5 /* ConstantHelper.swift in Sources */,
 				BB56778123D93E6F00AA1496 /* AppDelegate.swift in Sources */,
 				1C544D3123E7F45A00700D83 /* Schedule_Request.swift in Sources */,
 				1C544D2F23E7F23C00700D83 /* Schedule.swift in Sources */,
@@ -312,6 +319,7 @@
 				1C544D2B23E6BCC500700D83 /* Employer_Request.swift in Sources */,
 				BB535DAA23E4F45400CB875D /* EventModel.swift in Sources */,
 				BB535DAC23E4F82400CB875D /* TestData.swift in Sources */,
+				BB3E39FB23FC8AB3004F3DD5 /* HelperClass.swift in Sources */,
 				BB3E39EB23F5034E004F3DD5 /* GuestViewController.swift in Sources */,
 				1C544D2D23E6BCE600700D83 /* Employer.swift in Sources */,
 				BBEE050B23EAB54E0042E811 /* TableViewAnimation.swift in Sources */,
