@@ -389,6 +389,7 @@ class EventDetailCell: BaseTableCell {
                                      iconView.bottomAnchor.constraint(equalTo: locationView.bottomAnchor)
         ])
         iconView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: cardSpacing).isActive = true
+        iconView.widthAnchor.constraint(equalTo: locationView.heightAnchor).isActive = true
         locationView.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: 4).isActive = true
         setupGradientLayer()
         selectionStyle = .none

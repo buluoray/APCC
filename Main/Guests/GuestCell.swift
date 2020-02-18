@@ -67,6 +67,7 @@ class GuestCell: BaseCell {
         businessnNameLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
         countryLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
         iconView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+        countryLabel.centerContentVertically()
     }
 }
 
