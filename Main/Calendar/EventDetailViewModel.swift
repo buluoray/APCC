@@ -149,7 +149,7 @@ extension EventDetailViewModel: UITableViewDataSource, UITableViewDelegate{
             eventHeaderView.title = items[section].sectionTitle
             eventHeaderView.tableView = tableView
             eventHeaderView.headerLabel.textColor = .darkGray
-            eventHeaderView.headerLabel.font = UIFont(name: "Athelas-Italic", size: 24)
+            eventHeaderView.headerLabel.font = .italicSystemFont(ofSize: 24)
         }
     }
     

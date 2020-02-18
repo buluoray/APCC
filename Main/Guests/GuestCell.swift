@@ -25,16 +25,14 @@ class GuestCell: BaseCell {
         return iv
     }()
     
-    var countryLabel: UILabel = {
-        let iv = UILabel()
-        iv.translatesAutoresizingMaskIntoConstraints = false
+    var countryLabel: TextViewLabel = {
+        let iv = TextViewLabel()
         iv.text = ""
         iv.font = .systemFont(ofSize: 14, weight: .bold)
         iv.textColor = #colorLiteral(red: 0.6039215686, green: 0.6039215686, blue: 0.6039215686, alpha: 1)
         iv.textAlignment = .right
         iv.isUserInteractionEnabled = false
-        iv.numberOfLines = 1
-        iv.lineBreakMode = .byWordWrapping
+        iv.textContainer.lineBreakMode = .byWordWrapping
         
         return iv
     }()
@@ -51,34 +49,22 @@ class GuestCell: BaseCell {
         return String(describing: self)
     }
     
-//    override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
-//        setNeedsLayout()
-//        layoutIfNeeded()
-//        
-//        let size = contentView.systemLayoutSizeFitting(layoutAttributes.size)
-//        
-//        var frame = layoutAttributes.frame
-//        frame.size.height = ceil(size.height)
-//        layoutAttributes.frame = frame
-//        
-//        return layoutAttributes
-//    }
     
     override func layoutSubviews() {
-        //shadowDecorate()
+        countryLabel.centerContentVertically()
     }
     
     override func setupViews() {
         contentView.addSubview(businessnNameLabel)
         contentView.addSubview(countryLabel)
         contentView.addSubview(iconView)
-        contentView.addConstraintsWithFormat("V:|[v0]|", views: countryLabel)
+        contentView.addConstraintsWithFormat("V:|-24-[v0]-24-|", views: countryLabel)
         contentView.addConstraintsWithFormat("V:[v0]", views: businessnNameLabel)
         contentView.addConstraintsWithFormat("V:[v0(40)]", views: iconView)
-        contentView.addConstraintsWithFormat("H:|-12-[v2(40)]-12-[v0]-8-[v1]-12-|", views: businessnNameLabel, countryLabel,iconView)
+        contentView.addConstraintsWithFormat("H:|-12-[v2(40)]-12-[v0]-8-[v1(90)]-12-|", views: businessnNameLabel, countryLabel,iconView)
         businessnNameLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+        countryLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
         iconView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
-        countryLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
     }
 }
 

@@ -144,7 +144,7 @@ class EventOverviewCell: BaseCell, UITableViewDelegate, UITableViewDataSource {
     
     override func setupViews() {
         super.setupViews()
-        
+        eventDetailTablecView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 10, right: 0)
         eventDetailTablecView.register(EventDetailCell.self, forCellReuseIdentifier: cellId)
         eventDetailTablecView.register(EventSectionHeaderView.self, forHeaderFooterViewReuseIdentifier: EventSectionHeaderView.identifier)
         addSubview(eventDetailTablecView)
@@ -307,14 +307,6 @@ class EventDetailCell: BaseTableCell {
         iv.layer.masksToBounds = false
         iv.clipsToBounds = false
         iv.isUserInteractionEnabled = false
-//        iv.layer.shadowColor = UIColor.black.cgColor
-//        iv.layer.shadowRadius = 12
-//        iv.layer.shadowOpacity = 1.0
-//        iv.layer.shadowOffset = CGSize(width: 4, height: 4)
-//        iv.layer.shadowPath = UIBezierPath(rect: iv.bounds).cgPath
-        
-        //iv.layer.cornerRadius = 12
-        
 
         return iv
     }()
@@ -525,6 +517,7 @@ class TextViewLabel: UITextView {
         textContainerInset = UIEdgeInsets.zero
         textContainer.lineFragmentPadding = 0
         textContainer.lineBreakMode = .byTruncatingTail
+        translatesAutoresizingMaskIntoConstraints = false
     }
 }
 

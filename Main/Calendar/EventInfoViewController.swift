@@ -19,7 +19,7 @@ class EventInfoViewController: UIViewController {
         iv.translatesAutoresizingMaskIntoConstraints = false
         iv.text = "China Regional Breakout Session"
         iv.textAlignment = .center
-        iv.font = UIFont(name: "Athelas-Bold", size: 20)
+        iv.font = .systemFont(ofSize: 20, weight: .bold)
         iv.textColor = .darkGray
         iv.backgroundColor = .white
         iv.isUserInteractionEnabled = false
@@ -105,7 +105,7 @@ class TimeAndLocationCell: BaseTableCell {
         iv.textColor = .darkGray
         iv.backgroundColor = .white
         iv.isUserInteractionEnabled = false
-        iv.font = UIFont(name: "Athelas", size: 20)
+        iv.font = .systemFont(ofSize: 20, weight: .regular)
         return iv
     }()
     
@@ -137,7 +137,7 @@ class DescriptionCell: BaseTableCell {
         let iv = TextViewLabel()
         iv.translatesAutoresizingMaskIntoConstraints = false
         iv.textAlignment = .left
-        iv.font = UIFont(name: "Athelas-Regular", size: 19)
+        iv.font = .systemFont(ofSize: 19, weight: .regular)
         iv.textColor = .darkGray
         iv.backgroundColor = .clear
         iv.isUserInteractionEnabled = false

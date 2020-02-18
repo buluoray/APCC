@@ -10,7 +10,7 @@ import Foundation
 
 struct Business: Codable, Comparable {
     static func < (lhs: Business, rhs: Business) -> Bool {
-        return lhs.businessName! < rhs.businessName!
+        return lhs.businessName!.lowercased() < rhs.businessName!.lowercased()
     }
     
     var businessName: String?
@@ -18,6 +18,7 @@ struct Business: Codable, Comparable {
     var country: String?
     var email: String?
     var businessHeader: String?
+    var promoLink: String?
     var attendee: [Attendee]?
 }
 
@@ -60,21 +61,29 @@ class GuestModel: NSObject{
     }
     func makeModel(employers: ([EmItem])){
         var tempBusinessesContainer = [Business]()
+        //Filter empty business name
         let filteredBusinesses = employers.filter{ $0.Item.Business_Name?.S != nil}
-        //filteredBusinesses.forEach { print($0.Item.Business_Name?.S)}
+        //Group them to [Business][individual] array
         let tempBusinesses = Array(Dictionary(grouping:filteredBusinesses){$0.Item.Business_Name?.S}.values)
         for b in tempBusinesses{
             var attendees = [Attendee]()
+            //Make Attendee object for this business
             b.forEach({attendees.append(Attendee(name: $0.Item.Name_of_Attendee?.S ?? "N/A",bio: $0.Item.Bio?.S ?? "N/A"))})
-            let business = Business(businessName: b.first?.Item.Business_Name?.S, businessDescription: "N/A", country: b.first?.Item.Country?.S, email: b.first?.Item.Emial?.S, businessHeader: String((b.first?.Item.Business_Name?.S.prefix(1))!) ,attendee: attendees)
+            //Make Business object
+            let business = Business(businessName: b.first?.Item.Business_Name?.S, businessDescription: b.first?.Item.Business_Description?.S, country: b.first?.Item.Country?.S, email: b.first?.Item.Emial?.S, businessHeader: String((b.first?.Item.Business_Name?.S.prefix(1))!) ,promoLink: b.first?.Item.Promo_Link?.S ,attendee: attendees)
             tempBusinessesContainer.append(business)
         }
-        
-        //tempBusinessesContainer.sort()
-        //let dict = Dictionary(grouping: tempBusinessesContainer, by: { $0.businessName })
-        businesses = Array(Dictionary(grouping:tempBusinessesContainer){$0.businessHeader}.values)
+        //Group them to [BusinessHeader][Business] array
+        let tempUnsortedBusinesses = Array(Dictionary(grouping:tempBusinessesContainer){$0.businessHeader}.values)
+        var appendingBusiness = [[Business]]()
+        for unsorted in tempUnsortedBusinesses{
+            //sort by [Business]
+            let sorted = unsorted.sorted(by: {$0 < $1})
+            appendingBusiness.append(sorted)
+        }
+        //sort by [BusinessHeader]
+        businesses = appendingBusiness
         businesses.sort { ($0[0] ) < ($1[0] ) }
-        print(businesses)
         saveEventDaysToFile(data: businesses, filename: "businesses.json")
         
         DispatchQueue.main.async {

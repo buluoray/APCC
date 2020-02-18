@@ -15,7 +15,10 @@ class GuestViewController: UICollectionViewController {
     private var businesses: [[Business]]?{
         didSet{
             collectionView.reloadData()
-            collectionView.refreshControl!.endRefreshing()
+            DispatchQueue.main.async {
+                self.collectionView.refreshControl!.endRefreshing()
+            }
+            //collectionView.refreshControl!.endRefreshing()
         }
     }
     
@@ -33,7 +36,6 @@ class GuestViewController: UICollectionViewController {
         setupRefreshControl()
         setupCollectionView()
         collectionView.register(GuestCell.self, forCellWithReuseIdentifier: GuestCell.identifier)
-        //collectionView.register(GuestSectionHeader.self, forCellWithReuseIdentifier: GuestSectionHeader.identifier)
         collectionView.register(GuestSectionHeader.self, forSupplementaryViewOfKind: "UICollectionElementKindSectionHeader", withReuseIdentifier: GuestSectionHeader.identifier)
         guestModel.delegate = self
         guestModel.loadFromCache()
@@ -63,7 +65,7 @@ class GuestViewController: UICollectionViewController {
             flowLayout.minimumLineSpacing = 10
         }
         collectionView.backgroundColor = #colorLiteral(red: 0.9333333333, green: 0.9333333333, blue: 0.9333333333, alpha: 1)
-        
+        collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 10, right: 0)
         setupRefreshControl()
 
     }
@@ -82,6 +84,14 @@ class GuestViewController: UICollectionViewController {
 
 extension GuestViewController : UICollectionViewDelegateFlowLayout{
 
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if businesses != nil{
+            let guestInfoVC = GusetInfoViewController()
+            guestInfoVC.setupModel(data: businesses![indexPath.section][indexPath.row])
+            navigationController?.pushViewController(guestInfoVC, animated: true)
+        }
+    }
+    
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         if kind == UICollectionView.elementKindSectionHeader {
             let sectionHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: GuestSectionHeader.identifier, for: indexPath) as! GuestSectionHeader
@@ -117,12 +127,15 @@ extension GuestViewController : UICollectionViewDelegateFlowLayout{
                 cell.shadowDecorate()
                 cell.businessnNameLabel.text = businesses[indexPath.section][indexPath.row].businessName
                 cell.countryLabel.text = businesses[indexPath.section][indexPath.row].country
-                
+                cell.countryLabel.layoutIfNeeded()
+
                 return cell
             }
         }
         return UICollectionViewCell()
     }
+
+    
 }
 
 
@@ -145,7 +158,7 @@ extension GuestViewController: GuestModelDelegate {
     func didRecieveDataUpdate(data: [[Business]]) {
         businesses = data
         DispatchQueue.main.async {
-            self.showSpinner(onView: self.view, text: "Guests Updated")
+            self.showSpinner(onView: self.view, text: "\(self.businesses?.joined().count ?? 0) Guests Updated")
         }
         print("Guests updated")
     }
