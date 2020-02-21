@@ -12,7 +12,10 @@ import SDWebImage
 
 class GuestInfoViewController: UIViewController {
     
-    private var business: Business?
+    // Constants for state restoration.
+    private static let restoreProduct = "restoreProductKey"
+    
+    private var business: Business!
     private lazy var guestInfoView: GuestInfoView = {
         let guestInfoView = GuestInfoView(frame: view.frame)
         
@@ -25,8 +28,16 @@ class GuestInfoViewController: UIViewController {
         setupNav()
         setupView()
     }
-    
 
+    
+    override func didMove(toParent parent: UIViewController?) {
+        super.didMove(toParent: parent)
+
+        if parent == nil {
+            debugPrint("Back Button pressed.")
+        }
+        
+    }
     
     func setupView(){
         view.addSubview(guestInfoView)
@@ -56,15 +67,23 @@ class GuestInfoViewController: UIViewController {
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.barTintColor = .themeColor
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: "Guests", style: .plain, target: nil, action: nil)
-        navigationItem.title = "Guest Detail"
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "Info", style: .plain, target: nil, action: nil)
+        navigationItem.title = "Guest Info"
         navigationController?.navigationBar.tintColor = .white
         navigationController?.navigationBar.shadowImage = UIImage()
+
     }
     
     func setupModel(data: Business){
         self.business = data
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        navigationController?.navigationBar.shadowImage = UIImage()
+    }
+    
+    
 }
 
 extension GuestInfoViewController: LinkLabelDelegate{
@@ -102,9 +121,36 @@ extension GuestInfoViewController: UICollectionViewDelegate, UICollectionViewDat
         return CGSize(width: collectionView.frame.width, height: collectionView.frame.height / 3 - 10)
     }
     
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if business?.attendee?[indexPath.row].name != ""{
+            let guestDetailVC = GuestDetailViewController()
+            guestDetailVC.setupModel(data: (business?.attendee?[indexPath.row])!)
+            navigationController?.pushViewController(guestDetailVC, animated: true)
+        }
+        
     }
+    
     
 }
 
+extension GuestInfoViewController {
+    
+    override func encodeRestorableState(with coder: NSCoder) {
+        super.encodeRestorableState(with: coder)
+        
+        // Encode the product.
+        coder.encode(business, forKey: GuestInfoViewController.restoreProduct)
+    }
+    
+    override func decodeRestorableState(with coder: NSCoder) {
+        super.decodeRestorableState(with: coder)
+        
+        // Restore the product.
+        if let decodedProduct = coder.decodeObject(forKey: GuestInfoViewController.restoreProduct) as? Business {
+            business = decodedProduct
+        } else {
+            fatalError("A product did not exist. In your app, handle this gracefully.")
+        }
+    }
+    
+}

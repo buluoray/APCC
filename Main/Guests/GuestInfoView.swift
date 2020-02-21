@@ -169,10 +169,11 @@ extension UIView{
 }
 
 class GuestInfoCell: BaseCell{
-    
 
-    
-
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        profileImageView.image = nil
+    }
     
     var nameLabel: TextViewLabel = {
         let iv = TextViewLabel()

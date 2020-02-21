@@ -9,6 +9,12 @@
 import UIKit
 
 //Guests
+var guestDetailFontSize: CGFloat{
+    get{
+        return UIDevice.current.userInterfaceIdiom == .phone ? 18 : 26
+    }
+}
+
 var fontSize: CGFloat{
     get{
         return UIDevice.current.userInterfaceIdiom == .phone ? 14 : 30

@@ -49,17 +49,18 @@ struct EventData: Hashable, Codable {
 struct EventSection: Comparable, Codable {
     
     var eventData = [EventData]()
-    var sectionHeader: String
+    var sectionHeader: String?
     
     
     static func < (lhs: EventSection, rhs: EventSection) -> Bool {
-        let left = lhs.sectionHeader
-        let right = rhs.sectionHeader
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "h:mm a"
-        let leftDate = dateFormatter.date(from: left)!
-        let rightDate = dateFormatter.date(from: right)!
-        return leftDate < rightDate
+        if let left = lhs.sectionHeader, let right = rhs.sectionHeader{
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "h:mm a"
+            if let leftDate = dateFormatter.date(from: left), let rightDate = dateFormatter.date(from: right){
+                return leftDate < rightDate
+            }
+        }
+        return false
     }
     
     init(sectionHeader: String, eventdata: [EventData]) {

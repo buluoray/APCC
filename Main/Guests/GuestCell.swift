@@ -33,19 +33,22 @@ class GuestCell: BaseCell {
         iv.textAlignment = .right
         iv.isUserInteractionEnabled = false
         iv.textContainer.lineBreakMode = .byWordWrapping
-        
+        iv.centerContentVertically()
         return iv
     }()
     
     let iconView: UIImageView = {
-        let iv = UIImageView(image: UIImage(named: "APCC"))
+        let iv = UIImageView()
         iv.translatesAutoresizingMaskIntoConstraints = false
         iv.isUserInteractionEnabled = false
         iv.contentMode = .scaleAspectFill
         return iv
     }()
     
-    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        iconView.image = nil
+    }
     
     static var identifier: String {
         return String(describing: self)
@@ -53,6 +56,7 @@ class GuestCell: BaseCell {
     
     
     override func layoutSubviews() {
+        super.layoutSubviews()
         countryLabel.centerContentVertically()
     }
     
@@ -67,7 +71,7 @@ class GuestCell: BaseCell {
         businessnNameLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
         countryLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
         iconView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
-        countryLabel.centerContentVertically()
+        //countryLabel.centerContentVertically()
     }
 }
 

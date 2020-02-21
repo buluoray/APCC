@@ -10,11 +10,13 @@ import UIKit
 import Foundation
 class EventViewController: UIViewController{
 
-    
+    var isfetching = false
     var eventDays = [EventDay](){
         didSet{
             eventView.eventDays = eventDays
+            
             if let selectedIndexPath = calendarBar.collectionView.indexPathsForSelectedItems?.first{
+                calendarBar.collectionView.reloadData()
                 eventView.collectionView.selectItem(at: selectedIndexPath, animated: false, scrollPosition: .centeredHorizontally)
                 calendarBar.collectionView.selectItem(at: selectedIndexPath, animated: false, scrollPosition: .centeredHorizontally)
             }
@@ -36,7 +38,30 @@ class EventViewController: UIViewController{
         return ev
     }()
     
-    
+    override func viewDidAppear(_ animated: Bool) {
+        
+
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1){
+            if let cell = self.eventView.collectionView.visibleCells.first as? EventOverviewCell {
+                print("succeed")
+                
+                if self.eventDays.count == 0 {
+                    self.isfetching = true
+                    print("begin refresh")
+                    cell.eventDetailTablecView.refreshControl?.beginRefreshingManually()
+                }
+                
+                if cell.eventDetailTablecView.refreshControl!.isRefreshing && !self.isfetching {
+                    print("End begin refresh")
+//                    vSpinner?.removeFromSuperview()
+//                    vSpinner = nil
+                    cell.eventDetailTablecView.refreshControl?.endRefreshing()
+                }
+                
+            }
+        }
+    }
     
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -61,6 +86,7 @@ class EventViewController: UIViewController{
         if let ed = readEventDaysFromFile(filename: "employerData.json"){
             employerData = ed
         }
+        isfetching = true
         fetchEvents()
         DispatchQueue.main.asyncAfter(deadline: .now()) {
             
@@ -134,8 +160,11 @@ class EventViewController: UIViewController{
             schedule_Request.getVenders{ [weak self] result in
                 switch result {
                 case .failure:
-                    DispatchQueue.main.async {
-                        self!.showSpinner(onView: self!.view, text: "Failed to update events:\nPlease check your internet connection")
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        self!.isfetching = false
+                        if !(self!.isfetching){
+                            self!.showSpinner(onView: self!.view, text: "Failed to update events:\nPlease check your internet connection")
+                        }
                         if let cell = self!.eventView.collectionView.visibleCells.first as? EventOverviewCell {
                             print("succeed")
                             cell.eventDetailTablecView.refreshControl?.endRefreshing()
@@ -217,7 +246,7 @@ class EventViewController: UIViewController{
         saveEventDaysToFile(eventdays: studentData, filename: "studentData.json")
         saveEventDaysToFile(eventdays: employerData, filename: "employerData.json")
         
-        DispatchQueue.main.async{
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
             if let cell = self.eventView.collectionView.visibleCells.first as? EventOverviewCell {
                 print("succeed loaded from web")
                 cell.eventDetailTablecView.refreshControl?.endRefreshing()
@@ -228,12 +257,16 @@ class EventViewController: UIViewController{
         //print(eventDays)
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(true)
+        vSpinner?.removeFromSuperview()
+        vSpinner = nil
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.isToolbarHidden = true
         self.navigationController?.tabBarController?.tabBar.isHidden = false
-
-        
     }
     
     func readEventDaysFromFile(filename: String) -> [EventDay]?{
@@ -372,6 +405,8 @@ extension String {
 var vSpinner : UIView?
 extension UIViewController {
     func showSpinner(onView : UIView, text: String) {
+        vSpinner?.removeFromSuperview()
+        vSpinner = nil
         let spinnerView = UIView(frame: .zero)
         spinnerView.backgroundColor = .themeColor
         spinnerView.translatesAutoresizingMaskIntoConstraints = false
@@ -401,13 +436,17 @@ extension UIViewController {
         vSpinner = spinnerView
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             UIView.animate(withDuration: 0.2, animations: {vSpinner?.alpha = 0.0},
-            completion: {(value: Bool) in
+            completion: {(success: Bool) in
                 vSpinner?.removeFromSuperview()
                 vSpinner = nil
-                        })
+                print(success)
+          })
         }
     }
+    
+
 }
+
 
 extension UIRefreshControl {
     func beginRefreshingManually() {
@@ -416,6 +455,6 @@ extension UIRefreshControl {
         }
         beginRefreshing()
         
-        //sendActions(for: UIControl.Event.valueChanged)
+        sendActions(for: UIControl.Event.valueChanged)
     }
 }

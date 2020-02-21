@@ -21,6 +21,17 @@ class GuestSectionHeader: UICollectionReusableView {
         return label
      }()
     
+    var ResultLabel: UILabel = {
+       let label: UILabel = UILabel()
+        label.text = "Results"
+       label.textColor = .themeColor
+       label.font = UIFont.systemFont(ofSize: 33, weight: .medium)
+       label.sizeToFit()
+       label.textAlignment = .center
+       label.layer.masksToBounds = true
+       return label
+    }()
+    
     static var identifier: String {
         return String(describing: self)
     }
@@ -29,12 +40,17 @@ class GuestSectionHeader: UICollectionReusableView {
         super.init(frame: frame)
 
         addSubview(label)
-
+        addSubview(ResultLabel)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.topAnchor.constraint(equalTo: self.topAnchor, constant: 10).isActive = true
         label.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20).isActive = true
         label.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10).isActive = true
         label.widthAnchor.constraint(equalToConstant: 56).isActive = true
+        ResultLabel.translatesAutoresizingMaskIntoConstraints = false
+        ResultLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 10).isActive = true
+        ResultLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20).isActive = true
+        ResultLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10).isActive = true
+        ResultLabel.isHidden = true
         
     }
     

@@ -20,6 +20,11 @@
 		BB3E39F723FA377C004F3DD5 /* GuestInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3E39F623FA377C004F3DD5 /* GuestInfoView.swift */; };
 		BB3E39F923FC8A1F004F3DD5 /* ConstantHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3E39F823FC8A1F004F3DD5 /* ConstantHelper.swift */; };
 		BB3E39FB23FC8AB3004F3DD5 /* HelperClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3E39FA23FC8AB3004F3DD5 /* HelperClass.swift */; };
+		BB3E39FD23FDDFEF004F3DD5 /* GuestDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3E39FC23FDDFEF004F3DD5 /* GuestDetailViewController.swift */; };
+		BB3E3A0023FE51C6004F3DD5 /* DiscoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3E39FF23FE51C6004F3DD5 /* DiscoverViewController.swift */; };
+		BB3E3A0223FE8FC8004F3DD5 /* ResultCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3E3A0123FE8FC8004F3DD5 /* ResultCollectionViewController.swift */; };
+		BB3E3A0423FE933B004F3DD5 /* GuestViewController+Restore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3E3A0323FE933B004F3DD5 /* GuestViewController+Restore.swift */; };
+		BB3E3A0623FF22DA004F3DD5 /* GuestViewController+Update.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3E3A0523FF22DA004F3DD5 /* GuestViewController+Update.swift */; };
 		BB535DA823E0BF6400CB875D /* EventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB535DA723E0BF6300CB875D /* EventView.swift */; };
 		BB535DAA23E4F45400CB875D /* EventModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB535DA923E4F45400CB875D /* EventModel.swift */; };
 		BB535DAC23E4F82400CB875D /* TestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB535DAB23E4F82400CB875D /* TestData.swift */; };
@@ -52,6 +57,11 @@
 		BB3E39F623FA377C004F3DD5 /* GuestInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuestInfoView.swift; sourceTree = "<group>"; };
 		BB3E39F823FC8A1F004F3DD5 /* ConstantHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstantHelper.swift; sourceTree = "<group>"; };
 		BB3E39FA23FC8AB3004F3DD5 /* HelperClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperClass.swift; sourceTree = "<group>"; };
+		BB3E39FC23FDDFEF004F3DD5 /* GuestDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuestDetailViewController.swift; sourceTree = "<group>"; };
+		BB3E39FF23FE51C6004F3DD5 /* DiscoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverViewController.swift; sourceTree = "<group>"; };
+		BB3E3A0123FE8FC8004F3DD5 /* ResultCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultCollectionViewController.swift; sourceTree = "<group>"; };
+		BB3E3A0323FE933B004F3DD5 /* GuestViewController+Restore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GuestViewController+Restore.swift"; sourceTree = "<group>"; };
+		BB3E3A0523FF22DA004F3DD5 /* GuestViewController+Update.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GuestViewController+Update.swift"; sourceTree = "<group>"; };
 		BB535DA723E0BF6300CB875D /* EventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventView.swift; sourceTree = "<group>"; };
 		BB535DA923E4F45400CB875D /* EventModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventModel.swift; sourceTree = "<group>"; };
 		BB535DAB23E4F82400CB875D /* TestData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestData.swift; sourceTree = "<group>"; };
@@ -123,15 +133,27 @@
 			isa = PBXGroup;
 			children = (
 				BB3E39EA23F5034E004F3DD5 /* GuestViewController.swift */,
+				BB3E3A0523FF22DA004F3DD5 /* GuestViewController+Update.swift */,
+				BB3E3A0323FE933B004F3DD5 /* GuestViewController+Restore.swift */,
+				BB3E3A0123FE8FC8004F3DD5 /* ResultCollectionViewController.swift */,
 				BB3E39EE23F79B13004F3DD5 /* GuestCell.swift */,
 				BB3E39F023F79C1F004F3DD5 /* GuestModel.swift */,
 				BB3E39F223F8EC74004F3DD5 /* GuestSectionHeaderView.swift */,
 				BB3E39F423FA376C004F3DD5 /* GuestInfoViewController.swift */,
 				BB3E39F623FA377C004F3DD5 /* GuestInfoView.swift */,
+				BB3E39FC23FDDFEF004F3DD5 /* GuestDetailViewController.swift */,
 				BB3E39F823FC8A1F004F3DD5 /* ConstantHelper.swift */,
 				BB3E39FA23FC8AB3004F3DD5 /* HelperClass.swift */,
 			);
 			path = Guests;
+			sourceTree = "<group>";
+		};
+		BB3E39FE23FE51A3004F3DD5 /* Discover */ = {
+			isa = PBXGroup;
+			children = (
+				BB3E39FF23FE51C6004F3DD5 /* DiscoverViewController.swift */,
+			);
+			path = Discover;
 			sourceTree = "<group>";
 		};
 		BB56777423D93E6F00AA1496 = {
@@ -171,6 +193,7 @@
 		BB56779623D94C8700AA1496 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				BB3E39FE23FE51A3004F3DD5 /* Discover */,
 				BB3E39EC23F5041A004F3DD5 /* Calendar */,
 				BB535DAD23E65D8200CB875D /* APCCTabBarController.swift */,
 				BB3E39ED23F50431004F3DD5 /* Guests */,
@@ -305,6 +328,8 @@
 				BB3E39F723FA377C004F3DD5 /* GuestInfoView.swift in Sources */,
 				BB56778523D93E6F00AA1496 /* EventViewController.swift in Sources */,
 				BB3E39F323F8EC74004F3DD5 /* GuestSectionHeaderView.swift in Sources */,
+				BB3E3A0423FE933B004F3DD5 /* GuestViewController+Restore.swift in Sources */,
+				BB3E3A0223FE8FC8004F3DD5 /* ResultCollectionViewController.swift in Sources */,
 				BB3E39EF23F79B13004F3DD5 /* GuestCell.swift in Sources */,
 				BB3E39F123F79C1F004F3DD5 /* GuestModel.swift in Sources */,
 				BB3E39F923FC8A1F004F3DD5 /* ConstantHelper.swift in Sources */,
@@ -314,6 +339,7 @@
 				BB3E39F523FA376C004F3DD5 /* GuestInfoViewController.swift in Sources */,
 				BB56778323D93E6F00AA1496 /* SceneDelegate.swift in Sources */,
 				BB535DB023E69D0B00CB875D /* EventInfoViewController.swift in Sources */,
+				BB3E39FD23FDDFEF004F3DD5 /* GuestDetailViewController.swift in Sources */,
 				BB56779523D945B500AA1496 /* CalendarBar.swift in Sources */,
 				BB535DAE23E65D8200CB875D /* APCCTabBarController.swift in Sources */,
 				1C544D2B23E6BCC500700D83 /* Employer_Request.swift in Sources */,
@@ -323,8 +349,10 @@
 				BB3E39EB23F5034E004F3DD5 /* GuestViewController.swift in Sources */,
 				1C544D2D23E6BCE600700D83 /* Employer.swift in Sources */,
 				BBEE050B23EAB54E0042E811 /* TableViewAnimation.swift in Sources */,
+				BB3E3A0623FF22DA004F3DD5 /* GuestViewController+Update.swift in Sources */,
 				BB535DA823E0BF6400CB875D /* EventView.swift in Sources */,
 				BBD2BC2D23EE341E000282E2 /* EventDetailViewModel.swift in Sources */,
+				BB3E3A0023FE51C6004F3DD5 /* DiscoverViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

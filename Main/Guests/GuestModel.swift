@@ -8,17 +8,35 @@
 
 import Foundation
 
-struct Business: Codable, Comparable {
+class Business: NSObject, Codable, Comparable {
     static func < (lhs: Business, rhs: Business) -> Bool {
         return lhs.businessName!.lowercased() < rhs.businessName!.lowercased()
     }
     
-    var businessName: String?
-    var businessDescription: String?
-    var country: String?
-    var email: String?
-    var businessHeader: String?
-    var promoLink: String?
+    init(businessName: String, businessDescription: String, country: String, email: String, businessHeader: String, promoLink:String, businessLogo:String, attendee:[Attendee]) {
+        self.businessName = businessName
+        self.businessDescription = businessDescription
+        self.country = country
+        self.email = email
+        self.businessHeader = businessHeader
+        self.promoLink = promoLink
+        self.attendee = attendee
+        self.businessLogo = businessLogo
+    }
+    
+    
+    /// NSPredicate expression keys for searching.
+    enum ExpressionKeys: String {
+        case businessName
+        case country
+    }
+    var businessLogo: String?
+    @objc var businessName: String?
+    @objc var businessDescription: String?
+    @objc var country: String?
+    @objc var email: String?
+    @objc var businessHeader: String?
+    @objc var promoLink: String?
 
     var attendee: [Attendee]?
 }
@@ -71,7 +89,7 @@ class GuestModel: NSObject{
             //Make Attendee object for this business
             b.forEach({attendees.append(Attendee(name: $0.Item.Name_of_Attendee?.S,profileImageURL: $0.Item.Profile_Image?.S, bio: $0.Item.Bio?.S, title: $0.Item.Title?.S))})
             //Make Business object
-            let business = Business(businessName: b.first?.Item.Business_Name?.S, businessDescription: b.first?.Item.Business_Description?.S, country: b.first?.Item.Country?.S, email: b.first?.Item.Emial?.S, businessHeader: String((b.first?.Item.Business_Name?.S.prefix(1))!) ,promoLink: b.first?.Item.Website?.S ,attendee: attendees)
+            let business = Business(businessName: b.first?.Item.Business_Name?.S ?? "", businessDescription: b.first?.Item.Business_Description?.S ?? "", country: b.first?.Item.Country?.S ?? "", email: b.first?.Item.Emial?.S ?? "", businessHeader: String((b.first?.Item.Business_Name?.S.prefix(1))!) ,promoLink: b.first?.Item.Website?.S ?? "", businessLogo: b.first?.Item.Business_Logo?.S ?? "", attendee: attendees)
             tempBusinessesContainer.append(business)
         }
         //Group them to [BusinessHeader][Business] array

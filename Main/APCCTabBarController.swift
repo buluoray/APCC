@@ -22,11 +22,17 @@ class APCCTabBarController: UITabBarController {
         
         let guestViewController = GuestViewController()
         let guestViewNavigationController = UINavigationController(rootViewController: guestViewController)
-        guestViewNavigationController.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+        guestViewNavigationController.navigationBar.prefersLargeTitles = true
         guestViewNavigationController.tabBarItem.title = "Guests"
         guestViewNavigationController.tabBarItem.image = UIImage(named: "guests")
+        
+        let discoverViewController = DiscoverViewController()
+        let discoverViewNavigationController = UINavigationController(rootViewController: discoverViewController)
+        discoverViewNavigationController.tabBarItem.title = "Discover"
+        discoverViewNavigationController.tabBarItem.image = UIImage(named: "discover")
+        discoverViewNavigationController.navigationBar.prefersLargeTitles = true
 
-        viewControllers = [eventViewNavigationController, guestViewNavigationController, createDummyNavControllerWithTitle(title: "Discover", imageName: "discover")]
+        viewControllers = [discoverViewNavigationController,eventViewNavigationController, guestViewNavigationController]
         
         
 

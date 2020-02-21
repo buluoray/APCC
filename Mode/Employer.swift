@@ -24,6 +24,11 @@ struct Item_info: Decodable, Hashable{
     var Bio: Bio_Info?
     var Title: Title_Info?
     var Profile_Image: Profile_Image_Info?
+    var Business_Logo: Business_Logo_Info?
+}
+
+struct Business_Logo_Info:Decodable, Hashable {
+    var S:String
 }
 
 struct Profile_Image_Info:Decodable, Hashable {

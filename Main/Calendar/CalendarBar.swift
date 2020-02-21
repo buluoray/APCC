@@ -96,14 +96,23 @@ class CalendarBar: UIView, UICollectionViewDataSource, UICollectionViewDelegate,
 
 class DayCell: BaseCell {
     
-    var eventDay: EventDay?
+    
+    
+    var eventDay: EventDay?{
+        didSet {
+            
+            if eventDay?.eventSections.count == 0 {
+                dayNumberView.textColor = .lightGray
+            }
+        }
+    }
     
     let dayNumberView: UILabel = {
         let iv = UILabel()
         iv.translatesAutoresizingMaskIntoConstraints = false
         iv.text = "1"
         iv.textAlignment = .center
-        iv.textColor = .white
+        iv.textColor = .lightGray
         iv.font = .systemFont(ofSize: 20, weight: .bold)
         return iv
     }()

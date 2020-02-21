@@ -14,6 +14,7 @@ class EventView: UIView, UICollectionViewDataSource, UICollectionViewDelegate, U
     var calendarBar: CalendarBar?
     var eventDays: [EventDay]? {
         didSet{
+            
             collectionView.reloadData()
         }
     }
@@ -249,7 +250,7 @@ class EventOverviewCell: BaseCell, UITableViewDelegate, UITableViewDataSource {
          
         let eventVC = EventInfoViewController()
         eventVC.eventDetail = eventDay.eventSections[indexPath.section].eventData[indexPath.row]
-        eventVC.hidesBottomBarWhenPushed = true
+        //eventVC.hidesBottomBarWhenPushed = true
         eventViewController?.navigationController?.pushViewController(eventVC, animated: true)
     }
     
@@ -384,7 +385,6 @@ class EventDetailCell: BaseTableCell {
         addConstraintsWithFormat("H:|-\(cardSpacing)-[v0]", views: timeView)
         addConstraintsWithFormat("V:|-\(cardFontSize)-[v0(24)]-10-[v1]-10-[v2(\(fontSize))]-\(locationViewSpacing)-|", views: timeView, titleView, locationView)
         addConstraintsWithFormat("H:|-\(cardSpacing)-[v0]-50-|", views: titleView)
-        //addConstraintsWithFormat("H:|-\(cardSpacing)-[v1]-6-[v0]-24-|", views: locationView, iconView)
         NSLayoutConstraint.activate([iconView.topAnchor.constraint(equalTo: locationView.topAnchor, constant: 0),
                                      iconView.bottomAnchor.constraint(equalTo: locationView.bottomAnchor)
         ])
