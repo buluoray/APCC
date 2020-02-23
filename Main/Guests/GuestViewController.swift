@@ -61,18 +61,21 @@ class GuestViewController: UICollectionViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
 
-
+        
         collectionView.visibleCells.forEach{
             let cell = $0 as? GuestCell
             cell?.countryLabel.centerContentVertically()
         }
+        resultCollectionController.collectionView.visibleCells.forEach{
+            let cell = $0 as? GuestCell
+            cell?.countryLabel.centerContentVertically()
+        }
     }
-    
 
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
+        navigationController?.navigationBar.barStyle = .black 
         // Restore the searchController's active state.
         if restoredState.wasActive {
             searchController.isActive = restoredState.wasActive
@@ -83,11 +86,22 @@ class GuestViewController: UICollectionViewController {
                 restoredState.wasFirstResponder = false
             }
         }
+        collectionView.visibleCells.forEach{
+            let cell = $0 as? GuestCell
+            cell?.countryLabel.centerContentVertically()
+        }
+        resultCollectionController.collectionView.visibleCells.forEach{
+            let cell = $0 as? GuestCell
+            cell?.countryLabel.centerContentVertically()
+        }
         
         if businesses == nil{
             isFetching = true
-            DispatchQueue.main.async {
-                self.collectionView.refreshControl!.beginRefreshingManually()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                if self.isFetching{
+                    self.collectionView.refreshControl!.beginRefreshingManually()
+                }
+                
             
             }
         }
@@ -197,7 +211,13 @@ class GuestViewController: UICollectionViewController {
 
 extension GuestViewController : UICollectionViewDelegateFlowLayout{
 
-    
+    override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if collectionView === self.collectionView{
+            
+            let cell = cell as? GuestCell
+            cell?.countryLabel.centerContentVertically()
+        }
+    }
 
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
@@ -310,7 +330,7 @@ extension GuestViewController: GuestModelDelegate {
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        .darkContent
+        .lightContent
     }
     
     func didRecieveDataUpdate(data: [[Business]]) {
@@ -322,10 +342,19 @@ extension GuestViewController: GuestModelDelegate {
         print("Guests updated")
     }
     
+    
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(true)
         vSpinner?.removeFromSuperview()
         vSpinner = nil
+        collectionView.visibleCells.forEach{
+            let cell = $0 as? GuestCell
+            cell?.countryLabel.centerContentVertically()
+        }
+        resultCollectionController.collectionView.visibleCells.forEach{
+            let cell = $0 as? GuestCell
+            cell?.countryLabel.centerContentVertically()
+        }
     }
     
 }
@@ -350,6 +379,32 @@ extension GuestViewController: UISearchBarDelegate {
     
 }
 
+extension GuestViewController: TabBarReselectHandling {
+    func handleReselect() {
+        
+        if searchController.isActive{
+            resultCollectionController.collectionView.scrollToTop(true)
+        } else {
+            collectionView.scrollToTop(true)
+        }
+        
+    }
+}
+
+
+extension UIScrollView {
+    func scrollToTop(_ animated: Bool) {
+        var topContentOffset: CGPoint
+        if #available(iOS 11.0, *) {
+            topContentOffset = CGPoint(x: -safeAreaInsets.left, y: -safeAreaInsets.top)
+        } else {
+            topContentOffset = CGPoint(x: -contentInset.left, y: -contentInset.top)
+        }
+
+        setContentOffset(topContentOffset, animated: animated)
+        
+    }
+}
 
 // MARK: - UISearchControllerDelegate
 

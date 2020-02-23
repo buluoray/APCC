@@ -19,6 +19,9 @@ class ResultCollectionViewController: UICollectionViewController {
             
         }
     }
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        .lightContent
+    }
     
     private let noResultLabel: UILabel = {
         let iv = UILabel()
@@ -52,18 +55,13 @@ class ResultCollectionViewController: UICollectionViewController {
         collectionView.visibleCells.forEach{
             let cell = $0 as? GuestCell
             cell?.layoutIfNeeded()
+            print("layout cells")
         }
-    }
-    
-    
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
+
         print("view did appear \(isFirstAppear)")
 
     }
@@ -142,6 +140,14 @@ extension ResultCollectionViewController: UICollectionViewDelegateFlowLayout{
             cell.businessnNameLabel.text =  filteredBusinesses[indexPath.section][indexPath.row].businessName
             cell.countryLabel.text =  filteredBusinesses[indexPath.section][indexPath.row].country
             cell.countryLabel.layoutIfNeeded()
+            if let URLString = filteredBusinesses[indexPath.section][indexPath.row].businessLogo{
+                if URLString != ""{
+                    if let imageURL = URL(string: URLString){
+                        cell.iconView.sd_setImage(with: imageURL, placeholderImage: UIImage(named: "APCC"), options: [.highPriority,.retryFailed,.continueInBackground], context: nil)
+                    }
+                }
+
+            }
             return cell
         }
     

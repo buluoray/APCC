@@ -38,11 +38,12 @@ class EventViewController: UIViewController{
         return ev
     }()
     
+    
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+        //recurseViews(view: (navigationController?.navigationBar)!)
         
-
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1){
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
             if let cell = self.eventView.collectionView.visibleCells.first as? EventOverviewCell {
                 print("succeed")
                 
@@ -87,7 +88,7 @@ class EventViewController: UIViewController{
             employerData = ed
         }
         isfetching = true
-        fetchEvents()
+        //fetchEvents()
         DispatchQueue.main.asyncAfter(deadline: .now()) {
             
             if UserDefaults.standard.bool(forKey: "isShowingStudent") {
@@ -106,6 +107,18 @@ class EventViewController: UIViewController{
         }
     }
     
+    func recurseViews(view:UIView) {
+        print("recurseViews: \(view)") // helpful for sorting out which view is which
+        if view.isKind(of: UIButton.self) { // find _my_ button
+            print("found")
+            view.backgroundColor = #colorLiteral(red: 0.7304885387, green: 0.2062669396, blue: 0.2816413343, alpha: 1)
+            view.layer.cornerRadius = 2.5
+//            view.layer.borderColor = UIColor.red.cgColor
+//            view.layer.borderWidth = 2
+        }
+        for v in view.subviews { recurseViews(view: v) }
+    }
+    
     func setupSwitchView(){
         let rightBarButtonItem = UIBarButtonItem(
         title: "",
@@ -113,6 +126,8 @@ class EventViewController: UIViewController{
         target: self,
         action: #selector(switchCalender_tapped))
         rightBarButtonItem.tintColor = .white
+        //rightBarButtonItem.setBackgroundImage(UIImage.imageWithColor(color: #colorLiteral(red: 0.9203479886, green: 0.1120881811, blue: 0.2776033282, alpha: 1)), for: .normal, barMetrics: .default)
+        
         self.navigationItem.rightBarButtonItem = rightBarButtonItem
     }
     
@@ -456,5 +471,15 @@ extension UIRefreshControl {
         beginRefreshing()
         
         sendActions(for: UIControl.Event.valueChanged)
+    }
+}
+
+extension EventViewController: TabBarReselectHandling {
+    func handleReselect() {
+        
+        if let cell = self.eventView.collectionView.visibleCells.first as? EventOverviewCell {
+            cell.eventDetailTablecView.scrollToTop(true)
+        }
+        
     }
 }

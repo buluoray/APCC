@@ -11,7 +11,9 @@ import SDWebImage
 class GuestDetailViewController: UIViewController {
 
     var attendee: Attendee?
-    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        .lightContent
+    }
     var titleLabel: TextViewLabel = {
         let iv = TextViewLabel()
         iv.text = ""

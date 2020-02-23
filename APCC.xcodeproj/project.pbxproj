@@ -25,7 +25,7 @@
 		BB3E3A0223FE8FC8004F3DD5 /* ResultCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3E3A0123FE8FC8004F3DD5 /* ResultCollectionViewController.swift */; };
 		BB3E3A0423FE933B004F3DD5 /* GuestViewController+Restore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3E3A0323FE933B004F3DD5 /* GuestViewController+Restore.swift */; };
 		BB3E3A0623FF22DA004F3DD5 /* GuestViewController+Update.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3E3A0523FF22DA004F3DD5 /* GuestViewController+Update.swift */; };
-		BB3E3A0823FFDC5B004F3DD5 /* apcc.html in Resources */ = {isa = PBXBuildFile; fileRef = BB3E3A0723FFDC5B004F3DD5 /* apcc.html */; };
+		BB3E3A0C2400C485004F3DD5 /* styles.css in Resources */ = {isa = PBXBuildFile; fileRef = BB3E3A0B2400C485004F3DD5 /* styles.css */; };
 		BB535DA823E0BF6400CB875D /* EventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB535DA723E0BF6300CB875D /* EventView.swift */; };
 		BB535DAA23E4F45400CB875D /* EventModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB535DA923E4F45400CB875D /* EventModel.swift */; };
 		BB535DAC23E4F82400CB875D /* TestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB535DAB23E4F82400CB875D /* TestData.swift */; };
@@ -38,6 +38,7 @@
 		BB56778D23D93E7100AA1496 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BB56778B23D93E7100AA1496 /* LaunchScreen.storyboard */; };
 		BB56779523D945B500AA1496 /* CalendarBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB56779423D945B500AA1496 /* CalendarBar.swift */; };
 		BB56779A23D94EE500AA1496 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BB56779923D94EE500AA1496 /* Default-568h@2x.png */; };
+		BBAC90192400CE5A00DEA18B /* apcc.html in Resources */ = {isa = PBXBuildFile; fileRef = BBAC90182400CE5A00DEA18B /* apcc.html */; };
 		BBD2BC2D23EE341E000282E2 /* EventDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD2BC2C23EE341E000282E2 /* EventDetailViewModel.swift */; };
 		BBEE050B23EAB54E0042E811 /* TableViewAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBEE050A23EAB54E0042E811 /* TableViewAnimation.swift */; };
 		EBF3D94DBDFD18E4BDF948AE /* Pods_APCC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF932D3A7294923CDC4E2248 /* Pods_APCC.framework */; };
@@ -63,7 +64,7 @@
 		BB3E3A0123FE8FC8004F3DD5 /* ResultCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultCollectionViewController.swift; sourceTree = "<group>"; };
 		BB3E3A0323FE933B004F3DD5 /* GuestViewController+Restore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GuestViewController+Restore.swift"; sourceTree = "<group>"; };
 		BB3E3A0523FF22DA004F3DD5 /* GuestViewController+Update.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GuestViewController+Update.swift"; sourceTree = "<group>"; };
-		BB3E3A0723FFDC5B004F3DD5 /* apcc.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = apcc.html; sourceTree = "<group>"; };
+		BB3E3A0B2400C485004F3DD5 /* styles.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = styles.css; sourceTree = "<group>"; };
 		BB535DA723E0BF6300CB875D /* EventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventView.swift; sourceTree = "<group>"; };
 		BB535DA923E4F45400CB875D /* EventModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventModel.swift; sourceTree = "<group>"; };
 		BB535DAB23E4F82400CB875D /* TestData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestData.swift; sourceTree = "<group>"; };
@@ -78,6 +79,7 @@
 		BB56778E23D93E7100AA1496 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BB56779423D945B500AA1496 /* CalendarBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarBar.swift; sourceTree = "<group>"; };
 		BB56779923D94EE500AA1496 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		BBAC90182400CE5A00DEA18B /* apcc.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = apcc.html; sourceTree = "<group>"; };
 		BBD2BC2C23EE341E000282E2 /* EventDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailViewModel.swift; sourceTree = "<group>"; };
 		BBEE050A23EAB54E0042E811 /* TableViewAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewAnimation.swift; sourceTree = "<group>"; };
 		CF932D3A7294923CDC4E2248 /* Pods_APCC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_APCC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -154,7 +156,8 @@
 			isa = PBXGroup;
 			children = (
 				BB3E39FF23FE51C6004F3DD5 /* DiscoverViewController.swift */,
-				BB3E3A0723FFDC5B004F3DD5 /* apcc.html */,
+				BB3E3A0B2400C485004F3DD5 /* styles.css */,
+				BBAC90182400CE5A00DEA18B /* apcc.html */,
 			);
 			path = Discover;
 			sourceTree = "<group>";
@@ -196,9 +199,9 @@
 		BB56779623D94C8700AA1496 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				BB535DAD23E65D8200CB875D /* APCCTabBarController.swift */,
 				BB3E39FE23FE51A3004F3DD5 /* Discover */,
 				BB3E39EC23F5041A004F3DD5 /* Calendar */,
-				BB535DAD23E65D8200CB875D /* APCCTabBarController.swift */,
 				BB3E39ED23F50431004F3DD5 /* Guests */,
 			);
 			path = Main;
@@ -273,10 +276,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				BB56778D23D93E7100AA1496 /* LaunchScreen.storyboard in Resources */,
+				BBAC90192400CE5A00DEA18B /* apcc.html in Resources */,
 				BB56778A23D93E7100AA1496 /* Assets.xcassets in Resources */,
 				BB3E39E923F2ADEC004F3DD5 /* Podfile in Resources */,
-				BB3E3A0823FFDC5B004F3DD5 /* apcc.html in Resources */,
 				BB56779A23D94EE500AA1496 /* Default-568h@2x.png in Resources */,
+				BB3E3A0C2400C485004F3DD5 /* styles.css in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

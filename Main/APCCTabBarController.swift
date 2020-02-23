@@ -8,7 +8,7 @@
 
 import UIKit
 
-class APCCTabBarController: UITabBarController {
+class APCCTabBarController: UITabBarController,UITabBarControllerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,13 +36,26 @@ class APCCTabBarController: UITabBarController {
         viewControllers = [eventViewNavigationController, guestViewNavigationController,discoverViewController]
         
         
-
+        delegate = self
 
         self.tabBar.barTintColor = .white
         self.tabBar.tintColor = .themeColor
     }
+    //MARK: Properties
     
+    func tabBarController(_ tabBarController: UITabBarController,shouldSelect viewController: UIViewController) -> Bool {
+        if tabBarController.selectedViewController === viewController{
+            //let handler = viewController as? TabBarReselectHandling {
+            // NOTE: viewController in line above might be a UINavigationController,
+            // in which case you need to access its contents
+            guard let navigationController = viewController as? UINavigationController else { return true }
+            guard navigationController.viewControllers.count <= 1, let handler = navigationController.viewControllers.first as? TabBarReselectHandling else { return true }
+            
+            handler.handleReselect()
+        }
 
+        return true
+    }
     
     private func createDummyNavControllerWithTitle(title: String, imageName: String) -> UINavigationController{
         let viewController = UIViewController()
@@ -51,4 +64,8 @@ class APCCTabBarController: UITabBarController {
         navController.tabBarItem.image = UIImage(named: imageName)
         return navController
     }
+}
+
+protocol TabBarReselectHandling {
+    func handleReselect()
 }

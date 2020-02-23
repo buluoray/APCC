@@ -162,9 +162,10 @@ class EventOverviewCell: BaseCell, UITableViewDelegate, UITableViewDataSource {
         refreshControl.attributedTitle = NSAttributedString(string: "Loading APCC Events...", attributes: attributes)
         refreshControl.addTarget(eventViewController, action: #selector(eventViewController?.fetchEvents), for: .valueChanged)
         eventDetailTablecView.refreshControl = refreshControl
-        if eventDay == nil{
-            eventDetailTablecView.refreshControl!.beginRefreshingManually()
-        }
+
+//        if eventDay == nil{
+//            eventDetailTablecView.refreshControl!.beginRefreshingManually()
+//        }
 //        eventDetailTablecView.refreshControl!.beginRefreshingManually()
     }
     
@@ -523,6 +524,7 @@ class TextViewLabel: UITextView {
         textContainer.lineFragmentPadding = 0
         textContainer.lineBreakMode = .byTruncatingTail
         translatesAutoresizingMaskIntoConstraints = false
+        
     }
 }
 
@@ -534,6 +536,7 @@ extension UITextView {
         let heightOffset = (bounds.size.height - size.height * zoomScale) / 2
         let positiveTopOffset = max(0, heightOffset)
         contentOffset.y = -positiveTopOffset
+        //setContentOffset(CGPoint(x: 0, y: -positiveTopOffset), animated: false)
     }
 }
 

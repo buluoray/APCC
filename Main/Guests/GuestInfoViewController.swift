@@ -21,22 +21,14 @@ class GuestInfoViewController: UIViewController {
         
         return guestInfoView
     }()
-    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        .lightContent
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = #colorLiteral(red: 0.9333333333, green: 0.9333333333, blue: 0.9333333333, alpha: 1)
         setupNav()
         setupView()
-    }
-
-    
-    override func didMove(toParent parent: UIViewController?) {
-        super.didMove(toParent: parent)
-
-        if parent == nil {
-            debugPrint("Back Button pressed.")
-        }
-        
     }
     
     func setupView(){
