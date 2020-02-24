@@ -167,7 +167,7 @@
 			children = (
 				BB3E39E823F2ADEC004F3DD5 /* Podfile */,
 				BB56779923D94EE500AA1496 /* Default-568h@2x.png */,
-				BB56779623D94C8700AA1496 /* Main */,
+				BB56779623D94C8700AA1496 /* APCC */,
 				BB56777F23D93E6F00AA1496 /* Helper */,
 				BB56777E23D93E6F00AA1496 /* Products */,
 				1C544D2923E6BC9F00700D83 /* Mode */,
@@ -196,7 +196,7 @@
 			path = Helper;
 			sourceTree = "<group>";
 		};
-		BB56779623D94C8700AA1496 /* Main */ = {
+		BB56779623D94C8700AA1496 /* APCC */ = {
 			isa = PBXGroup;
 			children = (
 				BB535DAD23E65D8200CB875D /* APCCTabBarController.swift */,
@@ -204,7 +204,7 @@
 				BB3E39EC23F5041A004F3DD5 /* Calendar */,
 				BB3E39ED23F50431004F3DD5 /* Guests */,
 			);
-			path = Main;
+			path = APCC;
 			sourceTree = "<group>";
 		};
 		FD7C9AE3A2E60C96AB3F50BF /* Frameworks */ = {
